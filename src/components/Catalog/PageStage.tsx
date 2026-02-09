@@ -91,7 +91,7 @@ export const PageStage = forwardRef<HTMLDivElement, PageStageProps>(({
             </div>
 
             {activeProduct && activeHotspot && (
-                <div className="absolute inset-0 z-50 flex items-center justify-center pointer-events-none bg-black/20 backdrop-blur-sm animate-in fade-in duration-200">
+                <div className="absolute inset-0 z-50 flex items-center justify-center pointer-events-none bg-black/20 animate-in fade-in duration-200">
                     <div className="pointer-events-auto">
                         <ProductPopover
                             product={activeProduct}

@@ -60,7 +60,7 @@ export const Flipbook = forwardRef<any, FlipbookProps>(({
                 useMouseEvents={true}
                 swipeDistance={30}
                 showPageCorners={true}
-                disableFlipByClick={false}
+                disableFlipByClick={true}
             >
                 {pages.map((page) => (
                     <PageStage
