@@ -1,0 +1,109 @@
+import { useState, useRef } from "react";
+import { type Page } from "../../data/pages";
+import { type Hotspot } from "../../data/hotspots";
+import { HotspotPin } from "./HotspotPin";
+import { ProductPopover } from "./ProductPopover";
+import { useProducts } from "../../context/ProductContext";
+import { cn } from "../../utils/cn";
+
+type PageStageProps = {
+    page: Page;
+    hotspots: Hotspot[];
+    isAdmin: boolean;
+    onHotspotClick: (hotspot: Hotspot) => void;
+    onStageClick?: (xPct: number, yPct: number) => void;
+};
+
+export function PageStage({
+    page,
+    hotspots,
+    isAdmin,
+    onHotspotClick,
+    onStageClick,
+}: PageStageProps) {
+    const [activeHotspotId, setActiveHotspotId] = useState<string | null>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
+    const { getProduct } = useProducts();
+
+    const handleHotspotClick = (hotspot: Hotspot) => {
+        if (isAdmin) {
+            onHotspotClick(hotspot);
+        } else {
+            setActiveHotspotId(activeHotspotId === hotspot.id ? null : hotspot.id);
+        }
+    };
+
+    const handleBackgroundClick = (e: React.MouseEvent) => {
+        if (activeHotspotId) {
+            setActiveHotspotId(null);
+            return;
+        }
+
+        if (isAdmin && onStageClick && containerRef.current) {
+            const rect = containerRef.current.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            const xPct = (x / rect.width) * 100;
+            const yPct = (y / rect.height) * 100;
+
+            onStageClick(xPct, yPct);
+        }
+    };
+
+    const activeHotspot = hotspots.find(h => h.id === activeHotspotId);
+    const activeProduct = activeHotspot ? getProduct(activeHotspot.productId) : null;
+
+    return (
+        <div className="flex items-center justify-center w-full h-full p-2 sm:p-4">
+            <div
+                ref={containerRef}
+                className={cn(
+                    "relative overflow-hidden transition-all duration-300 ease-out bg-white shadow-2xl rounded-sm"
+                )}
+                style={{
+                    height: 'auto',
+                    maxHeight: '80vh',
+                    aspectRatio: '0.707',
+                    width: 'auto'
+                }}
+                onClick={handleBackgroundClick}
+            >
+                <img
+                    src={page.src}
+                    alt={page.label || `Page ${page.id}`}
+                    className="w-full h-full object-cover select-none pointer-events-none"
+                />
+
+                <div className="absolute inset-0">
+                    {hotspots.map((hotspot) => (
+                        <HotspotPin
+                            key={hotspot.id}
+                            hotspot={hotspot}
+                            isActive={activeHotspotId === hotspot.id}
+                            isAdmin={isAdmin}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                handleHotspotClick(hotspot);
+                            }}
+                        />
+                    ))}
+                </div>
+
+            </div>
+
+            {activeProduct && activeHotspot && (
+                <div className="absolute inset-0 z-50 flex items-center justify-center pointer-events-none bg-black/20 backdrop-blur-sm animate-in fade-in duration-200">
+                    <div className="pointer-events-auto">
+                        <ProductPopover
+                            product={activeProduct}
+                            pageId={page.id}
+                            onClose={() => setActiveHotspotId(null)}
+                            style={{ position: 'relative' }}
+                        />
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+}
