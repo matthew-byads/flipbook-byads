@@ -1,0 +1,13 @@
+name = "flipbook-byads"
+main = "src/main.tsx"
+compatibility_date = "2026-02-09"
+type = "module"
+
+[env.staging]
+name = "flipbook-byads-staging"
+vars = { ENV = "staging" }
+
+[env.production]
+name = "flipbook-byads-prod"
+vars = { ENV = "production" }
+route = { pattern = "api.example.com/*", zone_name = "example.com" }

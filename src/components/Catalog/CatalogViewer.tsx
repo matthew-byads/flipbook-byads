@@ -1,10 +1,11 @@
-import { useState, useEffect, useCallback } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import { pages as staticPages, type Page } from "../../data/pages";
 import { hotspots as initialHotspots, type Hotspot } from "../../data/hotspots";
-import { PageStage } from "./PageStage";
 import { ThumbnailStrip } from "./ThumbnailStrip";
 import { loadAdminHotspots, saveAdminHotspots, loadPagesConfig } from "../Admin/hotspotIO";
 import { AdminPanel } from "../Admin/AdminPanel";
+
+import { Flipbook } from "./Flipbook";
 
 type CatalogViewerProps = {
     isAdmin: boolean;
@@ -16,6 +17,8 @@ export function CatalogViewer({ isAdmin }: CatalogViewerProps) {
         const custom = loadPagesConfig();
         return custom.length > 0 ? custom : staticPages;
     });
+
+    const flipbookRef = useRef<any>(null);
 
     const [allHotspots, setAllHotspots] = useState<Hotspot[]>(() => [
         ...initialHotspots,
@@ -32,11 +35,11 @@ export function CatalogViewer({ isAdmin }: CatalogViewerProps) {
     const page = pages[pageIndex] || pages[0];
 
     const handleNext = useCallback(() => {
-        setPageIndex((i) => Math.min(i + 1, pages.length - 1));
-    }, [pages.length]);
+        flipbookRef.current?.pageFlip()?.flipNext();
+    }, []);
 
     const handlePrev = useCallback(() => {
-        setPageIndex((i) => Math.max(i - 1, 0));
+        flipbookRef.current?.pageFlip()?.flipPrev();
     }, []);
 
     // Keyboard navigation
@@ -51,7 +54,9 @@ export function CatalogViewer({ isAdmin }: CatalogViewerProps) {
 
     const handlePageSelect = (id: string) => {
         const index = pages.findIndex(p => p.id === id);
-        if (index >= 0) setPageIndex(index);
+        if (index >= 0) {
+            flipbookRef.current?.pageFlip()?.turnToPage(index);
+        }
     };
 
     // Admin State
@@ -97,20 +102,22 @@ export function CatalogViewer({ isAdmin }: CatalogViewerProps) {
                     <svg className="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
                 </button>
 
-                <div className="w-full h-full max-w-4xl mx-auto">
-                    <PageStage
-                        key={page.id}
-                        page={page}
-                        hotspots={allHotspots.filter(h => h.pageId === page.id)}
+                <div className="w-full h-full flex items-center justify-center">
+                    <Flipbook
+                        ref={flipbookRef}
+                        pages={pages}
+                        hotspots={allHotspots}
                         isAdmin={isAdmin}
                         onHotspotClick={handleHotspotClick}
-                        onStageClick={(x, y) => handleStageClick(page.id, x, y)}
+                        onStageClick={handleStageClick}
+                        onPageChange={setPageIndex}
+                        initialPage={0}
                     />
                 </div>
 
                 <button
                     onClick={handleNext}
-                    disabled={pageIndex === pages.length - 1}
+                    disabled={pageIndex >= pages.length - 2}
                     className="absolute cursor-pointer right-4 z-20 p-3 rounded-full bg-white/80 hover:bg-white shadow-md disabled:opacity-30 transition-all hover:scale-110"
                 >
                     <svg className="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>

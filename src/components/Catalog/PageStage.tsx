@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, forwardRef } from "react";
 import { type Page } from "../../data/pages";
 import { type Hotspot } from "../../data/hotspots";
 import { HotspotPin } from "./HotspotPin";
@@ -14,16 +14,19 @@ type PageStageProps = {
     onStageClick?: (xPct: number, yPct: number) => void;
 };
 
-export function PageStage({
+export const PageStage = forwardRef<HTMLDivElement, PageStageProps>(({
     page,
     hotspots,
     isAdmin,
     onHotspotClick,
     onStageClick,
-}: PageStageProps) {
+}, ref) => {
     const [activeHotspotId, setActiveHotspotId] = useState<string | null>(null);
-    const containerRef = useRef<HTMLDivElement>(null);
+    const internalRef = useRef<HTMLDivElement>(null);
     const { getProduct } = useProducts();
+
+    // Use the external ref if provided, otherwise fallback to internal
+    const containerRef = (ref as React.RefObject<HTMLDivElement>) || internalRef;
 
     const handleHotspotClick = (hotspot: Hotspot) => {
         if (isAdmin) {
@@ -55,24 +58,19 @@ export function PageStage({
     const activeProduct = activeHotspot ? getProduct(activeHotspot.productId) : null;
 
     return (
-        <div className="flex items-center justify-center w-full h-full p-2 sm:p-4">
+        <div ref={ref} className="flex items-center justify-center w-full h-full p-2 sm:p-4 bg-white" data-density="soft">
             <div
-                ref={containerRef}
+                ref={internalRef}
                 className={cn(
-                    "relative overflow-hidden transition-all duration-300 ease-out bg-white shadow-2xl rounded-sm"
+                    "relative overflow-hidden transition-all duration-300 ease-out bg-white shadow-xl rounded-sm w-full h-full"
                 )}
-                style={{
-                    height: 'auto',
-                    maxHeight: '80vh',
-                    aspectRatio: '0.707',
-                    width: 'auto'
-                }}
                 onClick={handleBackgroundClick}
             >
                 <img
                     src={page.src}
                     alt={page.label || `Page ${page.id}`}
-                    className="w-full h-full object-cover select-none pointer-events-none"
+                    className="w-full h-full object-contain select-none pointer-events-none"
+                    style={{ backgroundColor: '#f3f4f6' }}
                 />
 
                 <div className="absolute inset-0">
@@ -106,4 +104,6 @@ export function PageStage({
             )}
         </div>
     );
-}
+});
+
+PageStage.displayName = "PageStage";
