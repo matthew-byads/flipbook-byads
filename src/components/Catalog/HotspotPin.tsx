@@ -16,7 +16,7 @@ export function HotspotPin({ hotspot, onClick, isActive, isAdmin }: HotspotPinPr
                 onClick(e);
             }}
             className={cn(
-                "absolute cursor-pointer -translate-x-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-full shadow-lg transition-transform duration-200 hover:scale-110 z-10",
+                "cursor-pointer absolute -translate-x-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-full shadow-lg transition-transform duration-200 hover:scale-110 z-10",
                 isActive ? "scale-110 z-20" : "z-10",
                 isAdmin ? "bg-red-500/90 hover:bg-red-600" : "bg-white/90 hover:bg-white"
             )}

@@ -93,16 +93,16 @@ export function CatalogViewer({ isAdmin }: CatalogViewerProps) {
     return (
         <div className="flex flex-col w-full h-screen bg-gray-50 pt-16 pb-20 overflow-hidden relative">
             {/* Main Stage */}
-            <div className="flex-1 relative flex items-center justify-center px-4 overflow-hidden">
+            <div className="flex-1 relative flex items-center justify-center px-4">
                 <button
                     onClick={handlePrev}
                     disabled={pageIndex === 0}
-                    className="absolute cursor-pointer left-4 z-20 p-3 rounded-full bg-white/80 hover:bg-white shadow-md disabled:opacity-30 transition-all hover:scale-110"
+                    className="absolute cursor-pointer left-4 z-[70] p-3 rounded-full bg-white/80 hover:bg-white shadow-md disabled:opacity-30 transition-all hover:scale-110"
                 >
                     <svg className="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
                 </button>
 
-                <div className="w-full h-full flex items-center justify-center">
+                <div className="w-full h-full max-w-7xl max-h-[calc(100vh-160px)] flex items-center justify-center">
                     <Flipbook
                         ref={flipbookRef}
                         pages={pages}
@@ -118,14 +118,14 @@ export function CatalogViewer({ isAdmin }: CatalogViewerProps) {
                 <button
                     onClick={handleNext}
                     disabled={pageIndex >= pages.length - 2}
-                    className="absolute cursor-pointer right-4 z-20 p-3 rounded-full bg-white/80 hover:bg-white shadow-md disabled:opacity-30 transition-all hover:scale-110"
+                    className="absolute cursor-pointer right-4 z-[70] p-3 rounded-full bg-white/80 hover:bg-white shadow-md disabled:opacity-30 transition-all hover:scale-110"
                 >
                     <svg className="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
                 </button>
 
                 {/* Page indicator */}
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 py-1.5 px-6 bg-black/60 backdrop-blur-md text-white rounded-full text-xs font-bold tracking-wider shadow-lg">
-                    {page.label || `Page ${pageIndex + 1}`} / {pages.length}
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 py-2 px-6 bg-black/80 backdrop-blur-md text-white rounded-full text-xs font-black tracking-widest shadow-2xl z-[70]">
+                    {page.label || `PAGE ${pageIndex + 1}`} / {pages.length}
                 </div>
             </div>
 
@@ -140,6 +140,11 @@ export function CatalogViewer({ isAdmin }: CatalogViewerProps) {
             {isAdmin && (
                 <AdminPanel
                     pageId={draftHotspot?.pageId || page.id}
+                    visiblePageIds={
+                        pageIndex === 0
+                            ? [pages[0].id]
+                            : [pages[pageIndex]?.id, pages[pageIndex + 1]?.id].filter(Boolean) as string[]
+                    }
                     allHotspots={allHotspots}
                     onUpdateHotspots={handleUpdateHotspots}
                     selectedHotspot={selectedHotspot}

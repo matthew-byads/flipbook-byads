@@ -20,6 +20,7 @@ type AdminPanelProps = {
     // If we have a draft hotspot (clicked point)
     draftHotspot?: { xPct: number; yPct: number } | null;
     onClearDraft: () => void;
+    visiblePageIds: string[];
 };
 
 type AdminTab = "hotspots" | "products" | "pages" | "settings";
@@ -32,6 +33,7 @@ export function AdminPanel({
     onCloseEditor,
     draftHotspot,
     onClearDraft,
+    visiblePageIds,
 }: AdminPanelProps) {
     const { allProducts, addProduct } = useProducts();
     const [activeTab, setActiveTab] = useState<AdminTab>("hotspots");
@@ -89,8 +91,8 @@ export function AdminPanel({
     };
 
     const handleClearPage = () => {
-        if (confirm("Delete all hotspots on this page?")) {
-            const updated = allHotspots.filter(h => h.pageId !== pageId);
+        if (confirm(`Delete all hotspots on ${visiblePageIds.length > 1 ? 'these pages' : 'this page'}?`)) {
+            const updated = allHotspots.filter(h => !visiblePageIds.includes(h.pageId));
             onUpdateHotspots(updated);
         }
     };

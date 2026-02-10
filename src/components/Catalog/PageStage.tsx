@@ -25,8 +25,6 @@ export const PageStage = forwardRef<HTMLDivElement, PageStageProps>(({
     const internalRef = useRef<HTMLDivElement>(null);
     const { getProduct } = useProducts();
 
-    // Use the external ref if provided, otherwise fallback to internal
-    const containerRef = (ref as React.RefObject<HTMLDivElement>) || internalRef;
 
     const handleHotspotClick = (hotspot: Hotspot) => {
         if (isAdmin) {
@@ -37,13 +35,17 @@ export const PageStage = forwardRef<HTMLDivElement, PageStageProps>(({
     };
 
     const handleBackgroundClick = (e: React.MouseEvent) => {
+        if (isAdmin || activeHotspotId) {
+            e.stopPropagation();
+        }
+
         if (activeHotspotId) {
             setActiveHotspotId(null);
             return;
         }
 
-        if (isAdmin && onStageClick && containerRef.current) {
-            const rect = containerRef.current.getBoundingClientRect();
+        if (isAdmin && onStageClick && internalRef.current) {
+            const rect = internalRef.current.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
 
@@ -58,13 +60,20 @@ export const PageStage = forwardRef<HTMLDivElement, PageStageProps>(({
     const activeProduct = activeHotspot ? getProduct(activeHotspot.productId) : null;
 
     return (
-        <div ref={ref} className="flex items-center justify-center w-full h-full p-2 sm:p-4 bg-white" data-density="soft">
+        <div
+            ref={ref}
+            className={cn(
+                "flex items-center justify-center w-full h-full bg-white",
+                isAdmin && "cursor-crosshair"
+            )}
+            data-density="soft"
+            onClick={handleBackgroundClick}
+        >
             <div
                 ref={internalRef}
                 className={cn(
-                    "relative overflow-hidden transition-all duration-300 ease-out bg-white shadow-xl rounded-sm w-full h-full"
+                    "relative bg-white shadow-xl rounded-sm w-full h-full"
                 )}
-                onClick={handleBackgroundClick}
             >
                 <img
                     src={page.src}
