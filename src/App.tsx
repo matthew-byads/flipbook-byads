@@ -4,7 +4,7 @@ import { CatalogViewer } from "./components/Catalog/CatalogViewer";
 import { CartDrawer } from "./components/Cart/CartDrawer";
 import { AdminUnlockModal } from "./components/Admin/AdminUnlockModal";
 import { CartProvider } from "./cart/CartContext";
-import { isAdminUnlocked, setAdminUnlocked } from "./components/Admin/hotspotIO";
+import { isAdminUnlocked } from "./components/Admin/hotspotIO";
 import { ProductProvider } from "./context/ProductContext";
 
 function App() {
