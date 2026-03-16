@@ -1,13 +1,12 @@
 import { useCart } from "../../cart/CartContext";
-import { cn } from "../../utils/cn";
 
 type HeaderProps = {
     isAdmin: boolean;
-    onAdminClick: () => void;
+    onAdminLock: () => void;
     title?: string;
 };
 
-export function Header({ isAdmin, onAdminClick, title = "Catalog" }: HeaderProps) {
+export function Header({ isAdmin, onAdminLock, title = "Catalog" }: HeaderProps) {
     const { state, dispatch } = useCart();
     const totalItems = state.items.reduce((acc, item) => acc + item.quantity, 0);
 
@@ -18,17 +17,19 @@ export function Header({ isAdmin, onAdminClick, title = "Catalog" }: HeaderProps
             </h1>
 
             <div className="flex items-center gap-4">
-                <button
-                    onClick={onAdminClick}
-                    className={cn(
-                        "text-xs font-medium px-3 py-1.5 rounded-full transition-colors",
-                        isAdmin
-                            ? "bg-red-100 text-red-700 hover:bg-red-200"
-                            : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                    )}
-                >
-                    {isAdmin ? "Admin Unlocked" : "Admin"}
-                </button>
+                {isAdmin && (
+                    <button
+                        onClick={onAdminLock}
+                        title="Click to lock admin mode"
+                        className="text-xs font-medium px-3 py-1.5 rounded-full bg-red-100 text-red-700 hover:bg-red-200 transition-colors flex items-center gap-1.5"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                        </svg>
+                        Admin Unlocked
+                    </button>
+                )}
 
                 <button
                     onClick={() => dispatch({ type: "TOGGLE_CART" })}

@@ -11,18 +11,12 @@ function App() {
   const [isAdmin, setIsAdmin] = useState(() => isAdminUnlocked());
   const [isUnlockModalOpen, setIsUnlockModalOpen] = useState(false);
 
-  const handleAdminToggle = () => {
-    if (isAdmin) {
-      // Lock
-      setAdminUnlocked(false);
-      setIsAdmin(false);
-    } else {
-      // Open modal
-      setIsUnlockModalOpen(true);
-    }
+  const handleAdminLock = () => {
+    setAdminUnlocked(false);
+    setIsAdmin(false);
   };
 
-  // Keyboard shortcut Ctrl+Shift+A
+  // Keyboard shortcut Ctrl+Shift+A to open admin unlock modal (secret access)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.ctrlKey && e.shiftKey && e.key === "A") {
@@ -37,10 +31,7 @@ function App() {
     <ProductProvider>
       <CartProvider>
         <div className="min-h-screen bg-gray-50 text-gray-900 font-sans">
-          <Header
-            isAdmin={isAdmin}
-            onAdminClick={handleAdminToggle}
-          />
+          <Header isAdmin={isAdmin} onAdminLock={handleAdminLock} />
 
           <CatalogViewer isAdmin={isAdmin} />
 
