@@ -1,13 +1,11 @@
 import { useCart } from "../../cart/CartContext";
-import { cn } from "../../utils/cn";
 
 type HeaderProps = {
     isAdmin: boolean;
-    onAdminClick: () => void;
     title?: string;
 };
 
-export function Header({ isAdmin, onAdminClick, title = "Catalog" }: HeaderProps) {
+export function Header({ isAdmin, title = "Catalog" }: HeaderProps) {
     const { state, dispatch } = useCart();
     const totalItems = state.items.reduce((acc, item) => acc + item.quantity, 0);
 
@@ -18,17 +16,11 @@ export function Header({ isAdmin, onAdminClick, title = "Catalog" }: HeaderProps
             </h1>
 
             <div className="flex items-center gap-4">
-                <button
-                    onClick={onAdminClick}
-                    className={cn(
-                        "text-xs font-medium px-3 py-1.5 rounded-full transition-colors",
-                        isAdmin
-                            ? "bg-red-100 text-red-700 hover:bg-red-200"
-                            : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                    )}
-                >
-                    {isAdmin ? "Admin Unlocked" : "Admin"}
-                </button>
+                {isAdmin && (
+                    <span className="text-xs font-medium px-3 py-1.5 rounded-full bg-red-100 text-red-700">
+                        Admin Unlocked
+                    </span>
+                )}
 
                 <button
                     onClick={() => dispatch({ type: "TOGGLE_CART" })}

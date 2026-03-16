@@ -4,25 +4,14 @@ import { CatalogViewer } from "./components/Catalog/CatalogViewer";
 import { CartDrawer } from "./components/Cart/CartDrawer";
 import { AdminUnlockModal } from "./components/Admin/AdminUnlockModal";
 import { CartProvider } from "./cart/CartContext";
-import { isAdminUnlocked, setAdminUnlocked } from "./components/Admin/hotspotIO";
+import { isAdminUnlocked } from "./components/Admin/hotspotIO";
 import { ProductProvider } from "./context/ProductContext";
 
 function App() {
   const [isAdmin, setIsAdmin] = useState(() => isAdminUnlocked());
   const [isUnlockModalOpen, setIsUnlockModalOpen] = useState(false);
 
-  const handleAdminToggle = () => {
-    if (isAdmin) {
-      // Lock
-      setAdminUnlocked(false);
-      setIsAdmin(false);
-    } else {
-      // Open modal
-      setIsUnlockModalOpen(true);
-    }
-  };
-
-  // Keyboard shortcut Ctrl+Shift+A
+  // Keyboard shortcut Ctrl+Shift+A to open admin unlock modal (secret access)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.ctrlKey && e.shiftKey && e.key === "A") {
@@ -37,10 +26,7 @@ function App() {
     <ProductProvider>
       <CartProvider>
         <div className="min-h-screen bg-gray-50 text-gray-900 font-sans">
-          <Header
-            isAdmin={isAdmin}
-            onAdminClick={handleAdminToggle}
-          />
+          <Header isAdmin={isAdmin} />
 
           <CatalogViewer isAdmin={isAdmin} />
 
