@@ -1384,7 +1384,7 @@ export const products: Product[] = [
     },
     {
         "id": "p152",
-        "name": "Vestidos de Bao",
+        "name": "Vestidos de Baño",
         "price": 115000,
         "currency": "COP",
         "sku": "Fuego",
@@ -1394,7 +1394,7 @@ export const products: Product[] = [
     },
     {
         "id": "p153",
-        "name": "Vestidos de Bao",
+        "name": "Vestidos de Baño",
         "price": 115000,
         "currency": "COP",
         "sku": "Oleaje",
@@ -1404,7 +1404,7 @@ export const products: Product[] = [
     },
     {
         "id": "p154",
-        "name": "Vestidos de Bao",
+        "name": "Vestidos de Baño",
         "price": 125000,
         "currency": "COP",
         "sku": "Multiusos",
@@ -1414,7 +1414,7 @@ export const products: Product[] = [
     },
     {
         "id": "p155",
-        "name": "Vestidos de Bao",
+        "name": "Vestidos de Baño",
         "price": 115000,
         "currency": "COP",
         "sku": "Rojo/ocre",
@@ -1424,7 +1424,7 @@ export const products: Product[] = [
     },
     {
         "id": "p156",
-        "name": "Vestidos de Bao",
+        "name": "Vestidos de Baño",
         "price": 115000,
         "currency": "COP",
         "sku": "Fantasia Caf",
@@ -1434,7 +1434,7 @@ export const products: Product[] = [
     },
     {
         "id": "p157",
-        "name": "Vestidos de Bao",
+        "name": "Vestidos de Baño",
         "price": 115000,
         "currency": "COP",
         "sku": "Fantasia Blanco",
@@ -1444,7 +1444,7 @@ export const products: Product[] = [
     },
     {
         "id": "p158",
-        "name": "Vestidos de Bao",
+        "name": "Vestidos de Baño",
         "price": 115000,
         "currency": "COP",
         "sku": "Marea",
@@ -1454,7 +1454,7 @@ export const products: Product[] = [
     },
     {
         "id": "p159",
-        "name": "Vestidos de Bao",
+        "name": "Vestidos de Baño",
         "price": 115000,
         "currency": "COP",
         "sku": "Terracota",
@@ -1464,7 +1464,7 @@ export const products: Product[] = [
     },
     {
         "id": "p160",
-        "name": "Vestidos de Bao",
+        "name": "Vestidos de Baño",
         "price": 130000,
         "currency": "COP",
         "sku": "Negro/Verde",
@@ -1474,7 +1474,7 @@ export const products: Product[] = [
     },
     {
         "id": "p161",
-        "name": "Vestidos de Bao",
+        "name": "Vestidos de Baño",
         "price": 130000,
         "currency": "COP",
         "sku": "Vinotinto/Dorado",
@@ -1484,7 +1484,7 @@ export const products: Product[] = [
     },
     {
         "id": "p162",
-        "name": "Vestidos de Bao",
+        "name": "Vestidos de Baño",
         "price": 115000,
         "currency": "COP",
         "sku": "Morado/Fucsia",
@@ -1494,7 +1494,7 @@ export const products: Product[] = [
     },
     {
         "id": "p163",
-        "name": "Vestidos de Bao",
+        "name": "Vestidos de Baño",
         "price": 115000,
         "currency": "COP",
         "sku": "Fuego",
@@ -1504,7 +1504,7 @@ export const products: Product[] = [
     },
     {
         "id": "p164",
-        "name": "Vestidos de Bao",
+        "name": "Vestidos de Baño",
         "price": 115000,
         "currency": "COP",
         "sku": "Oleaje",
@@ -1514,7 +1514,7 @@ export const products: Product[] = [
     },
     {
         "id": "p165",
-        "name": "Vestidos de Bao",
+        "name": "Vestidos de Baño",
         "price": 125000,
         "currency": "COP",
         "sku": "Multiusos",
@@ -1524,7 +1524,7 @@ export const products: Product[] = [
     },
     {
         "id": "p166",
-        "name": "Vestidos de Bao",
+        "name": "Vestidos de Baño",
         "price": 115000,
         "currency": "COP",
         "sku": "Rojo/ocre",
@@ -1534,7 +1534,7 @@ export const products: Product[] = [
     },
     {
         "id": "p167",
-        "name": "Vestidos de Bao",
+        "name": "Vestidos de Baño",
         "price": 115000,
         "currency": "COP",
         "sku": "Fantasia Caf",
@@ -1544,7 +1544,7 @@ export const products: Product[] = [
     },
     {
         "id": "p168",
-        "name": "Vestidos de Bao",
+        "name": "Vestidos de Baño",
         "price": 115000,
         "currency": "COP",
         "sku": "Fantasia Blanco",
@@ -1554,7 +1554,7 @@ export const products: Product[] = [
     },
     {
         "id": "p169",
-        "name": "Vestidos de Bao",
+        "name": "Vestidos de Baño",
         "price": 115000,
         "currency": "COP",
         "sku": "Marea",
@@ -1564,7 +1564,7 @@ export const products: Product[] = [
     },
     {
         "id": "p170",
-        "name": "Vestidos de Bao",
+        "name": "Vestidos de Baño",
         "price": 115000,
         "currency": "COP",
         "sku": "Terracota",
@@ -1574,7 +1574,7 @@ export const products: Product[] = [
     },
     {
         "id": "p171",
-        "name": "Vestidos de Bao",
+        "name": "Vestidos de Baño",
         "price": 130000,
         "currency": "COP",
         "sku": "Negro/Verde",
@@ -1584,7 +1584,7 @@ export const products: Product[] = [
     },
     {
         "id": "p172",
-        "name": "Vestidos de Bao",
+        "name": "Vestidos de Baño",
         "price": 130000,
         "currency": "COP",
         "sku": "Vinotinto/Dorado",
@@ -1594,7 +1594,7 @@ export const products: Product[] = [
     },
     {
         "id": "p173",
-        "name": "Vestidos de Bao",
+        "name": "Vestidos de Baño",
         "price": 115000,
         "currency": "COP",
         "sku": "Morado/Fucsia",
@@ -1604,7 +1604,7 @@ export const products: Product[] = [
     },
     {
         "id": "p174",
-        "name": "Pantalonetas de bao",
+        "name": "Pantalonetas de Baño",
         "price": 110000,
         "currency": "COP",
         "sku": "Bahia Solano",
@@ -1614,7 +1614,7 @@ export const products: Product[] = [
     },
     {
         "id": "p175",
-        "name": "Pantalonetas de bao",
+        "name": "Pantalonetas de Baño",
         "price": 110000,
         "currency": "COP",
         "sku": "Festival del Tinglar",
@@ -1624,7 +1624,7 @@ export const products: Product[] = [
     },
     {
         "id": "p176",
-        "name": "Pantalonetas de bao",
+        "name": "Pantalonetas de Baño",
         "price": 110000,
         "currency": "COP",
         "sku": "Oleaje",
@@ -1634,7 +1634,7 @@ export const products: Product[] = [
     },
     {
         "id": "p177",
-        "name": "Pantalonetas de bao",
+        "name": "Pantalonetas de Baño",
         "price": 110000,
         "currency": "COP",
         "sku": "Aqua",
@@ -1644,7 +1644,7 @@ export const products: Product[] = [
     },
     {
         "id": "p178",
-        "name": "Pantalonetas de bao",
+        "name": "Pantalonetas de Baño",
         "price": 110000,
         "currency": "COP",
         "sku": "Azul/negro",
@@ -1654,7 +1654,7 @@ export const products: Product[] = [
     },
     {
         "id": "p179",
-        "name": "Pantalonetas de bao",
+        "name": "Pantalonetas de Baño",
         "price": 110000,
         "currency": "COP",
         "sku": "Carnaval de Rio",
@@ -1664,7 +1664,7 @@ export const products: Product[] = [
     },
     {
         "id": "p180",
-        "name": "Pantalonetas de bao",
+        "name": "Pantalonetas de Baño",
         "price": 110000,
         "currency": "COP",
         "sku": "Festival de aloha",
@@ -1674,7 +1674,7 @@ export const products: Product[] = [
     },
     {
         "id": "p181",
-        "name": "Pantalonetas de bao",
+        "name": "Pantalonetas de Baño",
         "price": 110000,
         "currency": "COP",
         "sku": "Elefante Africano",
@@ -1684,7 +1684,7 @@ export const products: Product[] = [
     },
     {
         "id": "p182",
-        "name": "Pantalonetas de bao",
+        "name": "Pantalonetas de Baño",
         "price": 110000,
         "currency": "COP",
         "sku": "Guacamayo Jacinto",
@@ -1694,7 +1694,7 @@ export const products: Product[] = [
     },
     {
         "id": "p183",
-        "name": "Pantalonetas de bao",
+        "name": "Pantalonetas de Baño",
         "price": 110000,
         "currency": "COP",
         "sku": "Pingino emperador",
@@ -1704,7 +1704,7 @@ export const products: Product[] = [
     },
     {
         "id": "p184",
-        "name": "Pantalonetas de bao",
+        "name": "Pantalonetas de Baño",
         "price": 110000,
         "currency": "COP",
         "sku": "Mantarraya Gigante",
@@ -1714,7 +1714,7 @@ export const products: Product[] = [
     },
     {
         "id": "p185",
-        "name": "Pantalonetas de bao",
+        "name": "Pantalonetas de Baño",
         "price": 110000,
         "currency": "COP",
         "sku": "Bahia Solano",
@@ -1724,7 +1724,7 @@ export const products: Product[] = [
     },
     {
         "id": "p186",
-        "name": "Pantalonetas de bao",
+        "name": "Pantalonetas de Baño",
         "price": 110000,
         "currency": "COP",
         "sku": "Festival del Tinglar",
@@ -1734,7 +1734,7 @@ export const products: Product[] = [
     },
     {
         "id": "p187",
-        "name": "Pantalonetas de bao",
+        "name": "Pantalonetas de Baño",
         "price": 110000,
         "currency": "COP",
         "sku": "Oleaje",
@@ -1744,7 +1744,7 @@ export const products: Product[] = [
     },
     {
         "id": "p188",
-        "name": "Pantalonetas de bao",
+        "name": "Pantalonetas de Baño",
         "price": 110000,
         "currency": "COP",
         "sku": "Aqua",
@@ -1754,7 +1754,7 @@ export const products: Product[] = [
     },
     {
         "id": "p189",
-        "name": "Pantalonetas de bao",
+        "name": "Pantalonetas de Baño",
         "price": 110000,
         "currency": "COP",
         "sku": "Azul/negro",
@@ -1764,7 +1764,7 @@ export const products: Product[] = [
     },
     {
         "id": "p190",
-        "name": "Pantalonetas de bao",
+        "name": "Pantalonetas de Baño",
         "price": 110000,
         "currency": "COP",
         "sku": "Carnaval de Rio",
@@ -1774,7 +1774,7 @@ export const products: Product[] = [
     },
     {
         "id": "p191",
-        "name": "Pantalonetas de bao",
+        "name": "Pantalonetas de Baño",
         "price": 110000,
         "currency": "COP",
         "sku": "Festival de aloha",
@@ -1784,7 +1784,7 @@ export const products: Product[] = [
     },
     {
         "id": "p192",
-        "name": "Pantalonetas de bao",
+        "name": "Pantalonetas de Baño",
         "price": 110000,
         "currency": "COP",
         "sku": "Elefante Africano",
@@ -1794,7 +1794,7 @@ export const products: Product[] = [
     },
     {
         "id": "p193",
-        "name": "Pantalonetas de bao",
+        "name": "Pantalonetas de Baño",
         "price": 110000,
         "currency": "COP",
         "sku": "Guacamayo Jacinto",
@@ -1804,7 +1804,7 @@ export const products: Product[] = [
     },
     {
         "id": "p194",
-        "name": "Pantalonetas de bao",
+        "name": "Pantalonetas de Baño",
         "price": 110000,
         "currency": "COP",
         "sku": "Pingino emperador",
@@ -1814,7 +1814,7 @@ export const products: Product[] = [
     },
     {
         "id": "p195",
-        "name": "Pantalonetas de bao",
+        "name": "Pantalonetas de Baño",
         "price": 110000,
         "currency": "COP",
         "sku": "Mantarraya Gigante",
@@ -1824,7 +1824,7 @@ export const products: Product[] = [
     },
     {
         "id": "p196",
-        "name": "Pantalonetas de bao",
+        "name": "Pantalonetas de Baño",
         "price": 110000,
         "currency": "COP",
         "sku": "Bahia Solano",
@@ -1834,7 +1834,7 @@ export const products: Product[] = [
     },
     {
         "id": "p197",
-        "name": "Pantalonetas de bao",
+        "name": "Pantalonetas de Baño",
         "price": 110000,
         "currency": "COP",
         "sku": "Festival del Tinglar",
@@ -1844,7 +1844,7 @@ export const products: Product[] = [
     },
     {
         "id": "p198",
-        "name": "Pantalonetas de bao",
+        "name": "Pantalonetas de Baño",
         "price": 110000,
         "currency": "COP",
         "sku": "Oleaje",
@@ -1854,7 +1854,7 @@ export const products: Product[] = [
     },
     {
         "id": "p199",
-        "name": "Pantalonetas de bao",
+        "name": "Pantalonetas de Baño",
         "price": 110000,
         "currency": "COP",
         "sku": "Aqua",
@@ -1864,7 +1864,7 @@ export const products: Product[] = [
     },
     {
         "id": "p200",
-        "name": "Pantalonetas de bao",
+        "name": "Pantalonetas de Baño",
         "price": 110000,
         "currency": "COP",
         "sku": "Azul/negro",
@@ -1874,7 +1874,7 @@ export const products: Product[] = [
     },
     {
         "id": "p201",
-        "name": "Pantalonetas de bao",
+        "name": "Pantalonetas de Baño",
         "price": 110000,
         "currency": "COP",
         "sku": "Carnaval de Rio",
@@ -1884,7 +1884,7 @@ export const products: Product[] = [
     },
     {
         "id": "p202",
-        "name": "Pantalonetas de bao",
+        "name": "Pantalonetas de Baño",
         "price": 110000,
         "currency": "COP",
         "sku": "Festival de aloha",
@@ -1894,7 +1894,7 @@ export const products: Product[] = [
     },
     {
         "id": "p203",
-        "name": "Pantalonetas de bao",
+        "name": "Pantalonetas de Baño",
         "price": 110000,
         "currency": "COP",
         "sku": "Elefante Africano",
@@ -1904,7 +1904,7 @@ export const products: Product[] = [
     },
     {
         "id": "p204",
-        "name": "Pantalonetas de bao",
+        "name": "Pantalonetas de Baño",
         "price": 110000,
         "currency": "COP",
         "sku": "Guacamayo Jacinto",
@@ -1914,7 +1914,7 @@ export const products: Product[] = [
     },
     {
         "id": "p205",
-        "name": "Pantalonetas de bao",
+        "name": "Pantalonetas de Baño",
         "price": 110000,
         "currency": "COP",
         "sku": "Pingino emperador",
@@ -1924,7 +1924,7 @@ export const products: Product[] = [
     },
     {
         "id": "p206",
-        "name": "Pantalonetas de bao",
+        "name": "Pantalonetas de Baño",
         "price": 110000,
         "currency": "COP",
         "sku": "Mantarraya Gigante",
@@ -1934,7 +1934,7 @@ export const products: Product[] = [
     },
     {
         "id": "p207",
-        "name": "Buzo Acutico",
+        "name": "Buzo Acuático",
         "price": 90000,
         "currency": "COP",
         "sku": "Negro",
@@ -1944,7 +1944,7 @@ export const products: Product[] = [
     },
     {
         "id": "p208",
-        "name": "Buzo Acutico",
+        "name": "Buzo Acuático",
         "price": 90000,
         "currency": "COP",
         "sku": "Gris",
@@ -1954,7 +1954,7 @@ export const products: Product[] = [
     },
     {
         "id": "p209",
-        "name": "Buzo Acutico",
+        "name": "Buzo Acuático",
         "price": 90000,
         "currency": "COP",
         "sku": "Rosado",
@@ -1964,7 +1964,7 @@ export const products: Product[] = [
     },
     {
         "id": "p210",
-        "name": "Buzo Acutico",
+        "name": "Buzo Acuático",
         "price": 90000,
         "currency": "COP",
         "sku": "Negro",
@@ -1974,7 +1974,7 @@ export const products: Product[] = [
     },
     {
         "id": "p211",
-        "name": "Buzo Acutico",
+        "name": "Buzo Acuático",
         "price": 90000,
         "currency": "COP",
         "sku": "Gris",
@@ -1984,7 +1984,7 @@ export const products: Product[] = [
     },
     {
         "id": "p212",
-        "name": "Buzo Acutico",
+        "name": "Buzo Acuático",
         "price": 90000,
         "currency": "COP",
         "sku": "Rosado",
@@ -1994,7 +1994,7 @@ export const products: Product[] = [
     },
     {
         "id": "p213",
-        "name": "Buzo Acutico",
+        "name": "Buzo Acuático",
         "price": 90000,
         "currency": "COP",
         "sku": "Negro",
@@ -2004,7 +2004,7 @@ export const products: Product[] = [
     },
     {
         "id": "p214",
-        "name": "Buzo Acutico",
+        "name": "Buzo Acuático",
         "price": 90000,
         "currency": "COP",
         "sku": "Gris",
@@ -2014,7 +2014,7 @@ export const products: Product[] = [
     },
     {
         "id": "p215",
-        "name": "Buzo Acutico",
+        "name": "Buzo Acuático",
         "price": 90000,
         "currency": "COP",
         "sku": "Rosado",
@@ -2204,7 +2204,7 @@ export const products: Product[] = [
     },
     {
         "id": "p236",
-        "name": "Paoleta",
+        "name": "Pañoleta",
         "price": 40000,
         "currency": "COP",
         "sku": "Guepardos",
@@ -2213,7 +2213,7 @@ export const products: Product[] = [
     },
     {
         "id": "p237",
-        "name": "Paoleta",
+        "name": "Pañoleta",
         "price": 40000,
         "currency": "COP",
         "sku": "Elefantes",
@@ -2222,7 +2222,7 @@ export const products: Product[] = [
     },
     {
         "id": "p238",
-        "name": "Paoleta",
+        "name": "Pañoleta",
         "price": 40000,
         "currency": "COP",
         "sku": "Jirafas",
@@ -2231,7 +2231,7 @@ export const products: Product[] = [
     },
     {
         "id": "p239",
-        "name": "Paoleta",
+        "name": "Pañoleta",
         "price": 40000,
         "currency": "COP",
         "sku": "Festival de aloha",
@@ -2240,7 +2240,7 @@ export const products: Product[] = [
     },
     {
         "id": "p240",
-        "name": "Paoleta",
+        "name": "Pañoleta",
         "price": 40000,
         "currency": "COP",
         "sku": "Feria de flores",
@@ -2249,7 +2249,7 @@ export const products: Product[] = [
     },
     {
         "id": "p241",
-        "name": "Paoleta",
+        "name": "Pañoleta",
         "price": 40000,
         "currency": "COP",
         "sku": "Festival de Songkran",
@@ -2258,7 +2258,7 @@ export const products: Product[] = [
     },
     {
         "id": "p242",
-        "name": "Paoleta",
+        "name": "Pañoleta",
         "price": 40000,
         "currency": "COP",
         "sku": "Festival Holi",
@@ -2267,7 +2267,7 @@ export const products: Product[] = [
     },
     {
         "id": "p243",
-        "name": "Paoleta",
+        "name": "Pañoleta",
         "price": 40000,
         "currency": "COP",
         "sku": "Festival del Tinglar",
@@ -2276,7 +2276,7 @@ export const products: Product[] = [
     },
     {
         "id": "p244",
-        "name": "Paoleta",
+        "name": "Pañoleta",
         "price": 40000,
         "currency": "COP",
         "sku": "Mariposa Monarca",
@@ -2285,7 +2285,7 @@ export const products: Product[] = [
     },
     {
         "id": "p245",
-        "name": "Paoleta",
+        "name": "Pañoleta",
         "price": 40000,
         "currency": "COP",
         "sku": "Guacamayo Jacinto",
@@ -2294,7 +2294,7 @@ export const products: Product[] = [
     },
     {
         "id": "p246",
-        "name": "Paoleta",
+        "name": "Pañoleta",
         "price": 40000,
         "currency": "COP",
         "sku": "Delfin Rosado",
@@ -2303,7 +2303,7 @@ export const products: Product[] = [
     },
     {
         "id": "p247",
-        "name": "Paoleta",
+        "name": "Pañoleta",
         "price": 40000,
         "currency": "COP",
         "sku": "Tortuga Carey",
