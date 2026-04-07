@@ -4,6 +4,7 @@ import { hotspots as initialHotspots, type Hotspot } from "../../data/hotspots";
 import { ThumbnailStrip } from "./ThumbnailStrip";
 import { loadAdminHotspots, saveAdminHotspots, loadPagesConfig } from "../Admin/hotspotIO";
 import { AdminPanel } from "../Admin/AdminPanel";
+import { useMediaQuery } from "../../hooks/useMediaQuery";
 
 import { Flipbook } from "./Flipbook";
 
@@ -12,6 +13,7 @@ type CatalogViewerProps = {
 };
 
 export function CatalogViewer({ isAdmin }: CatalogViewerProps) {
+    const isMobile = useMediaQuery("(max-width: 768px)");
     const [pageIndex, setPageIndex] = useState(0);
     const [pages, setPages] = useState<Page[]>(() => {
         const custom = loadPagesConfig();
@@ -35,12 +37,20 @@ export function CatalogViewer({ isAdmin }: CatalogViewerProps) {
     const page = pages[pageIndex] || pages[0];
 
     const handleNext = useCallback(() => {
-        flipbookRef.current?.pageFlip()?.flipNext();
-    }, []);
+        if (isMobile) {
+            flipbookRef.current?.pageFlip()?.turnToNextPage();
+        } else {
+            flipbookRef.current?.pageFlip()?.flipNext();
+        }
+    }, [isMobile]);
 
     const handlePrev = useCallback(() => {
-        flipbookRef.current?.pageFlip()?.flipPrev();
-    }, []);
+        if (isMobile) {
+            flipbookRef.current?.pageFlip()?.turnToPrevPage();
+        } else {
+            flipbookRef.current?.pageFlip()?.flipPrev();
+        }
+    }, [isMobile]);
 
     // Keyboard navigation
     useEffect(() => {
@@ -97,12 +107,12 @@ export function CatalogViewer({ isAdmin }: CatalogViewerProps) {
                 <button
                     onClick={handlePrev}
                     disabled={pageIndex === 0}
-                    className="absolute cursor-pointer left-4 z-[70] p-3 rounded-full bg-white/80 hover:bg-white shadow-md disabled:opacity-30 transition-all hover:scale-110"
+                    className="fixed top-1/2 -translate-y-1/2 left-2 sm:left-4 z-[100] p-3 rounded-full bg-white/80 hover:bg-white shadow-md disabled:opacity-30 transition-all hover:scale-110 pointer-events-auto"
                 >
                     <svg className="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
                 </button>
 
-                <div className="w-full h-full max-w-7xl max-h-[calc(100vh-160px)] flex items-center justify-center">
+                <div className="w-full h-full max-w-7xl max-h-[calc(100vh-160px)] flex items-center justify-center pointer-events-none">
                     <Flipbook
                         ref={flipbookRef}
                         pages={pages}
@@ -112,19 +122,20 @@ export function CatalogViewer({ isAdmin }: CatalogViewerProps) {
                         onStageClick={handleStageClick}
                         onPageChange={setPageIndex}
                         initialPage={0}
+                        isMobile={isMobile}
                     />
                 </div>
 
                 <button
                     onClick={handleNext}
-                    disabled={pageIndex >= pages.length - 2}
-                    className="absolute cursor-pointer right-4 z-[70] p-3 rounded-full bg-white/80 hover:bg-white shadow-md disabled:opacity-30 transition-all hover:scale-110"
+                    disabled={isMobile ? pageIndex >= pages.length - 1 : pageIndex >= pages.length - 2}
+                    className="fixed top-1/2 -translate-y-1/2 right-2 sm:right-4 z-[100] p-3 rounded-full bg-white/80 hover:bg-white shadow-md disabled:opacity-30 transition-all hover:scale-110 pointer-events-auto"
                 >
                     <svg className="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
                 </button>
 
                 {/* Page indicator */}
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 py-2 px-6 bg-black/80 backdrop-blur-md text-white rounded-full text-xs font-black tracking-widest shadow-2xl z-[70]">
+                <div className="fixed bottom-24 left-1/2 -translate-x-1/2 py-2 px-6 bg-black/80 backdrop-blur-md text-white rounded-full text-xs font-black tracking-widest shadow-2xl z-[100] pointer-events-none">
                     {page.label || `PAGE ${pageIndex + 1}`} / {pages.length}
                 </div>
             </div>
@@ -141,9 +152,11 @@ export function CatalogViewer({ isAdmin }: CatalogViewerProps) {
                 <AdminPanel
                     pageId={draftHotspot?.pageId || page.id}
                     visiblePageIds={
-                        pageIndex === 0
-                            ? [pages[0].id]
-                            : [pages[pageIndex]?.id, pages[pageIndex + 1]?.id].filter(Boolean) as string[]
+                        isMobile 
+                            ? [pages[pageIndex]?.id].filter(Boolean) as string[]
+                            : (pageIndex === 0
+                                ? [pages[0].id]
+                                : [pages[pageIndex]?.id, pages[pageIndex + 1]?.id].filter(Boolean) as string[])
                     }
                     allHotspots={allHotspots}
                     onUpdateHotspots={handleUpdateHotspots}

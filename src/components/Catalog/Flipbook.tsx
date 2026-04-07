@@ -12,6 +12,7 @@ type FlipbookProps = {
     onStageClick: (pageId: string, xPct: number, yPct: number) => void;
     onPageChange: (index: number) => void;
     initialPage?: number;
+    isMobile?: boolean;
 };
 
 export const Flipbook = forwardRef<any, FlipbookProps>(({
@@ -21,7 +22,8 @@ export const Flipbook = forwardRef<any, FlipbookProps>(({
     onHotspotClick,
     onStageClick,
     onPageChange,
-    initialPage = 0
+    initialPage = 0,
+    isMobile = false
 }, ref) => {
     const flipBookRef = useRef<any>(null);
 
@@ -34,7 +36,7 @@ export const Flipbook = forwardRef<any, FlipbookProps>(({
     }, [onPageChange]);
 
     return (
-        <div className="flex items-center justify-center w-full h-full">
+        <div className="flex items-center justify-center w-full h-full pointer-events-none">
             <HTMLFlipBook
                 width={500}
                 height={707}
@@ -44,19 +46,19 @@ export const Flipbook = forwardRef<any, FlipbookProps>(({
                 minHeight={400}
                 maxHeight={2828}
                 maxShadowOpacity={0.5}
-                showCover={true}
+                showCover={!isMobile}
                 mobileScrollSupport={true}
                 onFlip={onFlip}
                 className="flip-book-container shadow-2xl"
                 ref={flipBookRef}
-                style={{}}
+                style={{ pointerEvents: 'auto' }}
                 startPage={initialPage}
                 drawShadow={true}
                 flippingTime={600}
-                usePortrait={false} // Switch to double spread
+                usePortrait={isMobile} // Switch between single and double page spread
                 startZIndex={0}
                 autoSize={true}
-                clickEventForward={true}
+                clickEventForward={false}
                 useMouseEvents={!isAdmin}
                 swipeDistance={30}
                 showPageCorners={!isAdmin}
