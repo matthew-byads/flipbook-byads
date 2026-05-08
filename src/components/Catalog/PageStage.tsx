@@ -64,7 +64,7 @@ export const PageStage = forwardRef<HTMLDivElement, PageStageProps>(({
         setDrawCurrent({ xPct, yPct });
     };
 
-    const handleMouseUp = (e: React.MouseEvent) => {
+    const handleMouseUp = () => {
         if (!isAdmin) return;
         if (!drawStart || !drawCurrent) return;
 
@@ -97,7 +97,7 @@ export const PageStage = forwardRef<HTMLDivElement, PageStageProps>(({
     };
 
     const activeHotspot = hotspots.find(h => h.id === activeHotspotId);
-    const activeProduct = activeHotspot ? getProduct(activeHotspot.productId) : null;
+    const activeProduct = (activeHotspot && activeHotspot.productId) ? getProduct(activeHotspot.productId) : null;
 
     return (
         <div
