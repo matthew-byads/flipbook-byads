@@ -71,7 +71,7 @@ export function CatalogViewer({ isAdmin }: CatalogViewerProps) {
 
     // Admin State
     const [selectedHotspot, setSelectedHotspot] = useState<Hotspot | null>(null);
-    const [draftHotspot, setDraftHotspot] = useState<{ xPct: number; yPct: number; pageId: string } | null>(null);
+    const [draftHotspot, setDraftHotspot] = useState<{ xPct: number; yPct: number; pageId: string; widthPct?: number; heightPct?: number } | null>(null);
 
     // Clear admin state when changing pages
     useEffect(() => {
@@ -82,19 +82,42 @@ export function CatalogViewer({ isAdmin }: CatalogViewerProps) {
     const handleUpdateHotspots = (newHotspots: Hotspot[]) => {
         setAllHotspots(newHotspots);
         saveAdminHotspots(newHotspots);
+        if (selectedHotspot) {
+            const updated = newHotspots.find(h => h.id === selectedHotspot.id);
+            if (updated) setSelectedHotspot(updated);
+        }
     };
 
     const handleHotspotClick = (hotspot: Hotspot) => {
         if (isAdmin) {
             setSelectedHotspot(hotspot);
             setDraftHotspot(null);
+        } else {
+            if (hotspot.type === "link" && hotspot.targetPageId) {
+                // Navigate directly to the link's target page
+                handlePageSelect(hotspot.targetPageId);
+            } else {
+                // Normal user clicked a hotspot on an index page
+                const indexPages = ["001", "002", "003", "004", "005"];
+                if (indexPages.includes(hotspot.pageId)) {
+                    // Find another hotspot for this product that is NOT an index page
+                    const targetHotspots = allHotspots.filter(
+                        h => h.productId === hotspot.productId && !indexPages.includes(h.pageId)
+                    );
+    
+                    if (targetHotspots.length > 0) {
+                        // Navigate to the first found detail page
+                        handlePageSelect(targetHotspots[0].pageId);
+                    }
+                }
+            }
         }
     };
 
-    const handleStageClick = (pageId: string, xPct: number, yPct: number) => {
+    const handleStageClick = (pageId: string, xPct: number, yPct: number, widthPct?: number, heightPct?: number) => {
         if (isAdmin) {
             setSelectedHotspot(null);
-            setDraftHotspot({ xPct, yPct, pageId });
+            setDraftHotspot({ xPct, yPct, pageId, widthPct, heightPct });
         }
     };
 
@@ -126,6 +149,17 @@ export function CatalogViewer({ isAdmin }: CatalogViewerProps) {
                     />
                 </div>
 
+                {/* Return to Index button */}
+                {!["001", "002", "003", "004", "005"].includes(page.id) && (
+                    <button
+                        onClick={() => handlePageSelect("002")}
+                        className="fixed cursor-pointer top-24 left-4 sm:left-8 z-[100] px-4 py-2 bg-white/90 backdrop-blur shadow-md hover:bg-white rounded-full text-sm font-semibold text-gray-800 transition-all hover:scale-105 pointer-events-auto flex items-center gap-2"
+                    >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h7" /></svg>
+                        Volver al inicio
+                    </button>
+                )}
+
                 <button
                     onClick={handleNext}
                     disabled={isMobile ? pageIndex >= pages.length - 1 : pageIndex >= pages.length - 2}
@@ -152,7 +186,7 @@ export function CatalogViewer({ isAdmin }: CatalogViewerProps) {
                 <AdminPanel
                     pageId={draftHotspot?.pageId || page.id}
                     visiblePageIds={
-                        isMobile 
+                        isMobile
                             ? [pages[pageIndex]?.id].filter(Boolean) as string[]
                             : (pageIndex === 0
                                 ? [pages[0].id]

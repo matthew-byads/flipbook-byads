@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { type Hotspot } from "../../data/hotspots";
+import { pages as staticPages } from "../../data/pages";
 import { ProductSelect } from "./ProductSelect";
 import { generateId } from "../../utils/id";
 import { saveAdminHotspots } from "./hotspotIO";
@@ -17,8 +18,8 @@ type AdminPanelProps = {
     onUpdateHotspots: (hotspots: Hotspot[]) => void;
     selectedHotspot: Hotspot | null; // For editing
     onCloseEditor: () => void;
-    // If we have a draft hotspot (clicked point)
-    draftHotspot?: { xPct: number; yPct: number } | null;
+    // If we have a draft hotspot (clicked point or drawn area)
+    draftHotspot?: { xPct: number; yPct: number; widthPct?: number; heightPct?: number } | null;
     onClearDraft: () => void;
     visiblePageIds: string[];
 };
@@ -40,12 +41,34 @@ export function AdminPanel({
     const [isCreatingProduct, setIsCreatingProduct] = useState(false);
     const [selectedProductForDraft, setSelectedProductForDraft] = useState<string | null>(null);
     const [isDashboardOpen, setIsDashboardOpen] = useState(false);
+    
+    const [hotspotType, setHotspotType] = useState<"product" | "link">("product");
+    const [selectedTargetPageId, setSelectedTargetPageId] = useState<string>("");
+
+    useEffect(() => {
+        if (selectedHotspot) {
+            setHotspotType(selectedHotspot.type || "product");
+            setSelectedTargetPageId(selectedHotspot.targetPageId || "");
+        } else {
+            setHotspotType("product");
+            setSelectedTargetPageId("");
+        }
+    }, [selectedHotspot]);
 
     // -- Editor Logic for Existing Hotspot --
     const handleUpdateProduct = (productId: string) => {
         if (!selectedHotspot) return;
         const updated = allHotspots.map((h) =>
-            h.id === selectedHotspot.id ? { ...h, productId } : h
+            h.id === selectedHotspot.id ? { ...h, productId, type: "product", targetPageId: undefined } : h
+        );
+        onUpdateHotspots(updated);
+        saveAdminHotspots(updated);
+    };
+
+    const handleUpdateLink = (targetId: string) => {
+        if (!selectedHotspot) return;
+        const updated = allHotspots.map((h) =>
+            h.id === selectedHotspot.id ? { ...h, type: "link" as const, targetPageId: targetId, productId: undefined } : h
         );
         onUpdateHotspots(updated);
         saveAdminHotspots(updated);
@@ -60,20 +83,41 @@ export function AdminPanel({
 
     // -- Creator Logic for New Hotspot --
     const handleCreateHotspot = (productId?: string) => {
-        const pid = productId || selectedProductForDraft;
-        if (!draftHotspot || !pid) return;
+        if (!draftHotspot) return;
 
-        const newHotspot: Hotspot = {
-            id: generateId("admin-"),
-            pageId,
-            productId: pid,
-            xPct: draftHotspot.xPct,
-            yPct: draftHotspot.yPct,
-        };
+        let newHotspot: Hotspot;
+
+        if (hotspotType === "product") {
+            const pid = productId || selectedProductForDraft;
+            if (!pid) return;
+            newHotspot = {
+                id: generateId("admin-"),
+                pageId,
+                productId: pid,
+                xPct: draftHotspot.xPct,
+                yPct: draftHotspot.yPct,
+                widthPct: draftHotspot.widthPct,
+                heightPct: draftHotspot.heightPct,
+                type: "product"
+            };
+        } else {
+            if (!selectedTargetPageId) return;
+            newHotspot = {
+                id: generateId("admin-"),
+                pageId,
+                targetPageId: selectedTargetPageId,
+                xPct: draftHotspot.xPct,
+                yPct: draftHotspot.yPct,
+                widthPct: draftHotspot.widthPct,
+                heightPct: draftHotspot.heightPct,
+                type: "link"
+            };
+        }
 
         onUpdateHotspots([...allHotspots, newHotspot]);
         onClearDraft();
         setSelectedProductForDraft(null);
+        setSelectedTargetPageId("");
     };
 
     const handleCreateRandom = () => {
@@ -141,23 +185,68 @@ export function AdminPanel({
                         />
                     ) : (
                         <>
-                            <ProductSelect
-                                products={allProducts}
-                                selectedProductId={isEditing ? selectedHotspot.productId : selectedProductForDraft || ""}
-                                onSelect={(id) => {
-                                    if (isEditing) handleUpdateProduct(id);
-                                    else setSelectedProductForDraft(id);
-                                }}
-                                className="mb-4"
-                            />
+                            <div className="flex bg-gray-100 p-1 rounded-xl mb-4">
+                                <button 
+                                    onClick={() => {
+                                        setHotspotType("product");
+                                        if (isEditing) handleUpdateProduct(selectedHotspot?.productId || "");
+                                    }}
+                                    className={cn("flex-1 text-xs font-bold py-2 rounded-lg transition-all", hotspotType === "product" ? "bg-white shadow text-black" : "text-gray-500 hover:text-gray-700")}
+                                >
+                                    Product
+                                </button>
+                                <button 
+                                    onClick={() => {
+                                        setHotspotType("link");
+                                        if (isEditing && selectedTargetPageId) handleUpdateLink(selectedTargetPageId);
+                                    }}
+                                    className={cn("flex-1 text-xs font-bold py-2 rounded-lg transition-all", hotspotType === "link" ? "bg-white shadow text-black" : "text-gray-500 hover:text-gray-700")}
+                                >
+                                    Page Link
+                                </button>
+                            </div>
 
-                            <button
-                                onClick={() => setIsCreatingProduct(true)}
-                                className="w-full mb-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-xs font-bold text-gray-600 hover:bg-gray-100 transition-colors flex items-center justify-center gap-2"
-                            >
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
-                                Create New Product
-                            </button>
+                            {hotspotType === "product" ? (
+                                <>
+                                    <ProductSelect
+                                        products={allProducts}
+                                        selectedProductId={isEditing ? (selectedHotspot.productId || "") : (selectedProductForDraft || "")}
+                                        onSelect={(id) => {
+                                            if (isEditing) handleUpdateProduct(id);
+                                            else setSelectedProductForDraft(id);
+                                        }}
+                                        className="mb-4"
+                                    />
+
+                                    <button
+                                        onClick={() => setIsCreatingProduct(true)}
+                                        className="w-full mb-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-xs font-bold text-gray-600 hover:bg-gray-100 transition-colors flex items-center justify-center gap-2"
+                                    >
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
+                                        Create New Product
+                                    </button>
+                                </>
+                            ) : (
+                                <div className="mb-4 space-y-2">
+                                    <label className="text-xs font-bold text-gray-700">Target Page</label>
+                                    <select
+                                        value={isEditing ? (selectedHotspot.targetPageId || "") : selectedTargetPageId}
+                                        onChange={(e) => {
+                                            const newTarget = e.target.value;
+                                            setSelectedTargetPageId(newTarget);
+                                            if (isEditing) handleUpdateLink(newTarget);
+                                        }}
+                                        className="w-full p-3 rounded-xl border border-gray-200 bg-white text-sm focus:ring-2 focus:ring-black outline-none transition-all"
+                                    >
+                                        <option value="" disabled>Select a page to link to...</option>
+                                        {staticPages.map(p => (
+                                            <option key={p.id} value={p.id}>
+                                                {p.label || `Page ${p.id}`}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                            )}
 
                             <div className="flex gap-3">
                                 {isEditing ? (
@@ -170,7 +259,7 @@ export function AdminPanel({
                                 ) : (
                                     <button
                                         onClick={() => handleCreateHotspot()}
-                                        disabled={!selectedProductForDraft}
+                                        disabled={hotspotType === "product" ? !selectedProductForDraft : !selectedTargetPageId}
                                         className="flex-1 bg-black text-white py-3 rounded-xl hover:bg-gray-800 disabled:opacity-30 font-bold text-xs transition-colors"
                                     >
                                         Place Hotspot
