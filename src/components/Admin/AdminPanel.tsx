@@ -59,7 +59,7 @@ export function AdminPanel({
     const handleUpdateProduct = (productId: string) => {
         if (!selectedHotspot) return;
         const updated = allHotspots.map((h) =>
-            h.id === selectedHotspot.id ? { ...h, productId, type: "product", targetPageId: undefined } : h
+            h.id === selectedHotspot.id ? { ...h, productId, type: "product" as const, targetPageId: undefined } : h
         );
         onUpdateHotspots(updated);
         saveAdminHotspots(updated);
