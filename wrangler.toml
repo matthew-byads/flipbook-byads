@@ -1,9 +1,0 @@
-name = "flipbook-byads"
-compatibility_date = "2026-02-09"
-pages_build_output_dir = "./dist"
-
-[env.preview]
-vars = { ENV = "preview" }
-
-[env.production]
-vars = { ENV = "production" }
