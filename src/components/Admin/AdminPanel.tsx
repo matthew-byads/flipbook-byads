@@ -44,6 +44,8 @@ export function AdminPanel({
     
     const [hotspotType, setHotspotType] = useState<"product" | "link">("product");
     const [selectedTargetPageId, setSelectedTargetPageId] = useState<string>("");
+    const [isPublishing, setIsPublishing] = useState(false);
+    const [publishStatus, setPublishStatus] = useState<{ type: 'success' | 'error', message: string } | null>(null);
 
     useEffect(() => {
         if (selectedHotspot) {
@@ -161,6 +163,34 @@ export function AdminPanel({
             setSelectedProductForDraft(newProduct.id);
         } else if (selectedHotspot) {
             handleUpdateProduct(newProduct.id);
+        }
+    };
+
+    const handlePublish = async () => {
+        if (!confirm("Are you sure you want to publish these changes to the live site? This will commit the data directly to GitHub.")) return;
+        
+        setIsPublishing(true);
+        setPublishStatus(null);
+        try {
+            const response = await fetch("/api/publish", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    hotspots: allHotspots,
+                    products: allProducts,
+                }),
+            });
+
+            const result = await response.json() as any;
+            if (response.ok) {
+                setPublishStatus({ type: 'success', message: "Successfully published to GitHub! Deploying now..." });
+            } else {
+                setPublishStatus({ type: 'error', message: result.error || "Failed to publish" });
+            }
+        } catch (err: any) {
+            setPublishStatus({ type: 'error', message: "Connection error: " + err.message });
+        } finally {
+            setIsPublishing(false);
         }
     };
 
@@ -356,7 +386,63 @@ export function AdminPanel({
 
                         {activeTab === "products" && <BulkProductManager />}
                         {activeTab === "pages" && <BulkImageManager />}
-                        {activeTab === "settings" && <ConfigExporter />}
+                        {activeTab === "settings" && (
+                            <div className="space-y-6 animate-in fade-in duration-300">
+                                <div className="p-4 bg-blue-50 rounded-2xl border border-blue-100">
+                                    <h3 className="text-xs font-bold text-blue-900 uppercase tracking-widest mb-2 flex items-center gap-2">
+                                        <span>🚀</span> Publish Changes
+                                    </h3>
+                                    <p className="text-[10px] text-blue-700 mb-4 leading-relaxed">
+                                        Clicking the button below will save your hotspots and products directly to the GitHub repository. 
+                                        This triggers an automatic deployment on Cloudflare.
+                                    </p>
+                                    
+                                    <button
+                                        onClick={handlePublish}
+                                        disabled={isPublishing}
+                                        className={cn(
+                                            "w-full py-4 rounded-xl font-black text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-3 shadow-lg",
+                                            isPublishing 
+                                                ? "bg-blue-200 text-blue-400 cursor-not-allowed" 
+                                                : "bg-blue-600 text-white hover:bg-blue-700 active:scale-[0.98] shadow-blue-200"
+                                        )}
+                                    >
+                                        {isPublishing ? (
+                                            <>
+                                                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                                Publishing...
+                                            </>
+                                        ) : (
+                                            <>
+                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 11l7-7m0 0l7 7m-7-7v18" /></svg>
+                                                Push to GitHub
+                                            </>
+                                        )}
+                                    </button>
+
+                                    {publishStatus && (
+                                        <div className={cn(
+                                            "mt-4 p-3 rounded-xl text-[10px] font-bold flex items-center gap-2 animate-in slide-in-from-top-2",
+                                            publishStatus.type === 'success' ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
+                                        )}>
+                                            <span>{publishStatus.type === 'success' ? "✅" : "❌"}</span>
+                                            {publishStatus.message}
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div className="relative">
+                                    <div className="absolute inset-0 flex items-center" aria-hidden="true">
+                                        <div className="w-full border-t border-gray-100"></div>
+                                    </div>
+                                    <div className="relative flex justify-center text-[10px] font-black uppercase tracking-widest text-gray-300">
+                                        <span className="bg-white px-4">Local Export</span>
+                                    </div>
+                                </div>
+
+                                <ConfigExporter />
+                            </div>
+                        )}
                     </div>
 
                     {/* Footer */}

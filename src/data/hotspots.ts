@@ -54,13 +54,7 @@ export const hotspots: Hotspot[] = [
         "xPct": 45.49138804457954,
         "yPct": 32.28764316662748
     },
-    {
-        "id": "admin-dyfw63kc6",
-        "pageId": "004",
-        "productId": "p5",
-        "xPct": 50.050658561296856,
-        "yPct": 74.56308288270132
-    },
+
     {
         "id": "admin-6q1wml9ef",
         "pageId": "062",
