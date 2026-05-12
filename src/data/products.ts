@@ -3139,5 +3139,3 @@ export const products: Product[] = [
         "variant": "Unicolor"
     }
 ];
-
-export const productById = new Map(products.map(p => [p.id, p]));
