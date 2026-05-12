@@ -1,16 +1,15 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useProducts } from "../../context/ProductContext";
 import { type Hotspot } from "../../data/hotspots";
 import { pages as staticPages } from "../../data/pages";
-import { ProductSelect } from "./ProductSelect";
-import { generateId } from "../../utils/id";
-import { saveAdminHotspots } from "./hotspotIO";
-import { useProducts } from "../../context/ProductContext";
-import { ProductForm } from "./ProductForm";
 import { type Product } from "../../data/products";
-import { BulkProductManager } from "./BulkProductManager";
-import { BulkImageManager } from "./BulkImageManager";
-import { ConfigExporter } from "./ConfigExporter";
 import { cn } from "../../utils/cn";
+import { generateId } from "../../utils/id";
+import { BulkImageManager } from "./BulkImageManager";
+import { BulkProductManager } from "./BulkProductManager";
+import { saveAdminHotspots } from "./hotspotIO";
+import { ProductForm } from "./ProductForm";
+import { ProductSelect } from "./ProductSelect";
 
 type AdminPanelProps = {
     pageId: string;
@@ -41,7 +40,7 @@ export function AdminPanel({
     const [isCreatingProduct, setIsCreatingProduct] = useState(false);
     const [selectedProductForDraft, setSelectedProductForDraft] = useState<string | null>(null);
     const [isDashboardOpen, setIsDashboardOpen] = useState(false);
-    
+
     const [hotspotType, setHotspotType] = useState<"product" | "link">("product");
     const [selectedTargetPageId, setSelectedTargetPageId] = useState<string>("");
     const [isPublishing, setIsPublishing] = useState(false);
@@ -122,20 +121,6 @@ export function AdminPanel({
         setSelectedTargetPageId("");
     };
 
-    const handleCreateRandom = () => {
-        if (allProducts.length === 0) return;
-        const randomProduct = allProducts[Math.floor(Math.random() * allProducts.length)];
-
-        const newHotspot: Hotspot = {
-            id: generateId("admin-"),
-            pageId,
-            productId: randomProduct.id,
-            xPct: 10 + Math.random() * 80,
-            yPct: 10 + Math.random() * 80,
-        };
-        onUpdateHotspots([...allHotspots, newHotspot]);
-    };
-
     const handleClearPage = () => {
         if (confirm(`Delete all hotspots on ${visiblePageIds.length > 1 ? 'these pages' : 'this page'}?`)) {
             const updated = allHotspots.filter(h => !visiblePageIds.includes(h.pageId));
@@ -167,8 +152,8 @@ export function AdminPanel({
     };
 
     const handlePublish = async () => {
-        if (!confirm("Are you sure you want to publish these changes to the live site? This will commit the data directly to GitHub.")) return;
-        
+        if (!confirm("Would you like to save your changes and update the live website?")) return;
+
         setIsPublishing(true);
         setPublishStatus(null);
         try {
@@ -216,7 +201,7 @@ export function AdminPanel({
                     ) : (
                         <>
                             <div className="flex bg-gray-100 p-1 rounded-xl mb-4">
-                                <button 
+                                <button
                                     onClick={() => {
                                         setHotspotType("product");
                                         if (isEditing) handleUpdateProduct(selectedHotspot?.productId || "");
@@ -225,7 +210,7 @@ export function AdminPanel({
                                 >
                                     Product
                                 </button>
-                                <button 
+                                <button
                                     onClick={() => {
                                         setHotspotType("link");
                                         if (isEditing && selectedTargetPageId) handleUpdateLink(selectedTargetPageId);
@@ -339,13 +324,13 @@ export function AdminPanel({
                             { id: "hotspots", label: "Hotspots", icon: "📍" },
                             { id: "products", label: "Products", icon: "📦" },
                             { id: "pages", label: "Pages", icon: "📄" },
-                            { id: "settings", label: "Export", icon: "⚙️" }
+                            { id: "settings", label: "Save & Go Live", icon: "🚀" }
                         ].map(tab => (
                             <button
                                 key={tab.id}
                                 onClick={() => setActiveTab(tab.id as AdminTab)}
                                 className={cn(
-                                    "flex-1 py-3 text-[10px] font-bold uppercase tracking-widest transition-all relative overflow-hidden",
+                                    "flex-1 cursor-pointer py-3 text-[10px] font-bold uppercase tracking-widest transition-all relative overflow-hidden",
                                     activeTab === tab.id ? "text-black" : "text-gray-400 hover:text-gray-600 hover:bg-gray-50"
                                 )}
                             >
@@ -363,12 +348,6 @@ export function AdminPanel({
                         {activeTab === "hotspots" && (
                             <div className="space-y-4 animate-in fade-in duration-300">
                                 <div className="flex gap-2">
-                                    <button
-                                        onClick={handleCreateRandom}
-                                        className="flex-1 bg-black text-white py-3 rounded-xl hover:bg-gray-800 font-bold text-xs transition-all active:scale-95"
-                                    >
-                                        Add Random Hotspot
-                                    </button>
                                     <button
                                         onClick={handleClearPage}
                                         className="flex-1 bg-red-50 text-red-600 py-3 rounded-xl hover:bg-red-100 font-bold text-xs transition-all active:scale-95"
@@ -388,59 +367,50 @@ export function AdminPanel({
                         {activeTab === "pages" && <BulkImageManager />}
                         {activeTab === "settings" && (
                             <div className="space-y-6 animate-in fade-in duration-300">
-                                <div className="p-4 bg-blue-50 rounded-2xl border border-blue-100">
-                                    <h3 className="text-xs font-bold text-blue-900 uppercase tracking-widest mb-2 flex items-center gap-2">
-                                        <span>🚀</span> Publish Changes
+                                <div className="p-5 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-3xl border border-blue-100 shadow-sm">
+                                    <h3 className="text-sm font-bold text-blue-900 uppercase tracking-widest mb-3 flex items-center gap-2">
+                                        <span>✨</span> Ready to update?
                                     </h3>
-                                    <p className="text-[10px] text-blue-700 mb-4 leading-relaxed">
-                                        Clicking the button below will save your hotspots and products directly to the GitHub repository. 
-                                        This triggers an automatic deployment on Cloudflare.
+                                    <p className="text-[10px] text-blue-700/80 mb-6 leading-relaxed font-medium">
+                                        Your changes are currently saved only in your browser.
+                                        Click below to sync everything and update the live catalog for everyone to see.
                                     </p>
-                                    
+
                                     <button
                                         onClick={handlePublish}
                                         disabled={isPublishing}
                                         className={cn(
-                                            "w-full py-4 rounded-xl font-black text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-3 shadow-lg",
-                                            isPublishing 
-                                                ? "bg-blue-200 text-blue-400 cursor-not-allowed" 
-                                                : "bg-blue-600 text-white hover:bg-blue-700 active:scale-[0.98] shadow-blue-200"
+                                            "w-full py-4 rounded-2xl font-black text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-3 shadow-xl",
+                                            isPublishing
+                                                ? "bg-blue-200 text-blue-400 cursor-not-allowed"
+                                                : "bg-blue-600 cursor-pointer text-white hover:bg-blue-700 active:scale-[0.98] shadow-blue-200"
                                         )}
                                     >
                                         {isPublishing ? (
                                             <>
                                                 <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                                                Publishing...
+                                                Updating Site...
                                             </>
                                         ) : (
                                             <>
-                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 11l7-7m0 0l7 7m-7-7v18" /></svg>
-                                                Push to GitHub
+                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
+                                                Sync and Publish
                                             </>
                                         )}
                                     </button>
 
                                     {publishStatus && (
                                         <div className={cn(
-                                            "mt-4 p-3 rounded-xl text-[10px] font-bold flex items-center gap-2 animate-in slide-in-from-top-2",
+                                            "mt-5 p-4 rounded-2xl text-[10px] font-bold flex items-center gap-3 animate-in slide-in-from-top-2",
                                             publishStatus.type === 'success' ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
                                         )}>
-                                            <span>{publishStatus.type === 'success' ? "✅" : "❌"}</span>
-                                            {publishStatus.message}
+                                            <span className="text-sm">{publishStatus.type === 'success' ? "🎉" : "⚠️"}</span>
+                                            {publishStatus.type === 'success'
+                                                ? "Website updated successfully! It may take a minute to reflect the changes."
+                                                : publishStatus.message}
                                         </div>
                                     )}
                                 </div>
-
-                                <div className="relative">
-                                    <div className="absolute inset-0 flex items-center" aria-hidden="true">
-                                        <div className="w-full border-t border-gray-100"></div>
-                                    </div>
-                                    <div className="relative flex justify-center text-[10px] font-black uppercase tracking-widest text-gray-300">
-                                        <span className="bg-white px-4">Local Export</span>
-                                    </div>
-                                </div>
-
-                                <ConfigExporter />
                             </div>
                         )}
                     </div>
@@ -454,7 +424,7 @@ export function AdminPanel({
                 <div className="flex flex-col gap-3">
                     <button
                         onClick={() => setIsDashboardOpen(true)}
-                        className="bg-black text-white p-4 rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-all group relative border-4 border-white"
+                        className="bg-black cursor-pointer text-white p-4 rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-all group relative border-4 border-white"
                         title="Open Admin Dashboard"
                     >
                         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 6h16M4 12h16m-7 6h7" /></svg>
