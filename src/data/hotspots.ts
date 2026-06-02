@@ -5,8 +5,9 @@ export type Hotspot = {
     xPct: number; // 0..100
     yPct: number; // 0..100
     label?: string; // Optional override label
-    type?: "product" | "link";
+    type?: "product" | "link" | "video";
     targetPageId?: string;
+    videoUrl?: string;
     widthPct?: number;
     heightPct?: number;
 };

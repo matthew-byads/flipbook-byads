@@ -10,6 +10,7 @@ import { BulkProductManager } from "./BulkProductManager";
 import { saveAdminHotspots } from "./hotspotIO";
 import { ProductForm } from "./ProductForm";
 import { ProductSelect } from "./ProductSelect";
+import { VideoPopup } from "../Catalog/VideoPopup";
 
 type AdminPanelProps = {
     pageId: string;
@@ -41,8 +42,10 @@ export function AdminPanel({
     const [selectedProductForDraft, setSelectedProductForDraft] = useState<string | null>(null);
     const [isDashboardOpen, setIsDashboardOpen] = useState(false);
 
-    const [hotspotType, setHotspotType] = useState<"product" | "link">("product");
+    const [hotspotType, setHotspotType] = useState<"product" | "link" | "video">("product");
     const [selectedTargetPageId, setSelectedTargetPageId] = useState<string>("");
+    const [videoUrlDraft, setVideoUrlDraft] = useState<string>("");
+    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
     const [isPublishing, setIsPublishing] = useState(false);
     const [publishStatus, setPublishStatus] = useState<{ type: 'success' | 'error', message: string } | null>(null);
 
@@ -50,17 +53,18 @@ export function AdminPanel({
         if (selectedHotspot) {
             setHotspotType(selectedHotspot.type || "product");
             setSelectedTargetPageId(selectedHotspot.targetPageId || "");
+            setVideoUrlDraft(selectedHotspot.videoUrl || "");
         } else {
             setHotspotType("product");
             setSelectedTargetPageId("");
+            setVideoUrlDraft("");
         }
     }, [selectedHotspot]);
 
-    // -- Editor Logic for Existing Hotspot --
     const handleUpdateProduct = (productId: string) => {
         if (!selectedHotspot) return;
         const updated = allHotspots.map((h) =>
-            h.id === selectedHotspot.id ? { ...h, productId, type: "product" as const, targetPageId: undefined } : h
+            h.id === selectedHotspot.id ? { ...h, productId, type: "product" as const, targetPageId: undefined, videoUrl: undefined } : h
         );
         onUpdateHotspots(updated);
         saveAdminHotspots(updated);
@@ -69,7 +73,16 @@ export function AdminPanel({
     const handleUpdateLink = (targetId: string) => {
         if (!selectedHotspot) return;
         const updated = allHotspots.map((h) =>
-            h.id === selectedHotspot.id ? { ...h, type: "link" as const, targetPageId: targetId, productId: undefined } : h
+            h.id === selectedHotspot.id ? { ...h, type: "link" as const, targetPageId: targetId, productId: undefined, videoUrl: undefined } : h
+        );
+        onUpdateHotspots(updated);
+        saveAdminHotspots(updated);
+    };
+
+    const handleUpdateVideo = (videoUrl: string) => {
+        if (!selectedHotspot) return;
+        const updated = allHotspots.map((h) =>
+            h.id === selectedHotspot.id ? { ...h, type: "video" as const, videoUrl, productId: undefined, targetPageId: undefined } : h
         );
         onUpdateHotspots(updated);
         saveAdminHotspots(updated);
@@ -101,7 +114,7 @@ export function AdminPanel({
                 heightPct: draftHotspot.heightPct,
                 type: "product"
             };
-        } else {
+        } else if (hotspotType === "link") {
             if (!selectedTargetPageId) return;
             newHotspot = {
                 id: generateId("admin-"),
@@ -113,12 +126,24 @@ export function AdminPanel({
                 heightPct: draftHotspot.heightPct,
                 type: "link"
             };
+        } else {
+            newHotspot = {
+                id: generateId("admin-"),
+                pageId,
+                videoUrl: videoUrlDraft,
+                xPct: draftHotspot.xPct,
+                yPct: draftHotspot.yPct,
+                widthPct: draftHotspot.widthPct,
+                heightPct: draftHotspot.heightPct,
+                type: "video"
+            };
         }
 
         onUpdateHotspots([...allHotspots, newHotspot]);
         onClearDraft();
         setSelectedProductForDraft(null);
         setSelectedTargetPageId("");
+        setVideoUrlDraft("");
     };
 
     const handleClearPage = () => {
@@ -219,6 +244,15 @@ export function AdminPanel({
                                 >
                                     Page Link
                                 </button>
+                                <button
+                                    onClick={() => {
+                                        setHotspotType("video");
+                                        if (isEditing) handleUpdateVideo(videoUrlDraft);
+                                    }}
+                                    className={cn("flex-1 text-xs font-bold py-2 rounded-lg transition-all", hotspotType === "video" ? "bg-white shadow text-black" : "text-gray-500 hover:text-gray-700")}
+                                >
+                                    Video
+                                </button>
                             </div>
 
                             {hotspotType === "product" ? (
@@ -241,7 +275,7 @@ export function AdminPanel({
                                         Create New Product
                                     </button>
                                 </>
-                            ) : (
+                            ) : hotspotType === "link" ? (
                                 <div className="mb-4 space-y-2">
                                     <label className="text-xs font-bold text-gray-700">Target Page</label>
                                     <select
@@ -261,6 +295,30 @@ export function AdminPanel({
                                         ))}
                                     </select>
                                 </div>
+                            ) : (
+                                <div className="mb-4 space-y-2">
+                                    <label className="text-xs font-bold text-gray-700">Video URL</label>
+                                    <input
+                                        type="text"
+                                        placeholder="YouTube, Vimeo or direct MP4 URL"
+                                        value={videoUrlDraft}
+                                        onChange={(e) => {
+                                            const val = e.target.value;
+                                            setVideoUrlDraft(val);
+                                            if (isEditing) handleUpdateVideo(val);
+                                        }}
+                                        className="w-full p-3 rounded-xl border border-gray-200 bg-white text-sm focus:ring-2 focus:ring-black outline-none transition-all"
+                                    />
+                                    {videoUrlDraft && (
+                                        <button
+                                            onClick={() => setPreviewUrl(videoUrlDraft)}
+                                            className="w-full mt-2 py-2.5 bg-blue-50 border border-blue-100 rounded-xl text-[10px] font-bold text-blue-600 hover:bg-blue-100 transition-colors flex items-center justify-center gap-2 cursor-pointer"
+                                        >
+                                            <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+                                            Preview Video
+                                        </button>
+                                    )}
+                                </div>
                             )}
 
                             <div className="flex gap-3">
@@ -274,7 +332,13 @@ export function AdminPanel({
                                 ) : (
                                     <button
                                         onClick={() => handleCreateHotspot()}
-                                        disabled={hotspotType === "product" ? !selectedProductForDraft : !selectedTargetPageId}
+                                        disabled={
+                                            hotspotType === "product"
+                                                ? !selectedProductForDraft
+                                                : hotspotType === "link"
+                                                ? !selectedTargetPageId
+                                                : !videoUrlDraft
+                                        }
                                         className="flex-1 cursor-pointer bg-black text-white py-3 rounded-xl hover:bg-gray-800 disabled:opacity-30 font-bold text-xs transition-colors"
                                     >
                                         Place Hotspot
@@ -286,6 +350,9 @@ export function AdminPanel({
                                         onCloseEditor();
                                         onClearDraft();
                                         setIsCreatingProduct(false);
+                                        setVideoUrlDraft("");
+                                        setSelectedProductForDraft(null);
+                                        setSelectedTargetPageId("");
                                     }}
                                     className="flex-1 bg-gray-100 text-gray-700 py-3 rounded-xl hover:bg-gray-200 font-bold text-xs transition-colors"
                                 >
@@ -295,6 +362,14 @@ export function AdminPanel({
                         </>
                     )}
                 </div>
+                {previewUrl && (
+                    <div className="pointer-events-auto">
+                        <VideoPopup
+                            videoUrl={previewUrl}
+                            onClose={() => setPreviewUrl(null)}
+                        />
+                    </div>
+                )}
             </div>
         );
     }
