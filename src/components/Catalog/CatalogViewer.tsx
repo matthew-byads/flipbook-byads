@@ -5,6 +5,7 @@ import { ThumbnailStrip } from "./ThumbnailStrip";
 import { loadAdminHotspots, saveAdminHotspots, loadPagesConfig } from "../Admin/hotspotIO";
 import { AdminPanel } from "../Admin/AdminPanel";
 import { useMediaQuery } from "../../hooks/useMediaQuery";
+import { VideoPopup } from "./VideoPopup";
 
 import { Flipbook } from "./Flipbook";
 
@@ -72,6 +73,7 @@ export function CatalogViewer({ isAdmin }: CatalogViewerProps) {
     // Admin State
     const [selectedHotspot, setSelectedHotspot] = useState<Hotspot | null>(null);
     const [draftHotspot, setDraftHotspot] = useState<{ xPct: number; yPct: number; pageId: string; widthPct?: number; heightPct?: number } | null>(null);
+    const [activeVideoUrl, setActiveVideoUrl] = useState<string | null>(null);
 
     // Clear admin state when changing pages
     useEffect(() => {
@@ -96,6 +98,9 @@ export function CatalogViewer({ isAdmin }: CatalogViewerProps) {
             if (hotspot.type === "link" && hotspot.targetPageId) {
                 // Navigate directly to the link's target page
                 handlePageSelect(hotspot.targetPageId);
+            } else if (hotspot.type === "video" && hotspot.videoUrl) {
+                // Trigger full-screen video popup!
+                setActiveVideoUrl(hotspot.videoUrl);
             } else {
                 // Normal user clicked a hotspot on an index page
                 const indexPages = ["001", "002", "003", "004", "005"];
@@ -198,6 +203,13 @@ export function CatalogViewer({ isAdmin }: CatalogViewerProps) {
                     draftHotspot={draftHotspot}
                     onCloseEditor={() => setSelectedHotspot(null)}
                     onClearDraft={() => setDraftHotspot(null)}
+                />
+            )}
+
+            {activeVideoUrl && (
+                <VideoPopup
+                    videoUrl={activeVideoUrl}
+                    onClose={() => setActiveVideoUrl(null)}
                 />
             )}
         </div>
