@@ -81,7 +81,7 @@ export function CartDrawer() {
                             <p>Your cart is empty.</p>
                             <button
                                 onClick={() => dispatch({ type: "CLOSE_CART" })}
-                                className="mt-4 text-blue-600 hover:underline"
+                                className="mt-4 text-blue-600 hover:underline cursor-pointer"
                             >
                                 Start browsing
                             </button>

@@ -109,7 +109,7 @@ export function CatalogViewer({ isAdmin }: CatalogViewerProps) {
                     const targetHotspots = allHotspots.filter(
                         h => h.productId === hotspot.productId && !indexPages.includes(h.pageId)
                     );
-    
+
                     if (targetHotspots.length > 0) {
                         // Navigate to the first found detail page
                         handlePageSelect(targetHotspots[0].pageId);
@@ -135,7 +135,7 @@ export function CatalogViewer({ isAdmin }: CatalogViewerProps) {
                 <button
                     onClick={handlePrev}
                     disabled={pageIndex === 0}
-                    className="fixed top-1/2 -translate-y-1/2 left-2 sm:left-4 z-[100] p-3 rounded-full bg-white/80 hover:bg-white shadow-md disabled:opacity-30 transition-all hover:scale-110 pointer-events-auto"
+                    className="fixed cursor-pointer top-1/2 -translate-y-1/2 left-2 sm:left-4 z-[100] p-3 rounded-full bg-white/80 hover:bg-white shadow-md disabled:opacity-30 transition-all hover:scale-110 pointer-events-auto"
                 >
                     <svg className="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
                 </button>
@@ -168,7 +168,7 @@ export function CatalogViewer({ isAdmin }: CatalogViewerProps) {
                 <button
                     onClick={handleNext}
                     disabled={isMobile ? pageIndex >= pages.length - 1 : pageIndex >= pages.length - 2}
-                    className="fixed top-1/2 -translate-y-1/2 right-2 sm:right-4 z-[100] p-3 rounded-full bg-white/80 hover:bg-white shadow-md disabled:opacity-30 transition-all hover:scale-110 pointer-events-auto"
+                    className="fixed cursor-pointer top-1/2 -translate-y-1/2 right-2 sm:right-4 z-[100] p-3 rounded-full bg-white/80 hover:bg-white shadow-md disabled:opacity-30 transition-all hover:scale-110 pointer-events-auto"
                 >
                     <svg className="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
                 </button>

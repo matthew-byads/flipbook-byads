@@ -153,6 +153,12 @@ export function AdminPanel({
         }
     };
 
+    const handleClearAll = () => {
+        if (confirm("Delete all hotspots across all pages? This cannot be undone.")) {
+            onUpdateHotspots([]);
+        }
+    };
+
     const handleCreateProduct = (data: Partial<Product>) => {
         const newProduct: Product = {
             id: generateId("prod-"),
@@ -428,6 +434,12 @@ export function AdminPanel({
                                         className="flex-1 bg-red-50 text-red-600 py-3 rounded-xl hover:bg-red-100 font-bold text-xs transition-all active:scale-95"
                                     >
                                         Clear Page
+                                    </button>
+                                    <button
+                                        onClick={handleClearAll}
+                                        className="flex-1 bg-red-600 text-white py-3 rounded-xl hover:bg-red-700 font-bold text-xs transition-all active:scale-[0.98]"
+                                    >
+                                        Clear All
                                     </button>
                                 </div>
                                 <div className="p-3 bg-gray-50 rounded-xl border border-gray-100">

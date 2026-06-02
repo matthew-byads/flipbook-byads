@@ -33,7 +33,7 @@ export function Header({ isAdmin, onAdminLock, title = "Catalog" }: HeaderProps)
 
                 <button
                     onClick={() => dispatch({ type: "TOGGLE_CART" })}
-                    className="relative p-2 rounded-full hover:bg-gray-100 transition-colors group"
+                    className="relative cursor-pointer p-2 rounded-full hover:bg-gray-100 transition-colors group"
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
