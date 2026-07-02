@@ -7,10 +7,11 @@ import { cn } from "../../utils/cn";
 import { generateId } from "../../utils/id";
 import { BulkImageManager } from "./BulkImageManager";
 import { BulkProductManager } from "./BulkProductManager";
-import { saveAdminHotspots } from "./hotspotIO";
+
 import { ProductForm } from "./ProductForm";
 import { ProductSelect } from "./ProductSelect";
 import { VideoPopup } from "../Catalog/VideoPopup";
+import { VendorManager } from "./VendorManager";
 
 type AdminPanelProps = {
     pageId: string;
@@ -24,7 +25,7 @@ type AdminPanelProps = {
     visiblePageIds: string[];
 };
 
-type AdminTab = "hotspots" | "products" | "pages" | "settings";
+type AdminTab = "hotspots" | "products" | "vendors" | "pages" | "settings";
 
 export function AdminPanel({
     pageId,
@@ -67,7 +68,6 @@ export function AdminPanel({
             h.id === selectedHotspot.id ? { ...h, productId, type: "product" as const, targetPageId: undefined, videoUrl: undefined } : h
         );
         onUpdateHotspots(updated);
-        saveAdminHotspots(updated);
     };
 
     const handleUpdateLink = (targetId: string) => {
@@ -76,7 +76,6 @@ export function AdminPanel({
             h.id === selectedHotspot.id ? { ...h, type: "link" as const, targetPageId: targetId, productId: undefined, videoUrl: undefined } : h
         );
         onUpdateHotspots(updated);
-        saveAdminHotspots(updated);
     };
 
     const handleUpdateVideo = (videoUrl: string) => {
@@ -85,7 +84,6 @@ export function AdminPanel({
             h.id === selectedHotspot.id ? { ...h, type: "video" as const, videoUrl, productId: undefined, targetPageId: undefined } : h
         );
         onUpdateHotspots(updated);
-        saveAdminHotspots(updated);
     };
 
     const handleDelete = () => {
@@ -342,8 +340,8 @@ export function AdminPanel({
                                             hotspotType === "product"
                                                 ? !selectedProductForDraft
                                                 : hotspotType === "link"
-                                                ? !selectedTargetPageId
-                                                : !videoUrlDraft
+                                                    ? !selectedTargetPageId
+                                                    : !videoUrlDraft
                                         }
                                         className="flex-1 cursor-pointer bg-black text-white py-3 rounded-xl hover:bg-gray-800 disabled:opacity-30 font-bold text-xs transition-colors"
                                     >
@@ -404,6 +402,7 @@ export function AdminPanel({
                         {[
                             { id: "hotspots", label: "Hotspots", icon: "📍" },
                             { id: "products", label: "Products", icon: "📦" },
+                            { id: "vendors", label: "Vendors", icon: "🏢" },
                             { id: "pages", label: "Pages", icon: "📄" },
                             { id: "settings", label: "Save & Go Live", icon: "🚀" }
                         ].map(tab => (
@@ -431,13 +430,13 @@ export function AdminPanel({
                                 <div className="flex gap-2">
                                     <button
                                         onClick={handleClearPage}
-                                        className="flex-1 bg-red-50 text-red-600 py-3 rounded-xl hover:bg-red-100 font-bold text-xs transition-all active:scale-95"
+                                        className="flex-1 bg-red-50 text-red-600 py-3 rounded-xl hover:bg-red-100 font-bold text-xs transition-all active:scale-95 cursor-pointer"
                                     >
                                         Clear Page
                                     </button>
                                     <button
                                         onClick={handleClearAll}
-                                        className="flex-1 bg-red-600 text-white py-3 rounded-xl hover:bg-red-700 font-bold text-xs transition-all active:scale-[0.98]"
+                                        className="flex-1 bg-red-600 text-white py-3 rounded-xl hover:bg-red-700 font-bold text-xs transition-all active:scale-[0.98] cursor-pointer"
                                     >
                                         Clear All
                                     </button>
@@ -451,6 +450,7 @@ export function AdminPanel({
                         )}
 
                         {activeTab === "products" && <BulkProductManager />}
+                        {activeTab === "vendors" && <VendorManager />}
                         {activeTab === "pages" && <BulkImageManager />}
                         {activeTab === "settings" && (
                             <div className="space-y-6 animate-in fade-in duration-300">

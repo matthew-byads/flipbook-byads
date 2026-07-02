@@ -24,7 +24,7 @@ export const PageStage = forwardRef<HTMLDivElement, PageStageProps>(({
     const [activeHotspotId, setActiveHotspotId] = useState<string | null>(null);
     const [drawStart, setDrawStart] = useState<{ xPct: number; yPct: number } | null>(null);
     const [drawCurrent, setDrawCurrent] = useState<{ xPct: number; yPct: number } | null>(null);
-    
+
     const internalRef = useRef<HTMLDivElement>(null);
     const { getProduct } = useProducts();
 
@@ -34,10 +34,13 @@ export const PageStage = forwardRef<HTMLDivElement, PageStageProps>(({
         const isIndexPage = indexPages.includes(page.id);
 
         if (isAdmin) {
+            // Admin mode: always open the editor
             onHotspotClick(hotspot);
-        } else if (isIndexPage || hotspot.type === "link") {
+        } else if (hotspot.type === "link" || hotspot.type === "video") {
+            // Navigation / video hotspots: delegate to CatalogViewer
             onHotspotClick(hotspot);
         } else {
+            // Regular product hotspot on a detail page: show popover inline
             setActiveHotspotId(activeHotspotId === hotspot.id ? null : hotspot.id);
         }
     };
@@ -88,6 +91,10 @@ export const PageStage = forwardRef<HTMLDivElement, PageStageProps>(({
     };
 
     const handleClick = (e: React.MouseEvent) => {
+        // If the click originated from a hotspot pin, do not clear activeHotspotId
+        // (the pin's own stopPropagation should handle this, but we add an extra guard)
+        if ((e.target as HTMLElement).closest('button[data-hotspot-pin]')) return;
+
         if (isAdmin || activeHotspotId) {
             e.stopPropagation();
         }
@@ -129,7 +136,7 @@ export const PageStage = forwardRef<HTMLDivElement, PageStageProps>(({
                 <div className="absolute inset-0">
                     {/* Render active draw area */}
                     {isAdmin && drawStart && drawCurrent && (
-                        <div 
+                        <div
                             className="absolute bg-blue-500/20 border border-blue-500 z-50 pointer-events-none"
                             style={{
                                 left: `${Math.min(drawStart.xPct, drawCurrent.xPct)}%`,
@@ -139,7 +146,7 @@ export const PageStage = forwardRef<HTMLDivElement, PageStageProps>(({
                             }}
                         />
                     )}
-                    
+
                     {hotspots.map((hotspot) => (
                         <HotspotPin
                             key={hotspot.id}

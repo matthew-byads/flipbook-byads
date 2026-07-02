@@ -5,9 +5,12 @@ import { getWhatsAppLink } from "../../cart/whatsapp";
 import { cn } from "../../utils/cn";
 import { useProducts } from "../../context/ProductContext";
 
+import { useVendors } from "../../context/VendorContext";
+
 export function CartDrawer() {
     const { state, dispatch } = useCart();
     const { getProduct } = useProducts();
+    const { activeVendor } = useVendors();
     const drawerRef = useRef<HTMLDivElement>(null);
     const defaultCurrency = import.meta.env.VITE_DEFAULT_CURRENCY || "COP";
     const { items, isOpen } = state;
@@ -28,7 +31,7 @@ export function CartDrawer() {
     }, 0);
 
     const hasPrices = items.some(item => getProduct(item.productId)?.price);
-    const whatsappLink = getWhatsAppLink(items, getProduct);
+    const whatsappLink = getWhatsAppLink(items, getProduct, activeVendor?.phone);
 
 
     return (

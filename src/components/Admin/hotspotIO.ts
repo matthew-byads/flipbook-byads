@@ -2,25 +2,45 @@ import type { Hotspot } from "../../data/hotspots";
 import type { Product } from "../../data/products";
 import type { Page } from "../../data/pages";
 
-const ADMIN_HOTSPOTS_KEY = "byads_catalog_hotspots_admin_v1";
 const ADMIN_UNLOCKED_KEY = "byads_admin_unlocked_v1";
 const PAGES_CONFIG_KEY = "byads_pages_config_v1";
+const S3_HOTSPOTS_URL = "https://flipbook-four-elements.s3.us-east-2.amazonaws.com/hotspots.json";
 
-export function loadAdminHotspots(): Hotspot[] {
+export async function fetchHotspots(): Promise<Hotspot[]> {
     try {
-        const stored = localStorage.getItem(ADMIN_HOTSPOTS_KEY);
-        return stored ? JSON.parse(stored) : [];
-    } catch (error) {
-        console.warn("Failed to load admin hotspots", error);
-        return [];
+        const response = await fetch(S3_HOTSPOTS_URL, { cache: "no-store" });
+        if (response.ok) {
+            const data = await response.json();
+            return data as Hotspot[];
+        }
+        if (response.status === 404) {
+            return [];
+        }
+    } catch (err) {
+        console.error("Failed to fetch hotspots from S3", err);
     }
+    return [];
 }
 
-export function saveAdminHotspots(hotspots: Hotspot[]) {
+export async function saveHotspotsToS3(hotspots: Hotspot[]): Promise<boolean> {
     try {
-        localStorage.setItem(ADMIN_HOTSPOTS_KEY, JSON.stringify(hotspots));
-    } catch (error) {
-        console.warn("Failed to save admin hotspots", error);
+        const { AwsClient } = await import("aws4fetch");
+        const aws = new AwsClient({
+            accessKeyId: import.meta.env.VITE_AWS_ACCESS_KEY_ID,
+            secretAccessKey: import.meta.env.VITE_AWS_SECRET_ACCESS_KEY,
+            region: import.meta.env.VITE_AWS_REGION || "us-east-2",
+        });
+
+        const res = await aws.fetch(S3_HOTSPOTS_URL, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(hotspots),
+        });
+
+        return res.ok;
+    } catch (err) {
+        console.error("Failed to save hotspots to S3", err);
+        return false;
     }
 }
 
