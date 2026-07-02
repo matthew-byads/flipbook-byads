@@ -2,7 +2,7 @@ import { useRef, useState, useEffect, useCallback } from "react";
 import { pages as staticPages, type Page } from "../../data/pages";
 import { hotspots as initialHotspots, type Hotspot } from "../../data/hotspots";
 import { ThumbnailStrip } from "./ThumbnailStrip";
-import { loadAdminHotspots, saveAdminHotspots, loadPagesConfig } from "../Admin/hotspotIO";
+import { fetchHotspots, saveHotspotsToS3, loadPagesConfig } from "../Admin/hotspotIO";
 import { AdminPanel } from "../Admin/AdminPanel";
 import { useMediaQuery } from "../../hooks/useMediaQuery";
 import { VideoPopup } from "./VideoPopup";
@@ -23,16 +23,16 @@ export function CatalogViewer({ isAdmin }: CatalogViewerProps) {
 
     const flipbookRef = useRef<any>(null);
 
-    const [allHotspots, setAllHotspots] = useState<Hotspot[]>(() => [
-        ...initialHotspots,
-        ...loadAdminHotspots()
-    ]);
+    const [allHotspots, setAllHotspots] = useState<Hotspot[]>(initialHotspots);
 
     // Reload pages and hotspots when isAdmin changes
     useEffect(() => {
         const custom = loadPagesConfig();
         if (custom.length > 0) setPages(custom);
-        setAllHotspots([...initialHotspots, ...loadAdminHotspots()]);
+        
+        fetchHotspots().then(s3Hotspots => {
+            setAllHotspots([...initialHotspots, ...s3Hotspots]);
+        });
     }, [isAdmin]);
 
     const page = pages[pageIndex] || pages[0];
@@ -83,7 +83,9 @@ export function CatalogViewer({ isAdmin }: CatalogViewerProps) {
 
     const handleUpdateHotspots = (newHotspots: Hotspot[]) => {
         setAllHotspots(newHotspots);
-        saveAdminHotspots(newHotspots);
+        // Exclude initial hotspots from being saved to S3
+        const adminHotspots = newHotspots.filter(h => !initialHotspots.find(ih => ih.id === h.id));
+        saveHotspotsToS3(adminHotspots);
         if (selectedHotspot) {
             const updated = newHotspots.find(h => h.id === selectedHotspot.id);
             if (updated) setSelectedHotspot(updated);
@@ -142,6 +144,7 @@ export function CatalogViewer({ isAdmin }: CatalogViewerProps) {
 
                 <div className="w-full h-full max-w-7xl max-h-[calc(100vh-160px)] flex items-center justify-center pointer-events-none">
                     <Flipbook
+                        key={isAdmin ? "admin" : "user"}
                         ref={flipbookRef}
                         pages={pages}
                         hotspots={allHotspots}
@@ -149,7 +152,7 @@ export function CatalogViewer({ isAdmin }: CatalogViewerProps) {
                         onHotspotClick={handleHotspotClick}
                         onStageClick={handleStageClick}
                         onPageChange={setPageIndex}
-                        initialPage={0}
+                        initialPage={pageIndex}
                         isMobile={isMobile}
                     />
                 </div>

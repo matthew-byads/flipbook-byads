@@ -92,7 +92,7 @@ export function BulkImageManager() {
                     <button
                         onClick={handleSave}
                         disabled={!isDirty}
-                        className="px-4 py-1.5 bg-black text-white rounded-lg text-xs font-bold hover:bg-gray-800 disabled:opacity-50 transition-colors"
+                        className="px-4 py-1.5 bg-black text-white rounded-lg text-xs font-bold hover:bg-gray-800 disabled:opacity-50 transition-colors cursor-pointer"
                     >
                         Save Order
                     </button>

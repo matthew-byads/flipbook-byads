@@ -58,7 +58,7 @@ export const Flipbook = forwardRef<any, FlipbookProps>(({
                 usePortrait={isMobile} // Switch between single and double page spread
                 startZIndex={0}
                 autoSize={true}
-                clickEventForward={false}
+                clickEventForward={true}
                 useMouseEvents={!isAdmin}
                 swipeDistance={30}
                 showPageCorners={!isAdmin}
@@ -71,7 +71,7 @@ export const Flipbook = forwardRef<any, FlipbookProps>(({
                         hotspots={hotspots.filter(h => h.pageId === page.id)}
                         isAdmin={isAdmin}
                         onHotspotClick={onHotspotClick}
-                        onStageClick={(x, y) => onStageClick(page.id, x, y)}
+                        onStageClick={(x, y, w, h) => onStageClick(page.id, x, y, w, h)}
                     />
                 ))}
             </HTMLFlipBook>
