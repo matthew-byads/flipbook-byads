@@ -78,20 +78,51 @@ export function saveCustomProducts(products: Product[]) {
 }
 
 // -- Pages Config --
-export function loadPagesConfig(): Page[] {
+export async function loadPagesConfig(): Promise<Page[]> {
+    const S3_PAGES_URL = "https://flipbook-four-elements.s3.us-east-2.amazonaws.com/flipbook-pages.json";
     try {
+        const response = await fetch(S3_PAGES_URL, { cache: "no-store" });
+        if (response.ok) {
+            const data = await response.json();
+            return data as Page[];
+        }
+        if (response.status === 404) {
+            const stored = localStorage.getItem(PAGES_CONFIG_KEY);
+            return stored ? JSON.parse(stored) : [];
+        }
+    } catch (err) {
+        console.error("Failed to fetch pages config from S3", err);
         const stored = localStorage.getItem(PAGES_CONFIG_KEY);
         return stored ? JSON.parse(stored) : [];
-    } catch (error) {
-        console.warn("Failed to load pages config", error);
-        return [];
     }
+    const stored = localStorage.getItem(PAGES_CONFIG_KEY);
+    return stored ? JSON.parse(stored) : [];
 }
 
-export function savePagesConfig(pages: Page[]) {
+export async function savePagesConfig(pages: Page[]): Promise<boolean> {
+    // Save locally for backward compatibility
     try {
         localStorage.setItem(PAGES_CONFIG_KEY, JSON.stringify(pages));
     } catch (error) {
-        console.warn("Failed to save pages config", error);
+        console.warn("Failed to save pages config locally", error);
+    }
+    // Save to S3
+    try {
+        const { AwsClient } = await import("aws4fetch");
+        const aws = new AwsClient({
+            accessKeyId: import.meta.env.VITE_AWS_ACCESS_KEY_ID,
+            secretAccessKey: import.meta.env.VITE_AWS_SECRET_ACCESS_KEY,
+            region: import.meta.env.VITE_AWS_REGION || "us-east-2",
+        });
+        const S3_PAGES_URL = "https://flipbook-four-elements.s3.us-east-2.amazonaws.com/flipbook-pages.json";
+        const res = await aws.fetch(S3_PAGES_URL, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(pages),
+        });
+        return res.ok;
+    } catch (err) {
+        console.error("Failed to save pages config to S3", err);
+        return false;
     }
 }

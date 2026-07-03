@@ -8,7 +8,7 @@ import { isAdminUnlocked, setAdminUnlocked } from "./components/Admin/hotspotIO"
 import { ProductProvider } from "./context/ProductContext";
 
 import { VendorProvider } from "./context/VendorContext";
-
+import { SettingsProvider } from "./context/SettingsContext";
 function App() {
   const [isAdmin, setIsAdmin] = useState(() => isAdminUnlocked());
   const [isUnlockModalOpen, setIsUnlockModalOpen] = useState(false);
@@ -30,27 +30,29 @@ function App() {
   }, []);
 
   return (
-    <VendorProvider>
-      <ProductProvider>
-        <CartProvider>
-          <div className="min-h-screen bg-gray-50 text-gray-900 font-sans">
-            <Header isAdmin={isAdmin} onAdminLock={handleAdminLock} />
+    <SettingsProvider>
+      <VendorProvider>
+        <ProductProvider>
+          <CartProvider>
+            <div className="min-h-screen bg-gray-50 text-gray-900 font-sans">
+              <Header isAdmin={isAdmin} onAdminLock={handleAdminLock} />
 
-            <CatalogViewer isAdmin={isAdmin} />
+              <CatalogViewer isAdmin={isAdmin} />
 
-            <CartDrawer />
+              <CartDrawer />
 
-            {isUnlockModalOpen && (
-              <AdminUnlockModal
-                isOpen={true} // It's always open if rendered
-                onClose={() => setIsUnlockModalOpen(false)}
-                onUnlock={() => setIsAdmin(true)}
-              />
-            )}
-          </div>
-        </CartProvider>
-      </ProductProvider>
-    </VendorProvider>
+              {isUnlockModalOpen && (
+                <AdminUnlockModal
+                  isOpen={true} // It's always open if rendered
+                  onClose={() => setIsUnlockModalOpen(false)}
+                  onUnlock={() => setIsAdmin(true)}
+                />
+              )}
+            </div>
+          </CartProvider>
+        </ProductProvider>
+      </VendorProvider>
+    </SettingsProvider>
   );
 }
 

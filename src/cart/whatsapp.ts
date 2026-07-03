@@ -1,9 +1,8 @@
 import { type CartItem } from "./cartTypes";
 import { type Product } from "../data/products";
 
-export function getWhatsAppLink(items: CartItem[], getProduct: (id: string) => Product | undefined, vendorPhone?: string): string | null {
-    const defaultPhone = (import.meta.env.VITE_WHATSAPP_PHONE ?? "").replace(/\D/g, "");
-    const phone = vendorPhone ? vendorPhone.replace(/\D/g, "") : defaultPhone;
+export function getWhatsAppLink(items: CartItem[], getProduct: (id: string) => Product | undefined, vendorPhone?: string, fallbackPhone?: string): string | null {
+    const phone = (vendorPhone || fallbackPhone || "").replace(/\D/g, "");
 
     if (!phone) return null;
 

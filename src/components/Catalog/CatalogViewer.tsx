@@ -16,20 +16,40 @@ type CatalogViewerProps = {
 export function CatalogViewer({ isAdmin }: CatalogViewerProps) {
     const isMobile = useMediaQuery("(max-width: 768px)");
     const [pageIndex, setPageIndex] = useState(0);
-    const [pages, setPages] = useState<Page[]>(() => {
-        const custom = loadPagesConfig();
-        return custom.length > 0 ? custom : staticPages;
-    });
+    const [pages, setPages] = useState<Page[]>(staticPages);
+    const [isLoading, setIsLoading] = useState(true);
 
     const flipbookRef = useRef<any>(null);
 
     const [allHotspots, setAllHotspots] = useState<Hotspot[]>(initialHotspots);
 
-    // Reload pages and hotspots when isAdmin changes
+    // Load custom page order on mount
     useEffect(() => {
-        const custom = loadPagesConfig();
-        if (custom.length > 0) setPages(custom);
-        
+        (async () => {
+            try {
+                const savedOrder = await loadPagesConfig();
+                if (savedOrder.length > 0) {
+                    // Re-order staticPages based on saved IDs (keeps bundled src URLs intact)
+                    const staticMap = new Map(staticPages.map(p => [p.id, p]));
+                    const reordered = savedOrder
+                        .map(p => staticMap.get(p.id))
+                        .filter((p): p is typeof staticPages[0] => p !== undefined);
+                    // Append any pages not in saved order
+                    const savedIds = new Set(savedOrder.map(p => p.id));
+                    const remaining = staticPages.filter(p => !savedIds.has(p.id));
+                    const finalPages = [...reordered, ...remaining];
+                    if (finalPages.length > 0) setPages(finalPages);
+                }
+            } catch (e) {
+                console.warn("Failed to load page order, using default.", e);
+            } finally {
+                setIsLoading(false);
+            }
+        })();
+    }, []);
+
+    // Reload hotspots when isAdmin changes
+    useEffect(() => {
         fetchHotspots().then(s3Hotspots => {
             setAllHotspots([...initialHotspots, ...s3Hotspots]);
         });
@@ -127,6 +147,15 @@ export function CatalogViewer({ isAdmin }: CatalogViewerProps) {
             setDraftHotspot({ xPct, yPct, pageId, widthPct, heightPct });
         }
     };
+
+    if (isLoading) return (
+        <div className="h-screen flex items-center justify-center bg-gray-50">
+            <div className="flex flex-col items-center gap-3">
+                <div className="w-8 h-8 border-2 border-black border-t-transparent rounded-full animate-spin" />
+                <span className="text-xs font-semibold text-gray-400 tracking-widest">LOADING CATALOG...</span>
+            </div>
+        </div>
+    );
 
     if (pages.length === 0) return <div className="h-screen flex items-center justify-center">No pages found</div>;
 

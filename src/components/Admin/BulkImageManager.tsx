@@ -10,19 +10,33 @@ export function BulkImageManager() {
 
     // Initial load
     useEffect(() => {
-        const custom = loadPagesConfig();
-        if (custom.length > 0) {
-            setPages(custom);
-        } else {
-            setPages(staticPages);
+        async function fetchPages() {
+            const savedOrder = await loadPagesConfig();
+            if (savedOrder.length > 0) {
+                // Reorder staticPages by saved IDs (keeps bundled image URLs intact)
+                const staticMap = new Map(staticPages.map(p => [p.id, p]));
+                const reordered = savedOrder
+                    .map(p => staticMap.get(p.id))
+                    .filter((p): p is Page => p !== undefined);
+                const savedIds = new Set(savedOrder.map(p => p.id));
+                const remaining = staticPages.filter(p => !savedIds.has(p.id));
+                setPages([...reordered, ...remaining]);
+            } else {
+                setPages(staticPages);
+            }
         }
+        fetchPages();
     }, []);
 
-    const handleSave = () => {
-        savePagesConfig(pages);
+    const handleSave = async () => {
+        const success = await savePagesConfig(pages);
         setIsDirty(false);
-        alert("Page configuration saved locally!");
-        // We'll need to trigger a global refresh or page reload to see changes in CatalogViewer
+        if (success) {
+            alert("Page configuration saved!");
+        } else {
+            alert("Failed to save page configuration!");
+        }
+        // Refresh to reflect changes in CatalogViewer
         window.location.reload();
     };
 

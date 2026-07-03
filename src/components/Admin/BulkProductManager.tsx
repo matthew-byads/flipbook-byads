@@ -3,102 +3,95 @@ import { useProducts } from "../../context/ProductContext";
 import { generateId } from "../../utils/id";
 import { type Product } from "../../data/products";
 import { cn } from "../../utils/cn";
+import { saveProductsCsvToS3, fetchProductsCsv, parseUploadedFile, rawRowsToCsv } from "./productIO";
 
 export function BulkProductManager() {
-    const { addProduct, allProducts } = useProducts();
+    const { addProduct, updateProduct, allProducts } = useProducts();
     const [isImporting, setIsImporting] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
-    const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
 
         setIsImporting(true);
         setError(null);
 
-        const reader = new FileReader();
-        reader.onload = (event) => {
-            try {
-                const text = event.target?.result as string;
-                if (!text) throw new Error("Could not read file");
+        try {
+            const { products, rawRows } = await parseUploadedFile(file);
 
-                const lines = text.split("\n").filter(l => l.trim());
-                if (lines.length === 0) throw new Error("File is empty");
+            if (products.length === 0) {
+                throw new Error("No valid products found in file");
+            }
 
-                // Detect delimiter: check first line for ; or ,
-                const firstLine = lines[0];
-                const delimiter = firstLine.includes(";") ? ";" : ",";
-
-                const rows = lines.map(line => line.split(delimiter).map(cell => cell.trim()));
-
-                // Assuming first row is header or not, let's be flexible.
-                // Required format: nombre, precio, moneda, talla, tamaño, color
-
-                let startIndex = 0;
-                // Check if first row is header
-                const firstRow = rows[0];
-                if (firstRow[0] && (firstRow[0].toLowerCase().includes("nombre") || firstRow[0].toLowerCase().includes("name"))) {
-                    startIndex = 1;
-                }
-
-                let importedCount = 0;
-                for (let i = startIndex; i < rows.length; i++) {
-                    const row = rows[i];
-                    if (row.length < 2 || !row[0]) continue; // Skip empty/invalid rows
-
-                    // Ensure we have at least 6 columns (even if empty)
-                    const [nombre, precio, moneda, talla, tamano, color] = row;
-
-                    const newProduct: Product = {
-                        id: `bulk-${generateId()}`,
-                        name: nombre,
-                        price: precio ? parseInt(precio.replace(/\D/g, "") || "0") : undefined,
-                        currency: moneda || "COP",
-                        talla: talla || undefined,
-                        tamaño: tamano || undefined,
-                        color: color || undefined,
-                    };
-
-                    addProduct(newProduct);
+            const existingIds = new Set(allProducts.map(p => p.id));
+            let importedCount = 0;
+            let updatedCount = 0;
+            for (const product of products) {
+                if (existingIds.has(product.id)) {
+                    // Assume updateProduct exists on ProductContext (we need to destructure it if it does)
+                    // Let's just destructure it from useProducts()
+                    updateProduct(product);
+                    updatedCount++;
+                } else {
+                    addProduct(product);
+                    existingIds.add(product.id);
                     importedCount++;
                 }
-
-                if (fileInputRef.current) fileInputRef.current.value = "";
-                alert(`Successfully imported ${importedCount} products!`);
-            } catch (err) {
-                const message = err instanceof Error ? err.message : "Failed to parse CSV";
-                setError(message);
-            } finally {
-                setIsImporting(false);
             }
-        };
 
-        reader.onerror = () => {
-            setError("Error reading file");
+            if (rawRows.length > 0) {
+                const csvContent = rawRowsToCsv(rawRows);
+                saveProductsCsvToS3(csvContent).then(success => {
+                    if (!success) console.error('Failed to sync CSV to S3');
+                });
+            }
+
+            if (fileInputRef.current) fileInputRef.current.value = "";
+            alert(`Successfully added ${importedCount} and updated ${updatedCount} products!`);
+        } catch (err) {
+            const message = err instanceof Error ? err.message : "Failed to parse file";
+            setError(message);
+        } finally {
             setIsImporting(false);
-        };
-
-        reader.readAsText(file);
+        }
     };
 
     return (
         <div className="p-4 bg-white rounded-xl shadow-sm border border-gray-100 mb-4 animate-in fade-in slide-in-from-top-2 duration-300">
             <div className="flex items-center justify-between mb-4">
                 <h3 className="font-bold text-gray-900">Bulk Product Import</h3>
-                <div className="text-[10px] text-gray-400 font-mono bg-gray-50 px-2 py-1 rounded">.CSV supported</div>
+                <div className="text-[10px] text-gray-400 font-mono bg-gray-50 px-2 py-1 rounded">.CSV / .XLSX supported</div>
             </div>
 
             <p className="text-xs text-gray-500 mb-4">
-                Upload a CSV file with columns: <br />
-                <code className="text-[10px] bg-red-50 text-red-600 px-1 py-0.5 rounded">nombre, precio, moneda, talla, tamaño, color</code>
+                Upload a CSV or XLSX file with columns: <br />
+                <code className="text-[10px] bg-red-50 text-red-600 px-1 py-0.5 rounded">nombre, precio, moneda, talla, tamaño, color, referencia</code>
             </p>
+            {/* Download current CSV from S3 */}
+            <button
+                onClick={async () => {
+                    const csv = await fetchProductsCsv();
+                    const header = ['Nombre', 'Precio', 'Moneda', 'Talla (si aplica)', 'Tamaño (si aplica)', 'Color', 'Referencia'];
+                    const rows = csv.map(p => [
+                        p.name, p.price?.toString() || '', p.currency || 'COP', 
+                        p.talla || '', p.tamaño || '', p.color || '', p.referencia || ''
+                    ].map(v => v.includes(',') ? `"${v}"` : v).join(','));
+                    const blob = new Blob([header.join(',') + '\n' + rows.join('\n')], { type: 'text/csv' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url; a.download = 'products.csv'; a.click();
+                    URL.revokeObjectURL(url);
+                }}
+                className="px-3 py-1.5 bg-gray-800 text-white text-xs rounded hover:bg-gray-700 transition-colors mb-2"
+            >Download Current CSV</button>
 
             <div className="relative">
                 <input
                     ref={fileInputRef}
                     type="file"
-                    accept=".csv"
+                    accept=".csv,.xlsx"
                     onChange={handleFileUpload}
                     className="hidden"
                     id="csv-upload"
@@ -121,7 +114,7 @@ export function BulkProductManager() {
                             <svg className="w-8 h-8 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                             </svg>
-                            <span className="text-sm font-medium text-gray-700">Click to upload CSV</span>
+                            <span className="text-sm font-medium text-gray-700">Click to upload file</span>
                             <span className="text-[10px] text-gray-400 mt-1">or drag and drop</span>
                         </div>
                     )}
@@ -143,8 +136,10 @@ export function BulkProductManager() {
                         <div key={p.id} className="p-3 flex items-center justify-between group hover:bg-white transition-colors">
                             <div className="min-w-0">
                                 <div className="text-sm font-medium text-gray-900 truncate">{p.name}</div>
-                                <div className="flex gap-2 mt-0.5">
+                                <div className="flex gap-2 mt-0.5 flex-wrap">
                                     {p.price && <span className="text-[10px] text-gray-500">{p.currency} {p.price.toLocaleString()}</span>}
+                                    {p.color && <span className="text-[10px] bg-purple-50 text-purple-600 px-1 rounded">Color: {p.color}</span>}
+                                    {p.referencia && <span className="text-[10px] bg-amber-50 text-amber-600 px-1 rounded">Ref: {p.referencia}</span>}
                                     {p.talla && <span className="text-[10px] bg-blue-50 text-blue-600 px-1 rounded">Talla: {p.talla}</span>}
                                     {p.tamaño && <span className="text-[10px] bg-green-50 text-green-600 px-1 rounded">Tamaño: {p.tamaño}</span>}
                                 </div>
