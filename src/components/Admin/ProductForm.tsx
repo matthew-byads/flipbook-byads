@@ -19,6 +19,7 @@ export function ProductForm({ initialData, onSubmit, onCancel, className }: Prod
     const [talla, setTalla] = useState(initialData?.talla || "");
     const [tamano, setTamano] = useState(initialData?.tamaño || "");
     const [color, setColor] = useState(initialData?.color || "");
+    const [referencia, setReferencia] = useState(initialData?.referencia || "");
 
     // Simple validation
     const isValid = name.trim().length > 0;
@@ -37,6 +38,7 @@ export function ProductForm({ initialData, onSubmit, onCancel, className }: Prod
             talla: talla || undefined,
             tamaño: tamano || undefined,
             color: color || undefined,
+            referencia: referencia || undefined,
         });
     };
 
@@ -131,6 +133,16 @@ export function ProductForm({ initialData, onSubmit, onCancel, className }: Prod
                         onChange={(e) => setColor(e.target.value)}
                         className="w-full px-3 py-2 border border-gray-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-black/5"
                         placeholder="Red..."
+                    />
+                </div>
+                <div className="flex-1">
+                    <label className="block text-xs font-medium text-gray-700 mb-1">Referencia</label>
+                    <input
+                        type="text"
+                        value={referencia}
+                        onChange={(e) => setReferencia(e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-black/5"
+                        placeholder="Variant name..."
                     />
                 </div>
             </div>

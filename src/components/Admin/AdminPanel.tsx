@@ -12,6 +12,7 @@ import { ProductForm } from "./ProductForm";
 import { ProductSelect } from "./ProductSelect";
 import { VideoPopup } from "../Catalog/VideoPopup";
 import { VendorManager } from "./VendorManager";
+import { SettingsManager } from "./SettingsManager";
 
 type AdminPanelProps = {
     pageId: string;
@@ -169,6 +170,7 @@ export function AdminPanel({
             talla: data.talla,
             tamaño: data.tamaño,
             color: data.color,
+            referencia: data.referencia,
         };
         addProduct(newProduct);
         setIsCreatingProduct(false);
@@ -404,7 +406,7 @@ export function AdminPanel({
                             { id: "products", label: "Products", icon: "📦" },
                             { id: "vendors", label: "Vendors", icon: "🏢" },
                             { id: "pages", label: "Pages", icon: "📄" },
-                            { id: "settings", label: "Save & Go Live", icon: "🚀" }
+                            { id: "settings", label: "Settings", icon: "⚙️" }
                         ].map(tab => (
                             <button
                                 key={tab.id}
@@ -452,54 +454,7 @@ export function AdminPanel({
                         {activeTab === "products" && <BulkProductManager />}
                         {activeTab === "vendors" && <VendorManager />}
                         {activeTab === "pages" && <BulkImageManager />}
-                        {activeTab === "settings" && (
-                            <div className="space-y-6 animate-in fade-in duration-300">
-                                <div className="p-5 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-3xl border border-blue-100 shadow-sm">
-                                    <h3 className="text-sm font-bold text-blue-900 uppercase tracking-widest mb-3 flex items-center gap-2">
-                                        <span>✨</span> Ready to update?
-                                    </h3>
-                                    <p className="text-[10px] text-blue-700/80 mb-6 leading-relaxed font-medium">
-                                        Your changes are currently saved only in your browser.
-                                        Click below to sync everything and update the live catalog for everyone to see.
-                                    </p>
-
-                                    <button
-                                        onClick={handlePublish}
-                                        disabled={isPublishing}
-                                        className={cn(
-                                            "w-full py-4 rounded-2xl font-black text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-3 shadow-xl",
-                                            isPublishing
-                                                ? "bg-blue-200 text-blue-400 cursor-not-allowed"
-                                                : "bg-blue-600 cursor-pointer text-white hover:bg-blue-700 active:scale-[0.98] shadow-blue-200"
-                                        )}
-                                    >
-                                        {isPublishing ? (
-                                            <>
-                                                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                                                Updating Site...
-                                            </>
-                                        ) : (
-                                            <>
-                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
-                                                Sync and Publish
-                                            </>
-                                        )}
-                                    </button>
-
-                                    {publishStatus && (
-                                        <div className={cn(
-                                            "mt-5 p-4 rounded-2xl text-[10px] font-bold flex items-center gap-3 animate-in slide-in-from-top-2",
-                                            publishStatus.type === 'success' ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
-                                        )}>
-                                            <span className="text-sm">{publishStatus.type === 'success' ? "🎉" : "⚠️"}</span>
-                                            {publishStatus.type === 'success'
-                                                ? "Website updated successfully! It may take a minute to reflect the changes."
-                                                : publishStatus.message}
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-                        )}
+                        {activeTab === "settings" && <SettingsManager />}
                     </div>
 
                     {/* Footer */}

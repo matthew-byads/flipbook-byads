@@ -6,9 +6,10 @@ export type Product = {
     sku?: string;
     variant?: string;
     image?: string;
-    talla?: string;   // Clothing size (e.g. S, M, L)
-    tamaño?: string;  // Object size (e.g. 40x50cm)
-    color?: string;   // Color name or hex
+    talla?: string;      // Clothing size (e.g. S, M, L)
+    tamaño?: string;     // Object size (e.g. 40x50cm)
+    color?: string;      // Color category or specific color (e.g. "Sublimado", "Negro", "Azul")
+    referencia?: string; // Specific design/variant name from V2 (e.g. "Safari", "Caballero")
 };
 
 export const products: Product[] = [

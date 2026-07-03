@@ -31,7 +31,6 @@ A Vite + React + TypeScript application that renders an image-based catalog flip
     ```bash
     cp .env.example .env
     ```
-    - `VITE_WHATSAPP_PHONE`: Your WhatsApp number (country code + number, no symbols).
     - `VITE_DEFAULT_CURRENCY`: Currency symbol (default: COP).
     - `VITE_ADMIN_PASSCODE`: Passcode for Admin Mode (default: 1234).
 
