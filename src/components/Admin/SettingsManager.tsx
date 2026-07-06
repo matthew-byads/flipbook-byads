@@ -82,7 +82,7 @@ export function SettingsManager() {
                         Default WhatsApp Number
                     </label>
                     <p className="text-xs text-gray-500 mb-3">
-                        This number will be used for all checkout requests unless a specific vendor is selected. Leave blank to use the default configured in the environment variables. Format: Include country code (e.g., 573001234567).
+                        This number will be used for all checkout requests unless a specific vendor is selected. Format: Include country code (e.g., 573001234567).
                     </p>
 
                     {isEditing ? (
@@ -95,9 +95,8 @@ export function SettingsManager() {
                                 placeholder="e.g. 573001234567"
                                 maxLength={12}
                                 autoFocus
-                                className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-black outline-none transition-shadow ${
-                                    validationError ? "border-red-400" : "border-gray-300"
-                                }`}
+                                className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-black outline-none transition-shadow ${validationError ? "border-red-400" : "border-gray-300"
+                                    }`}
                             />
                             {validationError && (
                                 <p className="text-xs text-red-500 mt-1">{validationError}</p>
