@@ -9,7 +9,7 @@ type FlipbookProps = {
     hotspots: Hotspot[];
     isAdmin: boolean;
     onHotspotClick: (hotspot: Hotspot) => void;
-    onStageClick: (pageId: string, xPct: number, yPct: number) => void;
+    onStageClick: (pageId: string, xPct: number, yPct: number, widthPct?: number, heightPct?: number) => void;
     onPageChange: (index: number) => void;
     initialPage?: number;
     isMobile?: boolean;

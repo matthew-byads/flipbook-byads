@@ -30,9 +30,6 @@ export const PageStage = forwardRef<HTMLDivElement, PageStageProps>(({
 
 
     const handleHotspotClick = (hotspot: Hotspot) => {
-        const indexPages = ["001", "002", "003", "004", "005"];
-        const isIndexPage = indexPages.includes(page.id);
-
         if (isAdmin) {
             // Admin mode: always open the editor
             onHotspotClick(hotspot);

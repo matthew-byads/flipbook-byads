@@ -205,7 +205,6 @@ function unzipAll(data: Uint8Array): Record<string, string> {
             try {
                 const ds = new DecompressionStream("deflate-raw");
                 const writer = ds.writable.getWriter();
-                const reader = ds.readable.getReader();
                 writer.write(compressedData);
                 writer.close();
 

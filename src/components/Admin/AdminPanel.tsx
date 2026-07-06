@@ -48,8 +48,6 @@ export function AdminPanel({
     const [selectedTargetPageId, setSelectedTargetPageId] = useState<string>("");
     const [videoUrlDraft, setVideoUrlDraft] = useState<string>("");
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-    const [isPublishing, setIsPublishing] = useState(false);
-    const [publishStatus, setPublishStatus] = useState<{ type: 'success' | 'error', message: string } | null>(null);
 
     useEffect(() => {
         if (selectedHotspot) {
@@ -179,34 +177,6 @@ export function AdminPanel({
             setSelectedProductForDraft(newProduct.id);
         } else if (selectedHotspot) {
             handleUpdateProduct(newProduct.id);
-        }
-    };
-
-    const handlePublish = async () => {
-        if (!confirm("Would you like to save your changes and update the live website?")) return;
-
-        setIsPublishing(true);
-        setPublishStatus(null);
-        try {
-            const response = await fetch("/api/publish", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    hotspots: allHotspots,
-                    products: allProducts,
-                }),
-            });
-
-            const result = await response.json() as any;
-            if (response.ok) {
-                setPublishStatus({ type: 'success', message: "Successfully published to GitHub! Deploying now..." });
-            } else {
-                setPublishStatus({ type: 'error', message: result.error || "Failed to publish" });
-            }
-        } catch (err: any) {
-            setPublishStatus({ type: 'error', message: "Connection error: " + err.message });
-        } finally {
-            setIsPublishing(false);
         }
     };
 

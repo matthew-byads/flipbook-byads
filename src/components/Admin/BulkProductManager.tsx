@@ -1,7 +1,5 @@
 import { useState, useRef } from "react";
 import { useProducts } from "../../context/ProductContext";
-import { generateId } from "../../utils/id";
-import { type Product } from "../../data/products";
 import { cn } from "../../utils/cn";
 import { saveProductsCsvToS3, fetchProductsCsv, parseUploadedFile, rawRowsToCsv } from "./productIO";
 
