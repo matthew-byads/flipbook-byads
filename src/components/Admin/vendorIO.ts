@@ -1,7 +1,8 @@
 import type { Vendor } from "../../data/vendors";
+import { S3_CONFIG } from "../../config/s3";
 
 const S3_VENDORS_URL =
-    "https://flipbook-four-elements.s3.us-east-2.amazonaws.com/vendors.json";
+    `https://${S3_CONFIG.bucket}.s3.${S3_CONFIG.region}.amazonaws.com/vendors.json`;
 
 export async function fetchVendors(): Promise<Vendor[]> {
     try {
@@ -26,9 +27,9 @@ export async function saveVendors(vendors: Vendor[]): Promise<boolean> {
         // PUT directly to S3 — signed with IAM credentials from Vite env vars
         const { AwsClient } = await import("aws4fetch");
         const aws = new AwsClient({
-            accessKeyId: import.meta.env.VITE_AWS_ACCESS_KEY_ID,
-            secretAccessKey: import.meta.env.VITE_AWS_SECRET_ACCESS_KEY,
-            region: import.meta.env.VITE_AWS_REGION || "us-east-2",
+            accessKeyId: S3_CONFIG.accessKeyId,
+            secretAccessKey: S3_CONFIG.secretAccessKey,
+            region: S3_CONFIG.region,
         });
 
         const res = await aws.fetch(S3_VENDORS_URL, {

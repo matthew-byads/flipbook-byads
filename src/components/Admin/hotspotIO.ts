@@ -1,10 +1,11 @@
 import type { Hotspot } from "../../data/hotspots";
 import type { Product } from "../../data/products";
 import type { Page } from "../../data/pages";
+import { S3_CONFIG } from "../../config/s3";
 
 const ADMIN_UNLOCKED_KEY = "byads_admin_unlocked_v1";
 const PAGES_CONFIG_KEY = "byads_pages_config_v1";
-const S3_HOTSPOTS_URL = "https://flipbook-four-elements.s3.us-east-2.amazonaws.com/hotspots.json";
+const S3_HOTSPOTS_URL = `https://${S3_CONFIG.bucket}.s3.${S3_CONFIG.region}.amazonaws.com/hotspots.json`;
 
 export async function fetchHotspots(): Promise<Hotspot[]> {
     try {
@@ -26,9 +27,9 @@ export async function saveHotspotsToS3(hotspots: Hotspot[]): Promise<boolean> {
     try {
         const { AwsClient } = await import("aws4fetch");
         const aws = new AwsClient({
-            accessKeyId: import.meta.env.VITE_AWS_ACCESS_KEY_ID,
-            secretAccessKey: import.meta.env.VITE_AWS_SECRET_ACCESS_KEY,
-            region: import.meta.env.VITE_AWS_REGION || "us-east-2",
+            accessKeyId: S3_CONFIG.accessKeyId,
+            secretAccessKey: S3_CONFIG.secretAccessKey,
+            region: S3_CONFIG.region,
         });
 
         const res = await aws.fetch(S3_HOTSPOTS_URL, {
@@ -79,7 +80,7 @@ export function saveCustomProducts(products: Product[]) {
 
 // -- Pages Config --
 export async function loadPagesConfig(): Promise<Page[]> {
-    const S3_PAGES_URL = "https://flipbook-four-elements.s3.us-east-2.amazonaws.com/flipbook-pages.json";
+    const S3_PAGES_URL = `https://${S3_CONFIG.bucket}.s3.${S3_CONFIG.region}.amazonaws.com/flipbook-pages.json`;
     try {
         const response = await fetch(S3_PAGES_URL, { cache: "no-store" });
         if (response.ok) {
@@ -110,11 +111,11 @@ export async function savePagesConfig(pages: Page[]): Promise<boolean> {
     try {
         const { AwsClient } = await import("aws4fetch");
         const aws = new AwsClient({
-            accessKeyId: import.meta.env.VITE_AWS_ACCESS_KEY_ID,
-            secretAccessKey: import.meta.env.VITE_AWS_SECRET_ACCESS_KEY,
-            region: import.meta.env.VITE_AWS_REGION || "us-east-2",
+            accessKeyId: S3_CONFIG.accessKeyId,
+            secretAccessKey: S3_CONFIG.secretAccessKey,
+            region: S3_CONFIG.region,
         });
-        const S3_PAGES_URL = "https://flipbook-four-elements.s3.us-east-2.amazonaws.com/flipbook-pages.json";
+        const S3_PAGES_URL = `https://${S3_CONFIG.bucket}.s3.${S3_CONFIG.region}.amazonaws.com/flipbook-pages.json`;
         const res = await aws.fetch(S3_PAGES_URL, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
