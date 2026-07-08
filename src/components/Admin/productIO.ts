@@ -29,9 +29,10 @@ function slugify(text: string): string {
         .replace(/^-|-$/g, "");
 }
 
-function buildProductId(nombre: string, color: string, referencia: string): string {
-    if (referencia) return slugify(referencia);
-    return slugify(`${nombre}-${color}`);
+function buildProductId(nombre: string, color: string, referencia: string, size?: string): string {
+    // Include size so same name+color (or same referencia) in different sizes stay distinct.
+    const base = referencia ? referencia : `${nombre}-${color}`;
+    return slugify(size ? `${base}-${size}` : base);
 }
 
 // ─── V2 Row → Product expansion ───────────────────────────────────────────────
@@ -53,11 +54,13 @@ export function expandRawRow(row: RawProductRow): Product[] {
 
     if (!nombre) return [];
 
+    const size = tamaño ?? talla;
+
     // Pattern A — specific design/variant (referencia is the key)
     if (referencia) {
         return [
             {
-                id: buildProductId(nombre, colorRaw, referencia),
+                id: buildProductId(nombre, colorRaw, referencia, size),
                 name: nombre,
                 price: precio,
                 currency: moneda,
@@ -79,7 +82,7 @@ export function expandRawRow(row: RawProductRow): Product[] {
         // No colors at all — create one product with no color
         return [
             {
-                id: buildProductId(nombre, "", ""),
+                id: buildProductId(nombre, "", "", size),
                 name: nombre,
                 price: precio,
                 currency: moneda,
@@ -90,7 +93,7 @@ export function expandRawRow(row: RawProductRow): Product[] {
     }
 
     return colors.map((color) => ({
-        id: buildProductId(nombre, color, ""),
+        id: buildProductId(nombre, color, "", size),
         name: nombre,
         price: precio,
         currency: moneda,
