@@ -121,9 +121,14 @@ export function CatalogViewer({ isAdmin }: CatalogViewerProps) {
                 // Normal user clicked a hotspot on an index page
                 const indexPages = ["001", "002", "003", "004", "005"];
                 if (indexPages.includes(hotspot.pageId)) {
-                    // Find another hotspot for this product that is NOT an index page
+                    // Find another hotspot for this product that is NOT an index page.
+                    // Match on productName (new-style) when present, else productId (legacy).
+                    const sameProduct = (h: typeof hotspot) =>
+                        hotspot.productName
+                            ? h.productName === hotspot.productName
+                            : h.productId === hotspot.productId;
                     const targetHotspots = allHotspots.filter(
-                        h => h.productId === hotspot.productId && !indexPages.includes(h.pageId)
+                        h => sameProduct(h) && !indexPages.includes(h.pageId)
                     );
 
                     if (targetHotspots.length > 0) {

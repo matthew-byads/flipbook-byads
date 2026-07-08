@@ -1,9 +1,11 @@
 import { useState, useRef, forwardRef } from "react";
 import { type Page } from "../../data/pages";
 import { type Hotspot } from "../../data/hotspots";
+import { type Product } from "../../data/products";
 import { HotspotPin } from "./HotspotPin";
 import { ProductPopover } from "./ProductPopover";
 import { useProducts } from "../../context/ProductContext";
+import { getProductSize } from "../../utils/productSize";
 import { cn } from "../../utils/cn";
 
 type PageStageProps = {
@@ -26,7 +28,7 @@ export const PageStage = forwardRef<HTMLDivElement, PageStageProps>(({
     const [drawCurrent, setDrawCurrent] = useState<{ xPct: number; yPct: number } | null>(null);
 
     const internalRef = useRef<HTMLDivElement>(null);
-    const { getProduct } = useProducts();
+    const { getProduct, allProducts } = useProducts();
 
 
     const handleHotspotClick = (hotspot: Hotspot) => {
@@ -101,7 +103,29 @@ export const PageStage = forwardRef<HTMLDivElement, PageStageProps>(({
     };
 
     const activeHotspot = hotspots.find(h => h.id === activeHotspotId);
-    const activeProduct = (activeHotspot && activeHotspot.productId) ? getProduct(activeHotspot.productId) : null;
+
+    // Resolve the hotspot to the variants the customer can choose a color from.
+    // New-style: all variants matching the product name (+ size when set).
+    // Legacy: the single pinned variant.
+    let activeVariants: Product[] = [];
+    let activeName = "";
+    let activeSize: string | undefined;
+    if (activeHotspot) {
+        if (activeHotspot.productName) {
+            activeName = activeHotspot.productName;
+            activeSize = activeHotspot.productSize;
+            activeVariants = allProducts.filter(
+                (p) => p.name === activeName && (!activeSize || getProductSize(p) === activeSize)
+            );
+        } else if (activeHotspot.productId) {
+            const p = getProduct(activeHotspot.productId);
+            if (p) {
+                activeVariants = [p];
+                activeName = p.name;
+                activeSize = getProductSize(p);
+            }
+        }
+    }
 
     return (
         <div
@@ -160,11 +184,13 @@ export const PageStage = forwardRef<HTMLDivElement, PageStageProps>(({
 
             </div>
 
-            {activeProduct && activeHotspot && (
+            {activeVariants.length > 0 && activeHotspot && (
                 <div className="absolute inset-0 z-50 flex items-center justify-center pointer-events-none bg-black/20 animate-in fade-in duration-200">
-                    <div className="pointer-events-auto">
+                    <div className="pointer-events-auto" onClick={(e) => e.stopPropagation()}>
                         <ProductPopover
-                            product={activeProduct}
+                            variants={activeVariants}
+                            name={activeName}
+                            size={activeSize}
                             pageId={page.id}
                             onClose={() => setActiveHotspotId(null)}
                             style={{ position: 'relative' }}
