@@ -1,6 +1,6 @@
 import type { Hotspot } from "../../data/hotspots";
 import type { Product } from "../../data/products";
-import type { Page } from "../../data/pages";
+import { pages as staticPages, type Page } from "../../data/pages";
 import { S3_CONFIG } from "../../config/s3";
 
 const ADMIN_UNLOCKED_KEY = "byads_admin_unlocked_v1";
@@ -29,6 +29,7 @@ export async function saveHotspotsToS3(hotspots: Hotspot[]): Promise<boolean> {
         const aws = new AwsClient({
             accessKeyId: S3_CONFIG.accessKeyId,
             secretAccessKey: S3_CONFIG.secretAccessKey,
+            sessionToken: S3_CONFIG.sessionToken,
             region: S3_CONFIG.region,
         });
 
@@ -79,6 +80,54 @@ export function saveCustomProducts(products: Product[]) {
 }
 
 // -- Pages Config --
+
+/**
+ * Resolves the saved page config against the bundled static pages.
+ *
+ * The saved config is the source of truth for WHICH pages exist, their order,
+ * and their labels — so adds and deletes persist. For pages that are still part
+ * of the bundled build, we override `src` with the current build's imported URL
+ * (bundled asset URLs carry content hashes that change between deploys), while
+ * uploaded pages keep their stored (S3) `src`.
+ */
+export function mergePagesWithStatic(saved: Page[]): Page[] {
+    if (!saved || saved.length === 0) return staticPages;
+    const staticMap = new Map(staticPages.map((p) => [p.id, p]));
+    return saved.map((p) => {
+        const bundled = staticMap.get(p.id);
+        return bundled ? { ...p, src: bundled.src } : p;
+    });
+}
+
+/**
+ * Uploads a page image to S3 and returns its public URL (or null on failure).
+ * Used so admin-added pages persist across reloads instead of dying with the
+ * ephemeral blob: URL from URL.createObjectURL.
+ */
+export async function uploadPageImage(file: File): Promise<string | null> {
+    try {
+        const { AwsClient } = await import("aws4fetch");
+        const aws = new AwsClient({
+            accessKeyId: S3_CONFIG.accessKeyId,
+            secretAccessKey: S3_CONFIG.secretAccessKey,
+            sessionToken: S3_CONFIG.sessionToken,
+            region: S3_CONFIG.region,
+        });
+        const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+        const key = `pages/${Date.now()}-${safeName}`;
+        const url = `https://${S3_CONFIG.bucket}.s3.${S3_CONFIG.region}.amazonaws.com/${key}`;
+        const res = await aws.fetch(url, {
+            method: "PUT",
+            headers: { "Content-Type": file.type || "image/png" },
+            body: file,
+        });
+        return res.ok ? url : null;
+    } catch (err) {
+        console.error("Failed to upload page image to S3", err);
+        return null;
+    }
+}
+
 export async function loadPagesConfig(): Promise<Page[]> {
     const S3_PAGES_URL = `https://${S3_CONFIG.bucket}.s3.${S3_CONFIG.region}.amazonaws.com/flipbook-pages.json`;
     try {
@@ -113,6 +162,7 @@ export async function savePagesConfig(pages: Page[]): Promise<boolean> {
         const aws = new AwsClient({
             accessKeyId: S3_CONFIG.accessKeyId,
             secretAccessKey: S3_CONFIG.secretAccessKey,
+            sessionToken: S3_CONFIG.sessionToken,
             region: S3_CONFIG.region,
         });
         const S3_PAGES_URL = `https://${S3_CONFIG.bucket}.s3.${S3_CONFIG.region}.amazonaws.com/flipbook-pages.json`;

@@ -2,7 +2,7 @@ import { useRef, useState, useEffect, useCallback } from "react";
 import { pages as staticPages, type Page } from "../../data/pages";
 import { hotspots as initialHotspots, type Hotspot } from "../../data/hotspots";
 import { ThumbnailStrip } from "./ThumbnailStrip";
-import { fetchHotspots, saveHotspotsToS3, loadPagesConfig } from "../Admin/hotspotIO";
+import { fetchHotspots, saveHotspotsToS3, loadPagesConfig, mergePagesWithStatic } from "../Admin/hotspotIO";
 import { AdminPanel } from "../Admin/AdminPanel";
 import { useMediaQuery } from "../../hooks/useMediaQuery";
 import { VideoPopup } from "./VideoPopup";
@@ -29,15 +29,9 @@ export function CatalogViewer({ isAdmin }: CatalogViewerProps) {
             try {
                 const savedOrder = await loadPagesConfig();
                 if (savedOrder.length > 0) {
-                    // Re-order staticPages based on saved IDs (keeps bundled src URLs intact)
-                    const staticMap = new Map(staticPages.map(p => [p.id, p]));
-                    const reordered = savedOrder
-                        .map(p => staticMap.get(p.id))
-                        .filter((p): p is typeof staticPages[0] => p !== undefined);
-                    // Append any pages not in saved order
-                    const savedIds = new Set(savedOrder.map(p => p.id));
-                    const remaining = staticPages.filter(p => !savedIds.has(p.id));
-                    const finalPages = [...reordered, ...remaining];
+                    // Saved config is the source of truth (adds/deletes persist);
+                    // bundled pages keep their current build src.
+                    const finalPages = mergePagesWithStatic(savedOrder);
                     if (finalPages.length > 0) setPages(finalPages);
                 }
             } catch (e) {

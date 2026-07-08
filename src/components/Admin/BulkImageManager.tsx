@@ -1,29 +1,20 @@
 import { useState, useRef, useEffect } from "react";
 import { type Page } from "../../data/pages";
-import { loadPagesConfig, savePagesConfig } from "../Admin/hotspotIO";
-import { pages as staticPages } from "../../data/pages";
+import { loadPagesConfig, savePagesConfig, mergePagesWithStatic, uploadPageImage } from "../Admin/hotspotIO";
+import { cn } from "../../utils/cn";
 
 export function BulkImageManager() {
     const [pages, setPages] = useState<Page[]>([]);
     const [isDirty, setIsDirty] = useState(false);
+    const [isUploading, setIsUploading] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     // Initial load
     useEffect(() => {
         async function fetchPages() {
-            const savedOrder = await loadPagesConfig();
-            if (savedOrder.length > 0) {
-                // Reorder staticPages by saved IDs (keeps bundled image URLs intact)
-                const staticMap = new Map(staticPages.map(p => [p.id, p]));
-                const reordered = savedOrder
-                    .map(p => staticMap.get(p.id))
-                    .filter((p): p is Page => p !== undefined);
-                const savedIds = new Set(savedOrder.map(p => p.id));
-                const remaining = staticPages.filter(p => !savedIds.has(p.id));
-                setPages([...reordered, ...remaining]);
-            } else {
-                setPages(staticPages);
-            }
+            const saved = await loadPagesConfig();
+            // Saved config is the source of truth for which pages exist and their order.
+            setPages(mergePagesWithStatic(saved));
         }
         fetchPages();
     }, []);
@@ -40,22 +31,36 @@ export function BulkImageManager() {
         window.location.reload();
     };
 
-    const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
-        if (!files) return;
+        if (!files || files.length === 0) return;
 
-        const newPages: Page[] = Array.from(files).map((file, index) => {
-            const url = URL.createObjectURL(file);
-            return {
-                id: `new-${Date.now()}-${index}`,
-                src: url,
-                label: file.name.split('.')[0]
-            };
-        });
+        setIsUploading(true);
+        try {
+            const uploaded: Page[] = [];
+            let index = 0;
+            for (const file of Array.from(files)) {
+                const url = await uploadPageImage(file);
+                if (!url) {
+                    alert(`Failed to upload "${file.name}". It was skipped.`);
+                    continue;
+                }
+                uploaded.push({
+                    id: `upload-${Date.now()}-${index}`,
+                    src: url,
+                    label: file.name.split('.')[0],
+                });
+                index++;
+            }
 
-        setPages(prev => [...prev, ...newPages]);
-        setIsDirty(true);
-        if (fileInputRef.current) fileInputRef.current.value = "";
+            if (uploaded.length > 0) {
+                setPages(prev => [...prev, ...uploaded]);
+                setIsDirty(true);
+            }
+        } finally {
+            setIsUploading(false);
+            if (fileInputRef.current) fileInputRef.current.value = "";
+        }
     };
 
     const movePage = (index: number, direction: 'up' | 'down') => {
@@ -94,14 +99,18 @@ export function BulkImageManager() {
                         multiple
                         accept="image/*"
                         onChange={handleFileUpload}
+                        disabled={isUploading}
                         className="hidden"
                         id="bulk-image-upload"
                     />
                     <label
                         htmlFor="bulk-image-upload"
-                        className="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg text-xs font-bold hover:bg-gray-200 cursor-pointer transition-colors"
+                        className={cn(
+                            "px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg text-xs font-bold hover:bg-gray-200 transition-colors",
+                            isUploading ? "opacity-50 pointer-events-none cursor-wait" : "cursor-pointer"
+                        )}
                     >
-                        Add Pages
+                        {isUploading ? "Uploading…" : "Add Pages"}
                     </label>
                     <button
                         onClick={handleSave}
