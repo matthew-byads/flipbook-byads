@@ -1,5 +1,6 @@
 import { useCart } from "../../cart/CartContext";
 import { useProducts } from "../../context/ProductContext";
+import { getProductSize } from "../../utils/productSize";
 
 type CartItemRowProps = {
     productId: string;
@@ -29,8 +30,9 @@ export function CartItemRow({ productId, quantity, pageId }: CartItemRowProps) {
 
             <div className="flex-1 min-w-0">
                 <h4 className="font-medium text-gray-900 truncate">{product.name}</h4>
-                <div className="text-xs text-gray-500 mb-1">
-                    {product.sku && <span className="mr-2">SKU: {product.sku}</span>}
+                <div className="text-xs text-gray-500 mb-1 flex flex-wrap gap-x-2">
+                    {getProductSize(product) && <span>Talla/Tamaño: {getProductSize(product)}</span>}
+                    {product.color && <span>Color: {product.color}</span>}
                     {product.variant && <span>{product.variant}</span>}
                 </div>
 

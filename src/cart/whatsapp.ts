@@ -1,5 +1,6 @@
 import { type CartItem } from "./cartTypes";
 import { type Product } from "../data/products";
+import { getSizeField, getSizeLabel } from "../utils/productSize";
 
 export function getWhatsAppLink(items: CartItem[], getProduct: (id: string) => Product | undefined, vendorPhone?: string, fallbackPhone?: string): string | null {
     const phone = (vendorPhone || fallbackPhone || "").replace(/\D/g, "");
@@ -28,12 +29,16 @@ export function getWhatsAppLink(items: CartItem[], getProduct: (id: string) => P
             lineTotal = ` = *${currency} ${(product.price * item.quantity).toLocaleString()}*`;
         }
 
-        const sku = product.sku ? ` (Ref: ${product.sku})` : "";
+        const sizeField = getSizeField([product]);
+        const sizeVal = sizeField ? product[sizeField] : undefined;
+        const sizeStr = sizeVal ? ` — ${getSizeLabel(sizeField!)}: ${sizeVal}` : "";
+        const chosenColor = product.referencia || product.color;
+        const colorStr = chosenColor ? ` — Color: ${chosenColor}` : "";
         const variant = product.variant ? ` [${product.variant}]` : "";
         const origin = item.pageId ? ` _(Pág. ${item.pageId})_` : "";
 
-        // Format: "• 2 x Producto — $Price = $Total (Ref) [Var] (Page)"
-        return `• *${item.quantity} x* ${product.name}${priceStr}${lineTotal}${sku}${variant}${origin}`;
+        // Format: "• 2 x Producto — $Price = $Total — Tamaño: X — Color: Y [Var] (Page)"
+        return `• *${item.quantity} x* ${product.name}${priceStr}${lineTotal}${sizeStr}${colorStr}${variant}${origin}`;
     });
 
 

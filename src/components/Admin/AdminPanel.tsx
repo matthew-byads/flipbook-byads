@@ -1,15 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useProducts } from "../../context/ProductContext";
 import { type Hotspot } from "../../data/hotspots";
 import { pages as staticPages } from "../../data/pages";
 import { type Product } from "../../data/products";
 import { cn } from "../../utils/cn";
 import { generateId } from "../../utils/id";
+import { getProductSize } from "../../utils/productSize";
 import { BulkImageManager } from "./BulkImageManager";
 import { BulkProductManager } from "./BulkProductManager";
 
 import { ProductForm } from "./ProductForm";
-import { ProductSelect } from "./ProductSelect";
+import { ProductSelect, type ProductSelection } from "./ProductSelect";
 import { VideoPopup } from "../Catalog/VideoPopup";
 import { VendorManager } from "./VendorManager";
 import { SettingsManager } from "./SettingsManager";
@@ -38,10 +39,10 @@ export function AdminPanel({
     onClearDraft,
     visiblePageIds,
 }: AdminPanelProps) {
-    const { allProducts, addProduct } = useProducts();
+    const { allProducts, addProduct, getProduct } = useProducts();
     const [activeTab, setActiveTab] = useState<AdminTab>("hotspots");
     const [isCreatingProduct, setIsCreatingProduct] = useState(false);
-    const [selectedProductForDraft, setSelectedProductForDraft] = useState<string | null>(null);
+    const [draftSelection, setDraftSelection] = useState<ProductSelection | null>(null);
     const [isDashboardOpen, setIsDashboardOpen] = useState(false);
 
     const [hotspotType, setHotspotType] = useState<"product" | "link" | "video">("product");
@@ -61,10 +62,36 @@ export function AdminPanel({
         }
     }, [selectedHotspot]);
 
-    const handleUpdateProduct = (productId: string) => {
+    // The current product selection (name + size) for the hotspot being edited.
+    // New-style hotspots carry productName/productSize directly; legacy ones
+    // (productId only) are derived from the pinned variant so they can be re-edited.
+    const editingSelection: ProductSelection | null = useMemo(() => {
+        if (!selectedHotspot) return null;
+        if (selectedHotspot.productName) {
+            return { name: selectedHotspot.productName, size: selectedHotspot.productSize };
+        }
+        if (selectedHotspot.productId) {
+            const p = getProduct(selectedHotspot.productId);
+            if (p) return { name: p.name, size: getProductSize(p) };
+        }
+        return null;
+    }, [selectedHotspot, getProduct]);
+
+    const handleUpdateProductSelection = (sel: ProductSelection) => {
         if (!selectedHotspot) return;
         const updated = allHotspots.map((h) =>
-            h.id === selectedHotspot.id ? { ...h, productId, type: "product" as const, targetPageId: undefined, videoUrl: undefined } : h
+            h.id === selectedHotspot.id
+                ? { ...h, productName: sel.name, productSize: sel.size, productId: undefined, type: "product" as const, targetPageId: undefined, videoUrl: undefined }
+                : h
+        );
+        onUpdateHotspots(updated);
+    };
+
+    // Switch an existing hotspot to the "product" type without altering its product refs.
+    const handleSetProductType = () => {
+        if (!selectedHotspot) return;
+        const updated = allHotspots.map((h) =>
+            h.id === selectedHotspot.id ? { ...h, type: "product" as const, targetPageId: undefined, videoUrl: undefined } : h
         );
         onUpdateHotspots(updated);
     };
@@ -93,18 +120,19 @@ export function AdminPanel({
     };
 
     // -- Creator Logic for New Hotspot --
-    const handleCreateHotspot = (productId?: string) => {
+    const handleCreateHotspot = (selection?: ProductSelection) => {
         if (!draftHotspot) return;
 
         let newHotspot: Hotspot;
 
         if (hotspotType === "product") {
-            const pid = productId || selectedProductForDraft;
-            if (!pid) return;
+            const sel = selection || draftSelection;
+            if (!sel) return;
             newHotspot = {
                 id: generateId("admin-"),
                 pageId,
-                productId: pid,
+                productName: sel.name,
+                productSize: sel.size,
                 xPct: draftHotspot.xPct,
                 yPct: draftHotspot.yPct,
                 widthPct: draftHotspot.widthPct,
@@ -138,7 +166,7 @@ export function AdminPanel({
 
         onUpdateHotspots([...allHotspots, newHotspot]);
         onClearDraft();
-        setSelectedProductForDraft(null);
+        setDraftSelection(null);
         setSelectedTargetPageId("");
         setVideoUrlDraft("");
     };
@@ -173,10 +201,11 @@ export function AdminPanel({
         addProduct(newProduct);
         setIsCreatingProduct(false);
 
+        const selection: ProductSelection = { name: newProduct.name, size: getProductSize(newProduct) };
         if (draftHotspot) {
-            setSelectedProductForDraft(newProduct.id);
+            setDraftSelection(selection);
         } else if (selectedHotspot) {
-            handleUpdateProduct(newProduct.id);
+            handleUpdateProductSelection(selection);
         }
     };
 
@@ -205,7 +234,7 @@ export function AdminPanel({
                                 <button
                                     onClick={() => {
                                         setHotspotType("product");
-                                        if (isEditing) handleUpdateProduct(selectedHotspot?.productId || "");
+                                        if (isEditing) handleSetProductType();
                                     }}
                                     className={cn("flex-1 text-xs font-bold py-2 rounded-lg transition-all", hotspotType === "product" ? "bg-white shadow text-black" : "text-gray-500 hover:text-gray-700")}
                                 >
@@ -235,10 +264,10 @@ export function AdminPanel({
                                 <>
                                     <ProductSelect
                                         products={allProducts}
-                                        selectedProductId={isEditing ? (selectedHotspot.productId || "") : (selectedProductForDraft || "")}
-                                        onSelect={(id) => {
-                                            if (isEditing) handleUpdateProduct(id);
-                                            else setSelectedProductForDraft(id);
+                                        value={isEditing ? editingSelection : draftSelection}
+                                        onChange={(sel) => {
+                                            if (isEditing) handleUpdateProductSelection(sel);
+                                            else setDraftSelection(sel);
                                         }}
                                         className="mb-4"
                                     />
@@ -310,7 +339,7 @@ export function AdminPanel({
                                         onClick={() => handleCreateHotspot()}
                                         disabled={
                                             hotspotType === "product"
-                                                ? !selectedProductForDraft
+                                                ? !draftSelection
                                                 : hotspotType === "link"
                                                     ? !selectedTargetPageId
                                                     : !videoUrlDraft
@@ -327,7 +356,7 @@ export function AdminPanel({
                                         onClearDraft();
                                         setIsCreatingProduct(false);
                                         setVideoUrlDraft("");
-                                        setSelectedProductForDraft(null);
+                                        setDraftSelection(null);
                                         setSelectedTargetPageId("");
                                     }}
                                     className="flex-1 bg-gray-100 text-gray-700 py-3 rounded-xl hover:bg-gray-200 font-bold text-xs transition-colors"
