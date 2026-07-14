@@ -84,6 +84,15 @@ export function CatalogViewer({ isAdmin }: CatalogViewerProps) {
         }
     };
 
+    // "Volver al inicio" returns to the intro/index section. Position-based (2nd
+    // page) so it keeps working regardless of page ids, which change whenever the
+    // catalog is re-uploaded.
+    const INTRO_PAGE_COUNT = 5;
+    const goToStart = () => {
+        const target = Math.min(1, pages.length - 1);
+        flipbookRef.current?.pageFlip()?.turnToPage(target);
+    };
+
     // Admin State
     const [selectedHotspot, setSelectedHotspot] = useState<Hotspot | null>(null);
     const [draftHotspot, setDraftHotspot] = useState<{ xPct: number; yPct: number; pageId: string; widthPct?: number; heightPct?: number } | null>(null);
@@ -186,9 +195,9 @@ export function CatalogViewer({ isAdmin }: CatalogViewerProps) {
                 </div>
 
                 {/* Return to Index button */}
-                {!["001", "002", "003", "004", "005"].includes(page.id) && (
+                {pageIndex >= INTRO_PAGE_COUNT && (
                     <button
-                        onClick={() => handlePageSelect("002")}
+                        onClick={goToStart}
                         className="fixed cursor-pointer top-24 left-4 sm:left-8 z-[100] px-4 py-2 bg-white/90 backdrop-blur shadow-md hover:bg-white rounded-full text-sm font-semibold text-gray-800 transition-all hover:scale-105 pointer-events-auto flex items-center gap-2"
                     >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h7" /></svg>
@@ -221,6 +230,7 @@ export function CatalogViewer({ isAdmin }: CatalogViewerProps) {
             {isAdmin && (
                 <AdminPanel
                     pageId={draftHotspot?.pageId || page.id}
+                    pages={pages}
                     visiblePageIds={
                         isMobile
                             ? [pages[pageIndex]?.id].filter(Boolean) as string[]

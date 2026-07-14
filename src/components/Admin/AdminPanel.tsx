@@ -1,15 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { useProducts } from "../../context/ProductContext";
 import { type Hotspot } from "../../data/hotspots";
-import { pages as staticPages } from "../../data/pages";
-import { type Product } from "../../data/products";
+import { type Page } from "../../data/pages";
 import { cn } from "../../utils/cn";
 import { generateId } from "../../utils/id";
 import { getProductSize } from "../../utils/productSize";
 import { BulkImageManager } from "./BulkImageManager";
 import { BulkProductManager } from "./BulkProductManager";
 
-import { ProductForm } from "./ProductForm";
 import { ProductSelect, type ProductSelection } from "./ProductSelect";
 import { VideoPopup } from "../Catalog/VideoPopup";
 import { VendorManager } from "./VendorManager";
@@ -25,6 +23,8 @@ type AdminPanelProps = {
     draftHotspot?: { xPct: number; yPct: number; widthPct?: number; heightPct?: number } | null;
     onClearDraft: () => void;
     visiblePageIds: string[];
+    /** The live catalog pages (S3-merged), used to populate the Target Page picker. */
+    pages: Page[];
 };
 
 type AdminTab = "hotspots" | "products" | "vendors" | "pages" | "settings";
@@ -38,10 +38,10 @@ export function AdminPanel({
     draftHotspot,
     onClearDraft,
     visiblePageIds,
+    pages,
 }: AdminPanelProps) {
-    const { allProducts, addProduct, getProduct } = useProducts();
+    const { allProducts, getProduct } = useProducts();
     const [activeTab, setActiveTab] = useState<AdminTab>("hotspots");
-    const [isCreatingProduct, setIsCreatingProduct] = useState(false);
     const [draftSelection, setDraftSelection] = useState<ProductSelection | null>(null);
     const [isDashboardOpen, setIsDashboardOpen] = useState(false);
 
@@ -184,31 +184,6 @@ export function AdminPanel({
         }
     };
 
-    const handleCreateProduct = (data: Partial<Product>) => {
-        const newProduct: Product = {
-            id: generateId("prod-"),
-            name: data.name || "New Product",
-            price: data.price,
-            currency: data.currency,
-            sku: data.sku,
-            variant: data.variant,
-            image: data.image,
-            talla: data.talla,
-            tamaño: data.tamaño,
-            color: data.color,
-            referencia: data.referencia,
-        };
-        addProduct(newProduct);
-        setIsCreatingProduct(false);
-
-        const selection: ProductSelection = { name: newProduct.name, size: getProductSize(newProduct) };
-        if (draftHotspot) {
-            setDraftSelection(selection);
-        } else if (selectedHotspot) {
-            handleUpdateProductSelection(selection);
-        }
-    };
-
     const isEditing = !!selectedHotspot;
     const isCreating = !!draftHotspot;
 
@@ -220,16 +195,10 @@ export function AdminPanel({
                 <div className="bg-white p-4 rounded-2xl shadow-2xl border border-gray-100 w-full max-w-sm pointer-events-auto animate-in zoom-in-95 max-h-[90vh] overflow-y-auto relative z-10">
                     <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
                         <div className="w-2 h-2 rounded-full bg-red-500" />
-                        {isCreatingProduct ? "New Product" : (isEditing ? "Edit Hotspot" : "New Hotspot")}
+                        {isEditing ? "Edit Hotspot" : "New Hotspot"}
                     </h3>
 
-                    {isCreatingProduct ? (
-                        <ProductForm
-                            onSubmit={handleCreateProduct}
-                            onCancel={() => setIsCreatingProduct(false)}
-                        />
-                    ) : (
-                        <>
+                    <>
                             <div className="flex bg-gray-100 p-1 rounded-xl mb-4">
                                 <button
                                     onClick={() => {
@@ -271,14 +240,6 @@ export function AdminPanel({
                                         }}
                                         className="mb-4"
                                     />
-
-                                    <button
-                                        onClick={() => setIsCreatingProduct(true)}
-                                        className="w-full mb-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-xs font-bold text-gray-600 hover:bg-gray-100 transition-colors flex items-center justify-center gap-2"
-                                    >
-                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
-                                        Create New Product
-                                    </button>
                                 </>
                             ) : hotspotType === "link" ? (
                                 <div className="mb-4 space-y-2">
@@ -293,9 +254,9 @@ export function AdminPanel({
                                         className="w-full p-3 rounded-xl border border-gray-200 bg-white text-sm focus:ring-2 focus:ring-black outline-none transition-all"
                                     >
                                         <option value="" disabled>Select a page to link to...</option>
-                                        {staticPages.map(p => (
+                                        {pages.map((p, i) => (
                                             <option key={p.id} value={p.id}>
-                                                {p.label || `Page ${p.id}`}
+                                                {p.label || `Page ${i + 1}`}
                                             </option>
                                         ))}
                                     </select>
@@ -354,7 +315,6 @@ export function AdminPanel({
                                     onClick={() => {
                                         onCloseEditor();
                                         onClearDraft();
-                                        setIsCreatingProduct(false);
                                         setVideoUrlDraft("");
                                         setDraftSelection(null);
                                         setSelectedTargetPageId("");
@@ -365,7 +325,6 @@ export function AdminPanel({
                                 </button>
                             </div>
                         </>
-                    )}
                 </div>
                 {previewUrl && (
                     <div className="pointer-events-auto">

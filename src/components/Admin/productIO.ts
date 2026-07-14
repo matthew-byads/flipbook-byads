@@ -103,18 +103,91 @@ export function expandRawRow(row: RawProductRow): Product[] {
     }));
 }
 
+// ─── Encoding ─────────────────────────────────────────────────────────────────
+
+/**
+ * Decode raw file bytes into text. Spreadsheet exports are frequently saved as
+ * Windows-1252 / ISO-8859-1 (e.g. "Tamaño" → byte 0xF1) rather than UTF-8, which
+ * would otherwise corrupt accented names and break header detection. We try
+ * strict UTF-8 first and fall back to Windows-1252 (a superset of Latin-1).
+ */
+export function decodeBytes(buffer: ArrayBuffer): string {
+    const bytes = new Uint8Array(buffer);
+    try {
+        return new TextDecoder("utf-8", { fatal: true }).decode(bytes);
+    } catch {
+        return new TextDecoder("windows-1252").decode(bytes);
+    }
+}
+
 // ─── CSV Parsing ──────────────────────────────────────────────────────────────
 
 /**
+ * Tokenize delimited text into rows of fields, honoring RFC-4180 quoting:
+ * quoted fields may contain the delimiter, newlines, and escaped quotes ("").
+ */
+export function parseDelimitedRows(text: string, delimiter: string): string[][] {
+    const rows: string[][] = [];
+    let row: string[] = [];
+    let field = "";
+    let inQuotes = false;
+
+    for (let i = 0; i < text.length; i++) {
+        const ch = text[i];
+
+        if (inQuotes) {
+            if (ch === '"') {
+                if (text[i + 1] === '"') {
+                    field += '"';
+                    i++; // consume the escaped quote
+                } else {
+                    inQuotes = false;
+                }
+            } else {
+                field += ch;
+            }
+            continue;
+        }
+
+        if (ch === '"') {
+            inQuotes = true;
+        } else if (ch === delimiter) {
+            row.push(field);
+            field = "";
+        } else if (ch === "\n") {
+            row.push(field);
+            rows.push(row);
+            row = [];
+            field = "";
+        } else if (ch === "\r") {
+            // ignore — handled by the \n branch
+        } else {
+            field += ch;
+        }
+    }
+
+    // flush the trailing field/row (files without a final newline)
+    row.push(field);
+    rows.push(row);
+    return rows;
+}
+
+/**
  * Parse a V2 CSV text (or backward-compatible V1) into raw rows.
- * Handles both comma and semicolon delimiters.
+ * Handles both comma and semicolon delimiters and RFC-4180 quoted fields.
  */
 export function parseCsvToRawRows(text: string): RawProductRow[] {
-    const lines = text.split(/\r?\n/).filter((l) => l.trim().length > 0);
-    if (lines.length === 0) return [];
+    if (!text.trim()) return [];
 
-    const delimiter = lines[0].includes(";") ? ";" : ",";
-    const header = lines[0].split(delimiter).map((h) => h.trim().toLowerCase());
+    const firstLine = text.split(/\r?\n/, 1)[0] ?? "";
+    const delimiter = firstLine.includes(";") ? ";" : ",";
+
+    const allRows = parseDelimitedRows(text, delimiter).filter((r) =>
+        r.some((c) => c.trim().length > 0)
+    );
+    if (allRows.length === 0) return [];
+
+    const header = allRows[0].map((h) => h.trim().toLowerCase());
 
     const idx = {
         nombre: header.indexOf("nombre"),
@@ -133,8 +206,8 @@ export function parseCsvToRawRows(text: string): RawProductRow[] {
     };
 
     const rows: RawProductRow[] = [];
-    for (let i = 1; i < lines.length; i++) {
-        const cols = lines[i].split(delimiter);
+    for (let i = 1; i < allRows.length; i++) {
+        const cols = allRows[i];
         const nombre = (cols[idx.nombre] ?? "").trim();
         if (!nombre) continue;
 
@@ -413,7 +486,8 @@ export async function fetchProductsCsv(): Promise<Product[]> {
     try {
         const response = await fetch(S3_PRODUCTS_URL, { cache: "no-store" });
         if (response.ok) {
-            const text = await response.text();
+            const buffer = await response.arrayBuffer();
+            const text = decodeBytes(buffer);
             const rawRows = parseCsvToRawRows(text);
             return rawRows.flatMap(expandRawRow);
         }
@@ -443,7 +517,8 @@ export async function parseUploadedFile(file: File): Promise<{ products: Product
         const strings = parseSharedStrings(sharedStringsXml);
         rawRows = parseSheetXml(sheetXml, strings);
     } else {
-        const text = await file.text();
+        const buffer = await file.arrayBuffer();
+        const text = decodeBytes(buffer);
         rawRows = parseCsvToRawRows(text);
     }
 
@@ -456,9 +531,11 @@ export async function parseUploadedFile(file: File): Promise<{ products: Product
 /** Convert raw rows back to CSV text (for S3 storage). */
 export function rawRowsToCsv(rawRows: RawProductRow[]): string {
     const header = "Nombre,Precio,Moneda,Talla (si aplica),Tamaño (si aplica),Color,Referencia";
+    const escape = (v: string) =>
+        /[",\n\r]/.test(v) ? `"${v.replace(/"/g, '""')}"` : v;
     const lines = rawRows.map((r) =>
         [r.nombre, r.precio, r.moneda, r.talla, r.tamaño, r.color, r.referencia]
-            .map((v) => (v.includes(",") ? `"${v}"` : v))
+            .map(escape)
             .join(",")
     );
     return [header, ...lines].join("\n");
