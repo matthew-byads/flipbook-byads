@@ -179,7 +179,10 @@ export function CatalogViewer({ isAdmin }: CatalogViewerProps) {
                     <svg className="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
                 </button>
 
-                <div className="w-full h-full max-w-7xl max-h-[calc(100vh-160px)] flex items-center justify-center pointer-events-none">
+                {/* On mobile, cap the width so react-pageflip's block stays under its
+                    portrait threshold (2 x minWidth = 630px) for the whole <=768px range;
+                    otherwise the 630-768px band renders a two-page spread. */}
+                <div className={`w-full h-full max-h-[calc(100vh-160px)] flex items-center justify-center pointer-events-none ${isMobile ? "max-w-[600px]" : "max-w-7xl"}`}>
                     <Flipbook
                         key={isAdmin ? "admin" : "user"}
                         ref={flipbookRef}
