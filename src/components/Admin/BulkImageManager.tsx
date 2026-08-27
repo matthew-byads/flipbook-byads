@@ -7,7 +7,11 @@ export function BulkImageManager() {
     const [pages, setPages] = useState<Page[]>([]);
     const [isDirty, setIsDirty] = useState(false);
     const [isUploading, setIsUploading] = useState(false);
+    const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+    const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const scrollContainerRef = useRef<HTMLDivElement>(null);
+    const scrollIntervalRef = useRef<number | null>(null);
 
     // Initial load
     useEffect(() => {
@@ -17,6 +21,11 @@ export function BulkImageManager() {
             setPages(mergePagesWithStatic(saved));
         }
         fetchPages();
+    }, []);
+
+    // Cleanup scroll interval on unmount
+    useEffect(() => {
+        return () => stopAutoScroll();
     }, []);
 
     const handleSave = async () => {
@@ -72,6 +81,83 @@ export function BulkImageManager() {
         [newPages[index], newPages[targetIndex]] = [newPages[targetIndex], newPages[index]];
         setPages(newPages);
         setIsDirty(true);
+    };
+
+    const handleDragStart = (e: React.DragEvent, index: number) => {
+        setDraggedIndex(index);
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', index.toString());
+    };
+
+    const startAutoScroll = (clientY: number) => {
+        const container = scrollContainerRef.current;
+        if (!container) return;
+
+        stopAutoScroll();
+
+        const SCROLL_ZONE = 80;
+        const MAX_SCROLL_SPEED = 8;
+        const rect = container.getBoundingClientRect();
+        const top = rect.top;
+        const bottom = rect.bottom;
+        let speed = 0;
+
+        if (clientY < top + SCROLL_ZONE) {
+            speed = -Math.min(MAX_SCROLL_SPEED, ((top + SCROLL_ZONE) - clientY) / SCROLL_ZONE * MAX_SCROLL_SPEED);
+        } else if (clientY > bottom - SCROLL_ZONE) {
+            speed = Math.min(MAX_SCROLL_SPEED, (clientY - (bottom - SCROLL_ZONE)) / SCROLL_ZONE * MAX_SCROLL_SPEED);
+        }
+
+        if (speed !== 0) {
+            scrollIntervalRef.current = window.setInterval(() => {
+                container.scrollTop += speed;
+            }, 16);
+        }
+    };
+
+    const stopAutoScroll = () => {
+        if (scrollIntervalRef.current !== null) {
+            clearInterval(scrollIntervalRef.current);
+            scrollIntervalRef.current = null;
+        }
+    };
+
+    const handleDragOver = (e: React.DragEvent, index: number) => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        setDragOverIndex(index);
+        startAutoScroll(e.clientY);
+    };
+
+    const handleDragLeave = () => {
+        setDragOverIndex(null);
+        stopAutoScroll();
+    };
+
+    const handleDrop = (e: React.DragEvent, dropIndex: number) => {
+        e.preventDefault();
+        stopAutoScroll();
+        const dragIndex = draggedIndex;
+        if (dragIndex === null || dragIndex === dropIndex) {
+            setDraggedIndex(null);
+            setDragOverIndex(null);
+            return;
+        }
+
+        const newPages = [...pages];
+        const [draggedPage] = newPages.splice(dragIndex, 1);
+        newPages.splice(dropIndex, 0, draggedPage);
+
+        setPages(newPages);
+        setIsDirty(true);
+        setDraggedIndex(null);
+        setDragOverIndex(null);
+    };
+
+    const handleDragEnd = () => {
+        stopAutoScroll();
+        setDraggedIndex(null);
+        setDragOverIndex(null);
     };
 
     const deletePage = async (id: string) => {
@@ -136,11 +222,30 @@ export function BulkImageManager() {
                 </div>
             </div>
 
-            <div className="space-y-3 max-h-[500px] overflow-y-auto pr-2">
+            <div ref={scrollContainerRef} className="space-y-3 max-h-[500px] overflow-y-auto pr-2">
                 {pages.map((page, index) => (
-                    <div key={page.id} className="flex items-center gap-4 p-2 bg-gray-50 rounded-xl border border-gray-100 group">
+                    <div
+                        key={page.id}
+                        draggable
+                        onDragStart={(e) => handleDragStart(e, index)}
+                        onDragOver={(e) => handleDragOver(e, index)}
+                        onDragLeave={handleDragLeave}
+                        onDrop={(e) => handleDrop(e, index)}
+                        onDragEnd={handleDragEnd}
+                        className={cn(
+                            "flex items-center gap-4 p-2 bg-gray-50 rounded-xl border border-gray-100 group transition-all",
+                            draggedIndex === index && "opacity-50 scale-95",
+                            dragOverIndex === index && draggedIndex !== index && "border-black border-2 bg-gray-100"
+                        )}
+                    >
                         <div className="text-xs font-bold text-gray-400 w-4">
                             {index + 1}
+                        </div>
+
+                        <div className="cursor-grab active:cursor-grabbing p-1 hover:bg-gray-200 rounded transition-colors touch-none">
+                            <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8h16M4 16h16" />
+                            </svg>
                         </div>
 
                         <div className="w-16 h-20 bg-gray-200 rounded-lg overflow-hidden flex-shrink-0 shadow-sm">
