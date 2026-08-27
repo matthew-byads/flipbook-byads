@@ -1,8 +1,10 @@
+import { S3_CONFIG } from "../../config/s3";
+
 export interface Settings {
     defaultWhatsapp?: string;
 }
 
-const S3_SETTINGS_URL = "https://flipbook-four-elements.s3.us-east-2.amazonaws.com/settings.json";
+const S3_SETTINGS_URL = `https://${S3_CONFIG.bucket}.s3.${S3_CONFIG.region}.amazonaws.com/settings.json`;
 
 export async function fetchSettings(): Promise<Settings> {
     try {
@@ -24,9 +26,10 @@ export async function saveSettings(settings: Settings): Promise<boolean> {
     try {
         const { AwsClient } = await import("aws4fetch");
         const aws = new AwsClient({
-            accessKeyId: import.meta.env.VITE_AWS_ACCESS_KEY_ID,
-            secretAccessKey: import.meta.env.VITE_AWS_SECRET_ACCESS_KEY,
-            region: import.meta.env.VITE_AWS_REGION || "us-east-2",
+            accessKeyId: S3_CONFIG.accessKeyId,
+            secretAccessKey: S3_CONFIG.secretAccessKey,
+            sessionToken: S3_CONFIG.sessionToken,
+            region: S3_CONFIG.region,
         });
 
         const res = await aws.fetch(S3_SETTINGS_URL, {

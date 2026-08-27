@@ -24,11 +24,11 @@ export async function fetchVendors(): Promise<Vendor[]> {
 
 export async function saveVendors(vendors: Vendor[]): Promise<boolean> {
     try {
-        // PUT directly to S3 — signed with IAM credentials from Vite env vars
         const { AwsClient } = await import("aws4fetch");
         const aws = new AwsClient({
             accessKeyId: S3_CONFIG.accessKeyId,
             secretAccessKey: S3_CONFIG.secretAccessKey,
+            sessionToken: S3_CONFIG.sessionToken,
             region: S3_CONFIG.region,
         });
 

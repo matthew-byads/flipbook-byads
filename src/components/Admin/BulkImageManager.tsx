@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { type Page } from "../../data/pages";
-import { loadPagesConfig, savePagesConfig, mergePagesWithStatic, uploadPageImage } from "../Admin/hotspotIO";
+import { loadPagesConfig, savePagesConfig, mergePagesWithStatic, uploadPageImage, deletePageImage } from "../Admin/hotspotIO";
 import { cn } from "../../utils/cn";
 
 export function BulkImageManager() {
@@ -74,8 +74,22 @@ export function BulkImageManager() {
         setIsDirty(true);
     };
 
-    const deletePage = (id: string) => {
+    const deletePage = async (id: string) => {
         if (!window.confirm("Remove this page?")) return;
+
+        const page = pages.find(p => p.id === id);
+        if (!page) return;
+
+        const isUploadedToS3 = page.src.startsWith("https://") && page.src.includes(".s3.") && page.src.includes("/pages/");
+
+        if (isUploadedToS3) {
+            const success = await deletePageImage(page.src);
+            if (!success) {
+                alert("Failed to delete image from S3. The page was not removed.");
+                return;
+            }
+        }
+
         setPages(prev => prev.filter(p => p.id !== id));
         setIsDirty(true);
     };

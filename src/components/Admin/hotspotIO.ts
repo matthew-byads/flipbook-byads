@@ -177,3 +177,38 @@ export async function savePagesConfig(pages: Page[]): Promise<boolean> {
         return false;
     }
 }
+
+/**
+ * Deletes a page image from S3.
+ * Accepts either a full S3 URL or just the object key.
+ * Returns true on success, false on failure.
+ */
+export async function deletePageImage(s3UrlOrKey: string): Promise<boolean> {
+    try {
+        const { AwsClient } = await import("aws4fetch");
+        const aws = new AwsClient({
+            accessKeyId: S3_CONFIG.accessKeyId,
+            secretAccessKey: S3_CONFIG.secretAccessKey,
+            sessionToken: S3_CONFIG.sessionToken,
+            region: S3_CONFIG.region,
+        });
+
+        let key: string;
+        if (s3UrlOrKey.startsWith("http")) {
+            const url = new URL(s3UrlOrKey);
+            key = url.pathname.slice(1); // Remove leading '/'
+        } else {
+            key = s3UrlOrKey;
+        }
+
+        const url = `https://${S3_CONFIG.bucket}.s3.${S3_CONFIG.region}.amazonaws.com/${key}`;
+        const res = await aws.fetch(url, {
+            method: "DELETE",
+        });
+
+        return res.ok;
+    } catch (err) {
+        console.error("Failed to delete page image from S3", err);
+        return false;
+    }
+}

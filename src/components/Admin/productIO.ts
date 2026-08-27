@@ -1,7 +1,8 @@
 import type { Product } from "../../data/products";
+import { S3_CONFIG } from "../../config/s3";
 
 const S3_PRODUCTS_URL =
-    "https://flipbook-four-elements.s3.us-east-2.amazonaws.com/products.csv";
+    `https://${S3_CONFIG.bucket}.s3.${S3_CONFIG.region}.amazonaws.com/products.csv`;
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -546,9 +547,10 @@ export async function saveProductsCsvToS3(csvText: string): Promise<boolean> {
     try {
         const { AwsClient } = await import("aws4fetch");
         const aws = new AwsClient({
-            accessKeyId: import.meta.env.VITE_AWS_ACCESS_KEY_ID,
-            secretAccessKey: import.meta.env.VITE_AWS_SECRET_ACCESS_KEY,
-            region: import.meta.env.VITE_AWS_REGION || "us-east-2",
+            accessKeyId: S3_CONFIG.accessKeyId,
+            secretAccessKey: S3_CONFIG.secretAccessKey,
+            sessionToken: S3_CONFIG.sessionToken,
+            region: S3_CONFIG.region,
         });
         const res = await aws.fetch(S3_PRODUCTS_URL, {
             method: "PUT",

@@ -121,7 +121,6 @@ export function CatalogViewer({ isAdmin }: CatalogViewerProps) {
             setDraftHotspot(null);
         } else {
             if (hotspot.type === "link" && hotspot.targetPageId) {
-                // Navigate directly to the link's target page
                 handlePageSelect(hotspot.targetPageId);
             } else if (hotspot.type === "video" && hotspot.videoUrl) {
                 // Trigger full-screen video popup!
