@@ -1,32 +1,85 @@
-import { useState } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { type Product } from "../../data/products";
 import { useCart } from "../../cart/CartContext";
 import { getSizeField, getSizeLabel } from "../../utils/productSize";
 import { cn } from "../../utils/cn";
 
 type ProductPopoverProps = {
-    variants: Product[]; // Variants matching the hotspot's name (+ size); customer picks a color
+    variants: Product[];
     name: string;
-    size?: string;
+    referencia?: string;
     onClose: () => void;
-    pageId: string; // Origin page
+    pageId: string;
     style?: React.CSSProperties;
 };
 
-const colorLabel = (p: Product) => p.referencia || p.color || "Default";
-
-export function ProductPopover({ variants, name, size, onClose, pageId, style }: ProductPopoverProps) {
+export function ProductPopover({ variants, name, referencia, onClose, pageId, style }: ProductPopoverProps) {
     const { dispatch } = useCart();
     const defaultCurrency = import.meta.env.VITE_DEFAULT_CURRENCY || "COP";
 
-    // Preselect when there is only one variant to choose from.
-    const [selectedId, setSelectedId] = useState<string | null>(
-        variants.length === 1 ? variants[0].id : null
-    );
-    const selected = variants.find((v) => v.id === selectedId) || null;
-    const priceProduct = selected || variants[0];
-
+    // Step 1: Size first
     const sizeField = getSizeField(variants);
+    const sizeOptions = useMemo(() => {
+        if (!sizeField) return [];
+        return [...new Set(variants.map((v) => v[sizeField]).filter(Boolean))] as string[];
+    }, [variants, sizeField]);
+    const hasSizes = sizeOptions.length > 1;
+
+    const [selectedSize, setSelectedSize] = useState<string | null>(
+        sizeOptions.length === 1 ? sizeOptions[0] : null
+    );
+
+    // Filter by selected size
+    const sizeFilteredVariants = useMemo(() => {
+        if (!hasSizes || !selectedSize || !sizeField) return variants;
+        return variants.filter((v) => v[sizeField] === selectedSize);
+    }, [variants, hasSizes, selectedSize, sizeField]);
+
+    // Step 2: Color options (only after size is selected, or if no sizes exist)
+    const colorOptions = useMemo(() => {
+        const colors = sizeFilteredVariants
+            .map((v) => v.color)
+            .filter((c): c is string => !!c && c.trim() !== "");
+        return [...new Set(colors)];
+    }, [sizeFilteredVariants]);
+    const showColorStep = hasSizes ? !!selectedSize : true;
+    const hasColors = showColorStep && colorOptions.length > 1;
+
+    const [selectedColor, setSelectedColor] = useState<string | null>(
+        colorOptions.length === 1 ? colorOptions[0] : null
+    );
+
+    // Filter by selected color
+    const colorFilteredVariants = useMemo(() => {
+        if (!hasColors || !selectedColor) return sizeFilteredVariants;
+        return sizeFilteredVariants.filter((v) => v.color === selectedColor);
+    }, [sizeFilteredVariants, hasColors, selectedColor]);
+
+    // Auto-select when only one variant remains, clear when none match
+    const [selectedId, setSelectedId] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (colorFilteredVariants.length === 1) {
+            setSelectedId(colorFilteredVariants[0].id);
+        } else {
+            setSelectedId(null);
+        }
+    }, [colorFilteredVariants]);
+
+    const handleSizeChange = (size: string) => {
+        setSelectedSize(size);
+        setSelectedId(null);
+        setSelectedColor(null);
+    };
+
+    const handleColorChange = (color: string) => {
+        setSelectedColor(color);
+        setSelectedId(null);
+    };
+
+    const selected = colorFilteredVariants.find((v) => v.id === selectedId) || null;
+    const priceProduct = selected || colorFilteredVariants[0];
+
     const sizeText = sizeField ? getSizeLabel(sizeField) : "Tamaño";
 
     const handleAddToCart = () => {
@@ -54,10 +107,13 @@ export function ProductPopover({ variants, name, size, onClose, pageId, style }:
 
                 <h3 className="font-bold text-lg leading-tight text-gray-900">{name}</h3>
 
-                <div className="text-sm text-gray-500 space-y-0.5">
-                    {size && <p>{sizeText}: {size}</p>}
-                    {priceProduct?.variant && <p>{priceProduct.variant}</p>}
-                </div>
+                {referencia && (
+                    <p className="text-sm text-gray-500">{referencia}</p>
+                )}
+
+                {priceProduct?.variant && (
+                    <p className="text-sm text-gray-500">{priceProduct.variant}</p>
+                )}
 
                 {priceProduct?.price && (
                     <p className="font-semibold text-gray-900 mt-1">
@@ -65,29 +121,51 @@ export function ProductPopover({ variants, name, size, onClose, pageId, style }:
                     </p>
                 )}
 
-                {/* Color chooser */}
-                <div className="mt-2">
-                    <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Color</label>
-                    <div className="flex flex-wrap gap-1.5 mt-1.5 max-h-32 overflow-y-auto">
-                        {variants.map((v) => {
-                            const isSelected = selectedId === v.id;
-                            return (
+                {/* Step 1: Size chooser */}
+                {hasSizes && (
+                    <div className="mt-2">
+                        <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">{sizeText}</label>
+                        <div className="flex flex-wrap gap-1.5 mt-1.5">
+                            {sizeOptions.map((size) => (
                                 <button
-                                    key={v.id}
-                                    onClick={() => setSelectedId(v.id)}
+                                    key={size}
+                                    onClick={() => handleSizeChange(size)}
                                     className={cn(
                                         "px-2.5 py-1.5 rounded-lg text-xs border transition-colors cursor-pointer",
-                                        isSelected
+                                        selectedSize === size
                                             ? "bg-black text-white border-black"
                                             : "bg-white text-gray-700 border-gray-200 hover:border-gray-400"
                                     )}
                                 >
-                                    {colorLabel(v)}
+                                    {size}
                                 </button>
-                            );
-                        })}
+                            ))}
+                        </div>
                     </div>
-                </div>
+                )}
+
+                {/* Step 2: Color chooser (only after size is selected) */}
+                {hasColors && (
+                    <div className="mt-2 animate-in fade-in slide-in-from-top-2 duration-200">
+                        <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Color</label>
+                        <div className="flex flex-wrap gap-1.5 mt-1.5">
+                            {colorOptions.map((color) => (
+                                <button
+                                    key={color}
+                                    onClick={() => handleColorChange(color)}
+                                    className={cn(
+                                        "px-2.5 py-1.5 rounded-lg text-xs border transition-colors cursor-pointer",
+                                        selectedColor === color
+                                            ? "bg-black text-white border-black"
+                                            : "bg-white text-gray-700 border-gray-200 hover:border-gray-400"
+                                    )}
+                                >
+                                    {color}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                )}
 
                 <button
                     onClick={handleAddToCart}
@@ -95,7 +173,7 @@ export function ProductPopover({ variants, name, size, onClose, pageId, style }:
                     className="cursor-pointer mt-3 w-full bg-black text-white py-2 rounded-lg font-medium hover:bg-gray-800 disabled:opacity-30 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2 active:scale-95 duration-100"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
-                    {selected ? "Add to Cart" : "Select a color"}
+                    {selected ? "Add to Cart" : hasSizes && !selectedSize ? `Select a ${sizeText.toLowerCase()}` : hasColors ? "Select a color" : "Select an option"}
                 </button>
             </div>
         </div>

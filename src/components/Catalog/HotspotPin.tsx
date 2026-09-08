@@ -45,24 +45,18 @@ export function HotspotPin({ hotspot, onClick, isActive, isAdmin }: HotspotPinPr
                     ) : hotspot.type === "video" ? (
                         <svg className={cn("w-3.5 h-3.5 ml-0.5 fill-current pointer-events-none", isAdmin ? "text-white" : "text-black")} viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
                     ) : (
-                        <div
-                            className={cn(
-                                "w-3 h-3 rounded-full",
-                                isAdmin ? "bg-white" : "bg-black"
-                            )}
-                        />
+                        <svg className={cn("w-3.5 h-3.5 pointer-events-none", isAdmin ? "text-white" : "text-black")} fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
                     )}
                 </>
             )}
 
-            {/* Show an icon in the center of the area so it's clear what type it is */}
             {isArea && (
                 hotspot.type === "link" ? (
                     <svg className={cn("w-6 h-6 opacity-60 pointer-events-none", isAdmin ? "text-red-600" : "text-white")} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg>
                 ) : hotspot.type === "video" ? (
                     <svg className={cn("w-6 h-6 opacity-60 fill-current pointer-events-none", isAdmin ? "text-red-600" : "text-white")} viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
                 ) : (
-                    <div className={cn("w-6 h-6 rounded-full opacity-60 pointer-events-none", isAdmin ? "bg-red-500" : "bg-white")} />
+                    <svg className={cn("w-6 h-6 opacity-60 pointer-events-none", isAdmin ? "text-red-600" : "text-white")} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
                 )
             )}
         </button>

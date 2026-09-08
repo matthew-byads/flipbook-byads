@@ -4,7 +4,6 @@ import { type Hotspot } from "../../data/hotspots";
 import { type Page } from "../../data/pages";
 import { cn } from "../../utils/cn";
 import { generateId } from "../../utils/id";
-import { getProductSize } from "../../utils/productSize";
 import { BulkImageManager } from "./BulkImageManager";
 import { BulkProductManager } from "./BulkProductManager";
 
@@ -62,17 +61,17 @@ export function AdminPanel({
         }
     }, [selectedHotspot]);
 
-    // The current product selection (name + size) for the hotspot being edited.
-    // New-style hotspots carry productName/productSize directly; legacy ones
+    // The current product selection (name + referencia) for the hotspot being edited.
+    // New-style hotspots carry productName/productReferencia directly; legacy ones
     // (productId only) are derived from the pinned variant so they can be re-edited.
     const editingSelection: ProductSelection | null = useMemo(() => {
         if (!selectedHotspot) return null;
         if (selectedHotspot.productName) {
-            return { name: selectedHotspot.productName, size: selectedHotspot.productSize };
+            return { name: selectedHotspot.productName, referencia: selectedHotspot.productReferencia };
         }
         if (selectedHotspot.productId) {
             const p = getProduct(selectedHotspot.productId);
-            if (p) return { name: p.name, size: getProductSize(p) };
+            if (p) return { name: p.name, referencia: p.referencia };
         }
         return null;
     }, [selectedHotspot, getProduct]);
@@ -81,7 +80,7 @@ export function AdminPanel({
         if (!selectedHotspot) return;
         const updated = allHotspots.map((h) =>
             h.id === selectedHotspot.id
-                ? { ...h, productName: sel.name, productSize: sel.size, productId: undefined, type: "product" as const, targetPageId: undefined, videoUrl: undefined }
+                ? { ...h, productName: sel.name, productReferencia: sel.referencia, productId: undefined, type: "product" as const, targetPageId: undefined, videoUrl: undefined }
                 : h
         );
         onUpdateHotspots(updated);
@@ -132,7 +131,7 @@ export function AdminPanel({
                 id: generateId("admin-"),
                 pageId,
                 productName: sel.name,
-                productSize: sel.size,
+                productReferencia: sel.referencia,
                 xPct: draftHotspot.xPct,
                 yPct: draftHotspot.yPct,
                 widthPct: draftHotspot.widthPct,

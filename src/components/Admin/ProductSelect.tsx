@@ -2,9 +2,8 @@ import { useState, useMemo, useEffect, useLayoutEffect, useRef, type RefObject, 
 import { createPortal } from "react-dom";
 import { type Product } from "../../data/products";
 import { cn } from "../../utils/cn";
-import { getSizeField, getSizeLabel, getSizeOptions } from "../../utils/productSize";
 
-export type ProductSelection = { name: string; size?: string };
+export type ProductSelection = { name: string; referencia?: string };
 
 /**
  * A dropdown list rendered in a portal with fixed positioning so it escapes the
@@ -73,45 +72,43 @@ export function ProductSelect({ products, value, onChange, className }: ProductS
     const [searchName, setSearchName] = useState("");
     const [showNameDropdown, setShowNameDropdown] = useState(false);
     const [selectedName, setSelectedName] = useState<string | null>(null);
-    const [selectedSize, setSelectedSize] = useState<string | null>(null);
-    const [showSizeDropdown, setShowSizeDropdown] = useState(false);
+    const [selectedReferencia, setSelectedReferencia] = useState<string | null>(null);
+    const [showReferenciaDropdown, setShowReferenciaDropdown] = useState(false);
 
     const nameInputRef = useRef<HTMLInputElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const nameFieldRef = useRef<HTMLDivElement>(null);
     const nameListRef = useRef<HTMLDivElement>(null);
-    const sizeButtonRef = useRef<HTMLButtonElement>(null);
-    const sizeListRef = useRef<HTMLDivElement>(null);
+    const referenciaButtonRef = useRef<HTMLButtonElement>(null);
+    const referenciaListRef = useRef<HTMLDivElement>(null);
 
-    // Collapse any open dropdown when clicking outside the picker. The dropdown
-    // lists are portalled to <body>, so they're checked separately from the
-    // container.
+    // Collapse any open dropdown when clicking outside the picker.
     useEffect(() => {
-        if (!showNameDropdown && !showSizeDropdown) return;
-        const handlePointerDown = (e: MouseEvent) => {
+        if (!showNameDropdown && !showReferenciaDropdown) return;
+        const handleMouseDown = (e: MouseEvent) => {
             const target = e.target as Node;
             if (
                 containerRef.current?.contains(target) ||
                 nameListRef.current?.contains(target) ||
-                sizeListRef.current?.contains(target)
+                referenciaListRef.current?.contains(target)
             ) {
                 return;
             }
             setShowNameDropdown(false);
-            setShowSizeDropdown(false);
+            setShowReferenciaDropdown(false);
         };
-        document.addEventListener("mousedown", handlePointerDown);
-        return () => document.removeEventListener("mousedown", handlePointerDown);
-    }, [showNameDropdown, showSizeDropdown]);
+        document.addEventListener("mousedown", handleMouseDown);
+        return () => document.removeEventListener("mousedown", handleMouseDown);
+    }, [showNameDropdown, showReferenciaDropdown]);
 
     // Initialize from the incoming value (editing an existing hotspot)
     useEffect(() => {
         if (value?.name) {
             setSelectedName(value.name);
             setSearchName(value.name);
-            setSelectedSize(value.size ?? null);
+            setSelectedReferencia(value.referencia ?? null);
         }
-    }, [value?.name, value?.size]);
+    }, [value?.name, value?.referencia]);
 
     const uniqueNames = useMemo(() => {
         const names = Array.from(new Set(products.map((p) => p.name)));
@@ -125,23 +122,22 @@ export function ProductSelect({ products, value, onChange, className }: ProductS
         [products, selectedName]
     );
 
-    const sizeField = useMemo(() => getSizeField(groupVariants), [groupVariants]);
-    const sizeOptions = useMemo(() => getSizeOptions(groupVariants), [groupVariants]);
-    const hasSizes = sizeOptions.length > 0;
+    // Referencia options: ONLY from the `referencia` field, NOT from `color`
+    const referenciaOptions = useMemo(() => {
+        const refs = groupVariants
+            .map((p) => p.referencia)
+            .filter((r): r is string => !!r && r.trim() !== "");
+        return [...new Set(refs)].sort();
+    }, [groupVariants]);
 
-    const colorCount = useMemo(() => {
-        const relevant = hasSizes && selectedSize && sizeField
-            ? groupVariants.filter((p) => p[sizeField] === selectedSize)
-            : groupVariants;
-        return new Set(relevant.map((p) => (p.referencia || p.color || p.id).toLowerCase().trim())).size;
-    }, [groupVariants, hasSizes, selectedSize, sizeField]);
+    const hasReferencias = referenciaOptions.length > 0;
 
     const reset = () => {
         setSearchName("");
         setSelectedName(null);
-        setSelectedSize(null);
+        setSelectedReferencia(null);
         setShowNameDropdown(false);
-        setShowSizeDropdown(false);
+        setShowReferenciaDropdown(false);
     };
 
     return (
@@ -160,7 +156,7 @@ export function ProductSelect({ products, value, onChange, className }: ProductS
                             setShowNameDropdown(true);
                             if (selectedName && e.target.value !== selectedName) {
                                 setSelectedName(null);
-                                setSelectedSize(null);
+                                setSelectedReferencia(null);
                             }
                         }}
                         onClick={() => setShowNameDropdown(true)}
@@ -204,18 +200,26 @@ export function ProductSelect({ products, value, onChange, className }: ProductS
                             onClick={() => {
                                 setSelectedName(name);
                                 setSearchName(name);
-                                setSelectedSize(null);
+                                setSelectedReferencia(null);
                                 setShowNameDropdown(false);
 
-                                const variants = products.filter((p) => p.name === name);
-                                const opts = getSizeOptions(variants);
-                                if (opts.length > 0) {
-                                    // Wait for a size pick; emit name-only for now
+                                const refs = products
+                                    .filter((p) => p.name === name)
+                                    .map((p) => p.referencia)
+                                    .filter((r): r is string => !!r && r.trim() !== "");
+                                const uniqueRefs = [...new Set(refs)];
+
+                                if (uniqueRefs.length === 1) {
+                                    // Auto-select if only one reference
+                                    onChange({ name, referencia: uniqueRefs[0] });
+                                    setSelectedReferencia(uniqueRefs[0]);
+                                } else if (uniqueRefs.length > 1) {
+                                    // Show referencia dropdown
                                     onChange({ name });
-                                    setShowSizeDropdown(true);
+                                    setShowReferenciaDropdown(true);
                                 } else {
                                     onChange({ name });
-                                    setShowSizeDropdown(false);
+                                    setShowReferenciaDropdown(false);
                                 }
                             }}
                             className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 transition-colors"
@@ -229,50 +233,54 @@ export function ProductSelect({ products, value, onChange, className }: ProductS
                 </FloatingDropdown>
             </div>
 
-            {/* Step 2: Size (Tamaño / Talla) — only when the group has sizes */}
-            {selectedName && hasSizes && sizeField && (
+            {/* Step 2: Referencia — only when the group has references */}
+            {selectedName && hasReferencias && (
                 <div className="flex flex-col gap-1 relative animate-in fade-in slide-in-from-top-2 duration-300">
-                    <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">2. {getSizeLabel(sizeField)}</label>
+                    <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">2. Referencia</label>
                     <button
-                        ref={sizeButtonRef}
+                        ref={referenciaButtonRef}
                         type="button"
-                        onClick={() => setShowSizeDropdown(!showSizeDropdown)}
+                        onClick={() => setShowReferenciaDropdown(!showReferenciaDropdown)}
                         className="w-full px-3 py-2.5 bg-white border border-gray-200 rounded-lg text-sm text-left flex justify-between items-center hover:bg-gray-50 transition-colors"
                     >
-                        <span className={cn(selectedSize ? "" : "text-gray-400")}>
-                            {selectedSize || `Select ${getSizeLabel(sizeField).toLowerCase()}...`}
+                        <span className={cn(selectedReferencia ? "" : "text-gray-400")}>
+                            {selectedReferencia || "Select referencia..."}
                         </span>
-                        <svg className={cn("w-4 h-4 text-gray-400 transition-transform", showSizeDropdown && "rotate-180")} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg className={cn("w-4 h-4 text-gray-400 transition-transform", showReferenciaDropdown && "rotate-180")} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                         </svg>
                     </button>
 
-                    <FloatingDropdown anchorRef={sizeButtonRef} open={showSizeDropdown} listRef={sizeListRef} className="divide-y divide-gray-100">
-                        {sizeOptions.map((size) => (
+                    <FloatingDropdown anchorRef={referenciaButtonRef} open={showReferenciaDropdown} listRef={referenciaListRef} className="divide-y divide-gray-100">
+                        {referenciaOptions.map((ref) => (
                             <button
-                                key={size}
+                                key={ref}
                                 onClick={() => {
-                                    setSelectedSize(size);
-                                    setShowSizeDropdown(false);
-                                    onChange({ name: selectedName, size });
+                                    setSelectedReferencia(ref);
+                                    setShowReferenciaDropdown(false);
+                                    onChange({ name: selectedName, referencia: ref });
                                 }}
                                 className={cn(
                                     "w-full text-left px-3 py-2.5 text-sm transition-colors",
-                                    selectedSize === size ? "bg-gray-100 text-black font-medium" : "hover:bg-gray-50 text-gray-700"
+                                    selectedReferencia === ref ? "bg-gray-100 text-black font-medium" : "hover:bg-gray-50 text-gray-700"
                                 )}
                             >
-                                {size}
+                                {ref}
                             </button>
                         ))}
                     </FloatingDropdown>
                 </div>
             )}
 
-            {/* Summary: what the customer will choose from */}
-            {selectedName && (!hasSizes || selectedSize) && (
+            {/* Summary: what the customer will see */}
+            {selectedName && selectedReferencia && (
                 <p className="text-[11px] text-gray-500 px-1">
-                    Customer will pick a color from <strong className="text-gray-700">{colorCount}</strong> option{colorCount === 1 ? "" : "s"}
-                    {selectedSize ? <> for size <strong className="text-gray-700">{selectedSize}</strong></> : null}.
+                    Customer will see <strong className="text-gray-700">{selectedReferencia}</strong> and pick a size.
+                </p>
+            )}
+            {selectedName && !hasReferencias && (
+                <p className="text-[11px] text-gray-500 px-1">
+                    No references found for this product. Customer will see all variants.
                 </p>
             )}
         </div>

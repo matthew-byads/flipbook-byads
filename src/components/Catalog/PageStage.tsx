@@ -5,7 +5,6 @@ import { type Product } from "../../data/products";
 import { HotspotPin } from "./HotspotPin";
 import { ProductPopover } from "./ProductPopover";
 import { useProducts } from "../../context/ProductContext";
-import { getProductSize } from "../../utils/productSize";
 import { cn } from "../../utils/cn";
 
 type PageStageProps = {
@@ -104,25 +103,34 @@ export const PageStage = forwardRef<HTMLDivElement, PageStageProps>(({
 
     const activeHotspot = hotspots.find(h => h.id === activeHotspotId);
 
-    // Resolve the hotspot to the variants the customer can choose a color from.
-    // New-style: all variants matching the product name (+ size when set).
+    // Resolve the hotspot to the variants the customer can choose from.
+    // New-style with productReferencia: filter by reference only (name may vary by size).
+    // New-style without productReferencia: all variants matching the product name.
     // Legacy: the single pinned variant.
     let activeVariants: Product[] = [];
     let activeName = "";
-    let activeSize: string | undefined;
+    let activeReferencia: string | undefined;
     if (activeHotspot) {
         if (activeHotspot.productName) {
             activeName = activeHotspot.productName;
-            activeSize = activeHotspot.productSize;
-            activeVariants = allProducts.filter(
-                (p) => p.name === activeName && (!activeSize || getProductSize(p) === activeSize)
-            );
+            activeReferencia = activeHotspot.productReferencia;
+            if (activeReferencia) {
+                // Prefer referencia match — name may include size suffixes
+                activeVariants = allProducts.filter(
+                    (p) => p.referencia === activeReferencia
+                );
+            } else {
+                // No referencia — match by name (exact or prefix with size suffix)
+                activeVariants = allProducts.filter(
+                    (p) => p.name === activeName || p.name.startsWith(activeName + " ")
+                );
+            }
         } else if (activeHotspot.productId) {
             const p = getProduct(activeHotspot.productId);
             if (p) {
                 activeVariants = [p];
                 activeName = p.name;
-                activeSize = getProductSize(p);
+                activeReferencia = p.referencia;
             }
         }
     }
@@ -190,7 +198,7 @@ export const PageStage = forwardRef<HTMLDivElement, PageStageProps>(({
                         <ProductPopover
                             variants={activeVariants}
                             name={activeName}
-                            size={activeSize}
+                            referencia={activeReferencia}
                             pageId={page.id}
                             onClose={() => setActiveHotspotId(null)}
                             style={{ position: 'relative' }}

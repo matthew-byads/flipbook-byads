@@ -3,7 +3,8 @@ export type Hotspot = {
     pageId: string;
     productId?: string; // Legacy: pins one exact variant (name+color+size)
     productName?: string; // New-style: product group; customer picks the color
-    productSize?: string; // New-style: chosen size value (a Tamaño or Talla string)
+    productSize?: string; // DEPRECATED for new hotspots (kept for backward compat)
+    productReferencia?: string; // NEW: locked reference for this hotspot
     xPct: number; // 0..100
     yPct: number; // 0..100
     label?: string; // Optional override label

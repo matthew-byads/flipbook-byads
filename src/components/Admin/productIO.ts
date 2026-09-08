@@ -31,8 +31,8 @@ function slugify(text: string): string {
 }
 
 function buildProductId(nombre: string, color: string, referencia: string, size?: string): string {
-    // Include size so same name+color (or same referencia) in different sizes stay distinct.
-    const base = referencia ? referencia : `${nombre}-${color}`;
+    // Each (referencia, color, size) combination is a unique product
+    const base = referencia ? `${referencia}-${color || "default"}` : `${nombre}-${color || "default"}`;
     return slugify(size ? `${base}-${size}` : base);
 }
 
@@ -59,18 +59,38 @@ export function expandRawRow(row: RawProductRow): Product[] {
 
     // Pattern A — specific design/variant (referencia is the key)
     if (referencia) {
-        return [
-            {
-                id: buildProductId(nombre, colorRaw, referencia, size),
-                name: nombre,
-                price: precio,
-                currency: moneda,
-                talla,
-                tamaño,
-                color: colorRaw || undefined,
-                referencia,
-            },
-        ];
+        // Split comma-separated references into individual products
+        const refs = referencia
+            .split(",")
+            .map((r) => r.trim().replace(/\.$/, ""))
+            .filter(Boolean);
+
+        // Also split comma-separated colors so customers can choose
+        const colors = colorRaw
+            .split(",")
+            .map((c) => c.trim().replace(/\.$/, ""))
+            .filter(Boolean);
+
+        const effectiveRefs = refs.length > 0 ? refs : [""];
+        const effectiveColors = colors.length > 0 ? colors : [""];
+
+        // One product per (reference, color) combination
+        const products: Product[] = [];
+        for (const ref of effectiveRefs) {
+            for (const color of effectiveColors) {
+                products.push({
+                    id: buildProductId(nombre, color, ref, size),
+                    name: nombre,
+                    price: precio,
+                    currency: moneda,
+                    talla,
+                    tamaño,
+                    color: color || undefined,
+                    referencia: ref || undefined,
+                });
+            }
+        }
+        return products;
     }
 
     // Pattern B — comma-separated color list → one product per color
@@ -212,14 +232,21 @@ export function parseCsvToRawRows(text: string): RawProductRow[] {
         const nombre = (cols[idx.nombre] ?? "").trim();
         if (!nombre) continue;
 
+        const precio = (cols[idx.precio] ?? "").trim();
+        const color = (cols[idx.color] ?? "").trim();
+        const referencia = (cols[idx.referencia] ?? "").trim();
+
+        // Skip duplicate rows that only have a name (no price, color, or reference)
+        if (!precio && !color && !referencia) continue;
+
         rows.push({
             nombre,
-            precio: (cols[idx.precio] ?? "").trim(),
+            precio,
             moneda: (cols[idx.moneda] ?? "").trim(),
             talla: (cols[idx.talla] ?? "").trim(),
             tamaño: (cols[idx.tamaño] ?? "").trim(),
-            color: (cols[idx.color] ?? "").trim(),
-            referencia: (cols[idx.referencia] ?? "").trim(),
+            color,
+            referencia,
         });
     }
     return rows;
@@ -490,7 +517,14 @@ export async function fetchProductsCsv(): Promise<Product[]> {
             const buffer = await response.arrayBuffer();
             const text = decodeBytes(buffer);
             const rawRows = parseCsvToRawRows(text);
-            return rawRows.flatMap(expandRawRow);
+            const products = rawRows.flatMap(expandRawRow);
+            // Deduplicate by product ID (same name+color+referencia+size = same product)
+            const seen = new Set<string>();
+            return products.filter((p) => {
+                if (seen.has(p.id)) return false;
+                seen.add(p.id);
+                return true;
+            });
         }
         if (response.status === 404) return [];
     } catch (err) {
@@ -523,8 +557,16 @@ export async function parseUploadedFile(file: File): Promise<{ products: Product
         rawRows = parseCsvToRawRows(text);
     }
 
+    const products = rawRows.flatMap(expandRawRow);
+    const seen = new Set<string>();
+    const uniqueProducts = products.filter((p) => {
+        if (seen.has(p.id)) return false;
+        seen.add(p.id);
+        return true;
+    });
+
     return {
-        products: rawRows.flatMap(expandRawRow),
+        products: uniqueProducts,
         rawRows,
     };
 }
