@@ -2,8 +2,9 @@ import { useState, useMemo, useEffect, useLayoutEffect, useRef, type RefObject, 
 import { createPortal } from "react-dom";
 import { type Product } from "../../data/products";
 import { cn } from "../../utils/cn";
+import { getSizeOptions } from "../../utils/productSize";
 
-export type ProductSelection = { name: string; referencia?: string };
+export type ProductSelection = { name: string; referencia?: string; size?: string };
 
 /**
  * A dropdown list rendered in a portal with fixed positioning so it escapes the
@@ -74,6 +75,8 @@ export function ProductSelect({ products, value, onChange, className }: ProductS
     const [selectedName, setSelectedName] = useState<string | null>(null);
     const [selectedReferencia, setSelectedReferencia] = useState<string | null>(null);
     const [showReferenciaDropdown, setShowReferenciaDropdown] = useState(false);
+    const [selectedSize, setSelectedSize] = useState<string | null>(null);
+    const [showSizeDropdown, setShowSizeDropdown] = useState(false);
 
     const nameInputRef = useRef<HTMLInputElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
@@ -81,25 +84,29 @@ export function ProductSelect({ products, value, onChange, className }: ProductS
     const nameListRef = useRef<HTMLDivElement>(null);
     const referenciaButtonRef = useRef<HTMLButtonElement>(null);
     const referenciaListRef = useRef<HTMLDivElement>(null);
+    const sizeButtonRef = useRef<HTMLButtonElement>(null);
+    const sizeListRef = useRef<HTMLDivElement>(null);
 
     // Collapse any open dropdown when clicking outside the picker.
     useEffect(() => {
-        if (!showNameDropdown && !showReferenciaDropdown) return;
+        if (!showNameDropdown && !showReferenciaDropdown && !showSizeDropdown) return;
         const handleMouseDown = (e: MouseEvent) => {
             const target = e.target as Node;
             if (
                 containerRef.current?.contains(target) ||
                 nameListRef.current?.contains(target) ||
-                referenciaListRef.current?.contains(target)
+                referenciaListRef.current?.contains(target) ||
+                sizeListRef.current?.contains(target)
             ) {
                 return;
             }
             setShowNameDropdown(false);
             setShowReferenciaDropdown(false);
+            setShowSizeDropdown(false);
         };
         document.addEventListener("mousedown", handleMouseDown);
         return () => document.removeEventListener("mousedown", handleMouseDown);
-    }, [showNameDropdown, showReferenciaDropdown]);
+    }, [showNameDropdown, showReferenciaDropdown, showSizeDropdown]);
 
     // Initialize from the incoming value (editing an existing hotspot)
     useEffect(() => {
@@ -107,8 +114,9 @@ export function ProductSelect({ products, value, onChange, className }: ProductS
             setSelectedName(value.name);
             setSearchName(value.name);
             setSelectedReferencia(value.referencia ?? null);
+            setSelectedSize(value.size ?? null);
         }
-    }, [value?.name, value?.referencia]);
+    }, [value?.name, value?.referencia, value?.size]);
 
     const uniqueNames = useMemo(() => {
         const names = Array.from(new Set(products.map((p) => p.name)));
@@ -132,12 +140,22 @@ export function ProductSelect({ products, value, onChange, className }: ProductS
 
     const hasReferencias = referenciaOptions.length > 0;
 
+    // Size options from the group variants
+    const sizeOptions = useMemo(() => {
+        if (!selectedName) return [];
+        return getSizeOptions(groupVariants);
+    }, [groupVariants, selectedName]);
+
+    const hasSizes = sizeOptions.length > 1;
+
     const reset = () => {
         setSearchName("");
         setSelectedName(null);
         setSelectedReferencia(null);
+        setSelectedSize(null);
         setShowNameDropdown(false);
         setShowReferenciaDropdown(false);
+        setShowSizeDropdown(false);
     };
 
     return (
@@ -201,6 +219,7 @@ export function ProductSelect({ products, value, onChange, className }: ProductS
                                 setSelectedName(name);
                                 setSearchName(name);
                                 setSelectedReferencia(null);
+                                setSelectedSize(null);
                                 setShowNameDropdown(false);
 
                                 const refs = products
@@ -257,6 +276,7 @@ export function ProductSelect({ products, value, onChange, className }: ProductS
                                 key={ref}
                                 onClick={() => {
                                     setSelectedReferencia(ref);
+                                    setSelectedSize(null);
                                     setShowReferenciaDropdown(false);
                                     onChange({ name: selectedName, referencia: ref });
                                 }}
@@ -272,10 +292,67 @@ export function ProductSelect({ products, value, onChange, className }: ProductS
                 </div>
             )}
 
+            {/* Step 3: Size — only when the group has multiple sizes */}
+            {selectedName && hasSizes && (
+                <div className="flex flex-col gap-1 relative animate-in fade-in slide-in-from-top-2 duration-300">
+                    <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">3. Tamaño (optional lock)</label>
+                    <button
+                        ref={sizeButtonRef}
+                        type="button"
+                        onClick={() => setShowSizeDropdown(!showSizeDropdown)}
+                        className="w-full px-3 py-2.5 bg-white border border-gray-200 rounded-lg text-sm text-left flex justify-between items-center hover:bg-gray-50 transition-colors"
+                    >
+                        <span className={cn(selectedSize ? "" : "text-gray-400")}>
+                            {selectedSize || "All sizes (customer picks)"}
+                        </span>
+                        <svg className={cn("w-4 h-4 text-gray-400 transition-transform", showSizeDropdown && "rotate-180")} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+
+                    <FloatingDropdown anchorRef={sizeButtonRef} open={showSizeDropdown} listRef={sizeListRef} className="divide-y divide-gray-100">
+                        <button
+                            onClick={() => {
+                                setSelectedSize(null);
+                                setShowSizeDropdown(false);
+                                onChange({ name: selectedName, referencia: selectedReferencia ?? undefined });
+                            }}
+                            className={cn(
+                                "w-full text-left px-3 py-2.5 text-sm transition-colors",
+                                !selectedSize ? "bg-gray-100 text-black font-medium" : "hover:bg-gray-50 text-gray-700"
+                            )}
+                        >
+                            All sizes (customer picks)
+                        </button>
+                        {sizeOptions.map((size) => (
+                            <button
+                                key={size}
+                                onClick={() => {
+                                    setSelectedSize(size);
+                                    setShowSizeDropdown(false);
+                                    onChange({ name: selectedName, referencia: selectedReferencia ?? undefined, size });
+                                }}
+                                className={cn(
+                                    "w-full text-left px-3 py-2.5 text-sm transition-colors",
+                                    selectedSize === size ? "bg-gray-100 text-black font-medium" : "hover:bg-gray-50 text-gray-700"
+                                )}
+                            >
+                                {size}
+                            </button>
+                        ))}
+                    </FloatingDropdown>
+                </div>
+            )}
+
             {/* Summary: what the customer will see */}
             {selectedName && selectedReferencia && (
                 <p className="text-[11px] text-gray-500 px-1">
-                    Customer will see <strong className="text-gray-700">{selectedReferencia}</strong> and pick a size.
+                    Customer will see <strong className="text-gray-700">{selectedReferencia}</strong>
+                    {selectedSize ? (
+                        <> locked to <strong className="text-gray-700">{selectedSize}</strong></>
+                    ) : (
+                        <> and pick a size</>
+                    )}.
                 </p>
             )}
             {selectedName && !hasReferencias && (

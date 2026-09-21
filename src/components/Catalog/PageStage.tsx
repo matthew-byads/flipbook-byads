@@ -133,6 +133,13 @@ export const PageStage = forwardRef<HTMLDivElement, PageStageProps>(({
                 activeReferencia = p.referencia;
             }
         }
+
+        // Apply size lock if the hotspot has a pinned productSize
+        if (activeHotspot.productSize && activeVariants.length > 0) {
+            activeVariants = activeVariants.filter(
+                (p) => p.tamaño === activeHotspot.productSize || p.talla === activeHotspot.productSize
+            );
+        }
     }
 
     return (

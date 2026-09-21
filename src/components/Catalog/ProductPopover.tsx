@@ -122,7 +122,7 @@ export function ProductPopover({ variants, name, referencia, onClose, pageId, st
                 )}
 
                 {/* Step 1: Size chooser */}
-                {hasSizes && (
+                {hasSizes ? (
                     <div className="mt-2">
                         <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">{sizeText}</label>
                         <div className="flex flex-wrap gap-1.5 mt-1.5">
@@ -142,7 +142,12 @@ export function ProductPopover({ variants, name, referencia, onClose, pageId, st
                             ))}
                         </div>
                     </div>
-                )}
+                ) : selectedSize ? (
+                    <div className="mt-2">
+                        <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">{sizeText}</label>
+                        <p className="text-sm text-gray-700 mt-1">{selectedSize}</p>
+                    </div>
+                ) : null}
 
                 {/* Step 2: Color chooser (only after size is selected) */}
                 {hasColors && (

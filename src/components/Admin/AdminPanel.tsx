@@ -61,13 +61,13 @@ export function AdminPanel({
         }
     }, [selectedHotspot]);
 
-    // The current product selection (name + referencia) for the hotspot being edited.
-    // New-style hotspots carry productName/productReferencia directly; legacy ones
+    // The current product selection (name + referencia + size) for the hotspot being edited.
+    // New-style hotspots carry productName/productReferencia/productSize directly; legacy ones
     // (productId only) are derived from the pinned variant so they can be re-edited.
     const editingSelection: ProductSelection | null = useMemo(() => {
         if (!selectedHotspot) return null;
         if (selectedHotspot.productName) {
-            return { name: selectedHotspot.productName, referencia: selectedHotspot.productReferencia };
+            return { name: selectedHotspot.productName, referencia: selectedHotspot.productReferencia, size: selectedHotspot.productSize };
         }
         if (selectedHotspot.productId) {
             const p = getProduct(selectedHotspot.productId);
@@ -80,7 +80,7 @@ export function AdminPanel({
         if (!selectedHotspot) return;
         const updated = allHotspots.map((h) =>
             h.id === selectedHotspot.id
-                ? { ...h, productName: sel.name, productReferencia: sel.referencia, productId: undefined, type: "product" as const, targetPageId: undefined, videoUrl: undefined }
+                ? { ...h, productName: sel.name, productReferencia: sel.referencia, productSize: sel.size, productId: undefined, type: "product" as const, targetPageId: undefined, videoUrl: undefined }
                 : h
         );
         onUpdateHotspots(updated);
@@ -132,6 +132,7 @@ export function AdminPanel({
                 pageId,
                 productName: sel.name,
                 productReferencia: sel.referencia,
+                productSize: sel.size,
                 xPct: draftHotspot.xPct,
                 yPct: draftHotspot.yPct,
                 widthPct: draftHotspot.widthPct,
