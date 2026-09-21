@@ -423,10 +423,12 @@ function parseSharedStrings(xml: string): string[] {
 function parseSheetXml(xml: string, sharedStrings: string[]): RawProductRow[] {
     // Extract all rows
     const rowRegex = /<row[^>]*r="(\d+)"[^>]*>([\s\S]*?)<\/row>/g;
-    const cellRegex = /<c r="([A-Z]+)\d+"[^>]*(?:t="([^"]*)")?[^>]*>(?:<v>([^<]*)<\/v>)?/g;
+    // Capture the full attribute string so we can extract t= separately
+    const cellRegex = /<c r="([A-Z]+)\d+"([^>]*)>(?:<v>([^<]*)<\/v>)?/g;
 
     let headerRow: Record<string, string> | null = null;
     const rawRows: RawProductRow[] = [];
+    let lastName = "";
 
     let rowMatch: RegExpExecArray | null;
     while ((rowMatch = rowRegex.exec(xml)) !== null) {
@@ -438,8 +440,12 @@ function parseSheetXml(xml: string, sharedStrings: string[]): RawProductRow[] {
         cellRegex.lastIndex = 0;
         while ((cellMatch = cellRegex.exec(rowContent)) !== null) {
             const col = cellMatch[1];
-            const type = cellMatch[2] ?? "";
+            const attrs = cellMatch[2];
             const rawVal = cellMatch[3] ?? "";
+
+            // Extract t attribute from the raw attribute string
+            const tMatch = /t="([^"]*)"/.exec(attrs);
+            const type = tMatch ? tMatch[1] : "";
 
             let value = rawVal;
             if (type === "s" && rawVal !== "") {
@@ -461,17 +467,30 @@ function parseSheetXml(xml: string, sharedStrings: string[]): RawProductRow[] {
 
         // Map header positions
         const colMap = buildColMap(headerRow);
-        const nombre = cells[colMap.nombre] ?? "";
+        let nombre = cells[colMap.nombre] ?? "";
+        if (!nombre.trim()) {
+            // Carry forward name from previous row (merged cells)
+            nombre = lastName;
+        }
         if (!nombre.trim()) continue;
+
+        const precio = (cells[colMap.precio] ?? "").trim();
+        const color = (cells[colMap.color] ?? "").trim();
+        const referencia = (cells[colMap.referencia] ?? "").trim();
+
+        // Skip duplicate rows that only have a name (no price, color, or reference)
+        if (!precio && !color && !referencia) continue;
+
+        lastName = nombre.trim();
 
         rawRows.push({
             nombre: nombre.trim(),
-            precio: (cells[colMap.precio] ?? "").trim(),
+            precio,
             moneda: (cells[colMap.moneda] ?? "").trim(),
             talla: (cells[colMap.talla] ?? "").trim(),
             tamaño: (cells[colMap.tamaño] ?? "").trim(),
-            color: (cells[colMap.color] ?? "").trim(),
-            referencia: (cells[colMap.referencia] ?? "").trim(),
+            color,
+            referencia,
         });
     }
 
