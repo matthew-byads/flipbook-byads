@@ -65,8 +65,8 @@ export const PageStage = forwardRef<HTMLDivElement, PageStageProps>(({
             initialPinchDistance.current = getDistance(e.touches);
             initialZoom.current = zoom;
             lastTouchCenter.current = getCenter(e.touches);
-        } else if (e.touches.length === 1 && zoom > 1) {
-            // Pan gesture (only when zoomed in)
+        } else if (e.touches.length === 1) {
+            // Track touch center for potential pan (works when zoomed)
             e.preventDefault();
             lastTouchCenter.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
         }
@@ -93,22 +93,25 @@ export const PageStage = forwardRef<HTMLDivElement, PageStageProps>(({
             const newZoom = Math.min(initialZoom.current * scale, 4);
             setZoom(newZoom);
 
-            // Adjust pan to zoom towards center of pinch
+            // Adjust pan to keep pinch center fixed on screen
             const center = getCenter(e.touches);
             const dx = center.x - lastTouchCenter.current.x;
             const dy = center.y - lastTouchCenter.current.y;
             
+            // When zooming, the image center moves. To keep the pinch center fixed:
+            // pan += (center movement) / newZoom
             setPan(prev => ({
-                x: prev.x + dx * (initialZoom.current / newZoom),
-                y: prev.y + dy * (initialZoom.current / newZoom)
+                x: prev.x + dx / newZoom,
+                y: prev.y + dy / newZoom
             }));
             lastTouchCenter.current = center;
-        } else if (e.touches.length === 1 && zoom > 1 && isPinching) {
-            // Pan while zoomed
+        } else if (e.touches.length === 1 && zoom > 1) {
+            // Pan while zoomed (works after pinch ends too)
             e.preventDefault();
             const dx = e.touches[0].clientX - lastTouchCenter.current.x;
             const dy = e.touches[0].clientY - lastTouchCenter.current.y;
             
+            // Screen movement / zoom = image movement
             setPan(prev => ({
                 x: prev.x + dx / zoom,
                 y: prev.y + dy / zoom
