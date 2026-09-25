@@ -6,6 +6,7 @@ import { HotspotPin } from "./HotspotPin";
 import { ProductPopover } from "./ProductPopover";
 import { useProducts } from "../../context/ProductContext";
 import { cn } from "../../utils/cn";
+import { useMediaQuery } from "../../hooks/useMediaQuery";
 
 type PageStageProps = {
     page: Page;
@@ -26,8 +27,117 @@ export const PageStage = forwardRef<HTMLDivElement, PageStageProps>(({
     const [drawStart, setDrawStart] = useState<{ xPct: number; yPct: number } | null>(null);
     const [drawCurrent, setDrawCurrent] = useState<{ xPct: number; yPct: number } | null>(null);
 
+    // Pinch-to-zoom state (mobile only)
+    const [zoom, setZoom] = useState(1);
+    const [pan, setPan] = useState({ x: 0, y: 0 });
+    const [isPinching, setIsPinching] = useState(false);
+    const initialPinchDistance = useRef<number>(0);
+    const initialZoom = useRef<number>(1);
+    const initialPan = useRef({ x: 0, y: 0 });
+    const lastTouchCenter = useRef({ x: 0, y: 0 });
+
+    const isMobile = useMediaQuery("(max-width: 768px)");
+
     const internalRef = useRef<HTMLDivElement>(null);
     const { getProduct, allProducts } = useProducts();
+
+    // Zoom/pan reset is handled by React key change on PageStage (key={page.id} in Flipbook)
+
+    const getDistance = (touches: React.TouchList): number => {
+        const dx = touches[0].clientX - touches[1].clientX;
+        const dy = touches[0].clientY - touches[1].clientY;
+        return Math.sqrt(dx * dx + dy * dy);
+    };
+
+    const getCenter = (touches: React.TouchList): { x: number; y: number } => {
+        return {
+            x: (touches[0].clientX + touches[1].clientX) / 2,
+            y: (touches[0].clientY + touches[1].clientY) / 2
+        };
+    };
+
+    const handleTouchStart = (e: React.TouchEvent) => {
+        if (!isMobile || !internalRef.current) return;
+        
+        if (e.touches.length === 2) {
+            // Pinch gesture
+            e.preventDefault();
+            setIsPinching(true);
+            initialPinchDistance.current = getDistance(e.touches);
+            initialZoom.current = zoom;
+            initialPan.current = pan;
+            lastTouchCenter.current = getCenter(e.touches);
+        } else if (e.touches.length === 1 && zoom > 1) {
+            // Pan gesture (only when zoomed in)
+            e.preventDefault();
+            lastTouchCenter.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        }
+    };
+
+    const handleTouchMove = (e: React.TouchEvent) => {
+        if (!isMobile || !internalRef.current) return;
+
+        if (e.touches.length === 2 && isPinching) {
+            // Pinch zoom
+            e.preventDefault();
+            const currentDistance = getDistance(e.touches);
+            const scale = currentDistance / initialPinchDistance.current;
+            const newZoom = Math.min(Math.max(initialZoom.current * scale, 1), 4);
+            setZoom(newZoom);
+
+            // Adjust pan to zoom towards center of pinch
+            const center = getCenter(e.touches);
+            const dx = center.x - lastTouchCenter.current.x;
+            const dy = center.y - lastTouchCenter.current.y;
+            
+            setPan(prev => ({
+                x: prev.x + dx * (initialZoom.current / newZoom),
+                y: prev.y + dy * (initialZoom.current / newZoom)
+            }));
+            lastTouchCenter.current = center;
+        } else if (e.touches.length === 1 && zoom > 1 && isPinching) {
+            // Pan while zoomed
+            e.preventDefault();
+            const dx = e.touches[0].clientX - lastTouchCenter.current.x;
+            const dy = e.touches[0].clientY - lastTouchCenter.current.y;
+            
+            setPan(prev => ({
+                x: prev.x + dx / zoom,
+                y: prev.y + dy / zoom
+            }));
+            lastTouchCenter.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        }
+    };
+
+    const handleTouchEnd = (e: React.TouchEvent) => {
+        if (!isMobile) return;
+        
+        if (e.touches.length < 2) {
+            setIsPinching(false);
+        }
+        lastTouchCenter.current = { x: 0, y: 0 };
+    };
+
+    const handleDoubleTap = (e: React.MouseEvent) => {
+        if (!isMobile || !internalRef.current) return;
+        
+        const rect = internalRef.current.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        if (zoom === 1) {
+            // Zoom in to 2x at tap position
+            setZoom(2);
+            setPan({
+                x: -(x - rect.width / 2) * 2 + rect.width / 2,
+                y: -(y - rect.height / 2) * 2 + rect.height / 2
+            });
+        } else {
+            // Reset zoom
+            setZoom(1);
+            setPan({ x: 0, y: 0 });
+        }
+    };
 
 
     const handleHotspotClick = (hotspot: Hotspot) => {
@@ -155,6 +265,11 @@ export const PageStage = forwardRef<HTMLDivElement, PageStageProps>(({
             onMouseUp={handleMouseUp}
             onMouseLeave={() => { setDrawStart(null); setDrawCurrent(null); }}
             onClick={handleClick}
+            onDoubleClick={handleDoubleTap}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+            style={{ touchAction: isMobile && zoom > 1 ? 'none' : 'auto' }}
         >
             <div
                 ref={internalRef}
@@ -165,11 +280,18 @@ export const PageStage = forwardRef<HTMLDivElement, PageStageProps>(({
                 <img
                     src={page.src}
                     alt={page.label || `Page ${page.id}`}
-                    className="w-full h-full object-contain select-none pointer-events-none"
-                    style={{ backgroundColor: '#f3f4f6' }}
+                    className="w-full h-full object-contain select-none pointer-events-none transition-transform duration-100"
+                    style={{
+                        backgroundColor: '#f3f4f6',
+                        transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
+                        transformOrigin: 'center center'
+                    }}
                 />
 
-                <div className="absolute inset-0">
+                <div className="absolute inset-0" style={{
+                    transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
+                    transformOrigin: 'center center'
+                }}>
                     {/* Render active draw area */}
                     {isAdmin && drawStart && drawCurrent && (
                         <div
