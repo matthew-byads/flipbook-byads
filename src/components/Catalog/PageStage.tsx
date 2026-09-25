@@ -33,7 +33,6 @@ export const PageStage = forwardRef<HTMLDivElement, PageStageProps>(({
     const [isPinching, setIsPinching] = useState(false);
     const initialPinchDistance = useRef<number>(0);
     const initialZoom = useRef<number>(1);
-    const initialPan = useRef({ x: 0, y: 0 });
     const lastTouchCenter = useRef({ x: 0, y: 0 });
 
     const isMobile = useMediaQuery("(max-width: 768px)");
@@ -65,7 +64,6 @@ export const PageStage = forwardRef<HTMLDivElement, PageStageProps>(({
             setIsPinching(true);
             initialPinchDistance.current = getDistance(e.touches);
             initialZoom.current = zoom;
-            initialPan.current = pan;
             lastTouchCenter.current = getCenter(e.touches);
         } else if (e.touches.length === 1 && zoom > 1) {
             // Pan gesture (only when zoomed in)
@@ -82,7 +80,17 @@ export const PageStage = forwardRef<HTMLDivElement, PageStageProps>(({
             e.preventDefault();
             const currentDistance = getDistance(e.touches);
             const scale = currentDistance / initialPinchDistance.current;
-            const newZoom = Math.min(Math.max(initialZoom.current * scale, 1), 4);
+            
+            // Only allow zoom IN (scale > 1). 
+            // If user tries to zoom OUT (scale < 1), immediately reset to 1x.
+            if (scale < 1) {
+                setZoom(1);
+                setPan({ x: 0, y: 0 });
+                setIsPinching(false);
+                return;
+            }
+            
+            const newZoom = Math.min(initialZoom.current * scale, 4);
             setZoom(newZoom);
 
             // Adjust pan to zoom towards center of pinch
