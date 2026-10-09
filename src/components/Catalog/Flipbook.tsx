@@ -62,7 +62,7 @@ export const Flipbook = forwardRef<any, FlipbookProps>(({
                 // In admin mode: disable ALL page flip interactions (mouse, touch, hover corners, mobile scroll)
                 useMouseEvents={!isAdmin}
                 swipeDistance={30}
-                showPageCorners={!isAdmin}
+                showPageCorners={false}
                 disableFlipByClick={true}
             >
                 {pages.map((page) => (
