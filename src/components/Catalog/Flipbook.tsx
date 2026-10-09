@@ -47,7 +47,7 @@ export const Flipbook = forwardRef<any, FlipbookProps>(({
                 maxHeight={2828}
                 maxShadowOpacity={0.5}
                 showCover={!isMobile}
-                mobileScrollSupport={true}
+                mobileScrollSupport={!isAdmin}
                 onFlip={onFlip}
                 className="flip-book-container shadow-2xl"
                 ref={flipBookRef}
@@ -59,7 +59,7 @@ export const Flipbook = forwardRef<any, FlipbookProps>(({
                 startZIndex={0}
                 autoSize={true}
                 clickEventForward={true}
-                // In admin mode: disable ALL page flip interactions (mouse, touch, hover corners)
+                // In admin mode: disable ALL page flip interactions (mouse, touch, hover corners, mobile scroll)
                 useMouseEvents={!isAdmin}
                 swipeDistance={30}
                 showPageCorners={!isAdmin}
