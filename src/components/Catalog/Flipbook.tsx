@@ -55,10 +55,11 @@ export const Flipbook = forwardRef<any, FlipbookProps>(({
                 startPage={initialPage}
                 drawShadow={true}
                 flippingTime={600}
-                usePortrait={isMobile} // Switch between single and double page spread
+                usePortrait={isMobile}
                 startZIndex={0}
                 autoSize={true}
                 clickEventForward={true}
+                // In admin mode: disable ALL page flip interactions (mouse, touch, hover corners)
                 useMouseEvents={!isAdmin}
                 swipeDistance={30}
                 showPageCorners={!isAdmin}

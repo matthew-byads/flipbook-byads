@@ -170,13 +170,25 @@ export function CatalogViewer({ isAdmin }: CatalogViewerProps) {
         <div className="flex flex-col w-full h-screen bg-gray-50 pt-16 pb-20 overflow-hidden relative">
             {/* Main Stage */}
             <div className="flex-1 relative flex items-center justify-center px-4">
-                <button
-                    onClick={handlePrev}
-                    disabled={pageIndex === 0}
-                    className="fixed cursor-pointer top-1/2 -translate-y-1/2 left-2 sm:left-4 z-[100] p-3 rounded-full bg-white/80 hover:bg-white shadow-md disabled:opacity-30 transition-all hover:scale-110 pointer-events-auto"
-                >
-                    <svg className="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
-                </button>
+                {!isAdmin && (
+                    <>
+                        <button
+                            onClick={handlePrev}
+                            disabled={pageIndex === 0}
+                            className="fixed cursor-pointer top-1/2 -translate-y-1/2 left-2 sm:left-4 z-[100] p-3 rounded-full bg-white/80 hover:bg-white shadow-md disabled:opacity-30 transition-all hover:scale-110 pointer-events-auto"
+                        >
+                            <svg className="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
+                        </button>
+
+                        <button
+                            onClick={handleNext}
+                            disabled={isMobile ? pageIndex >= pages.length - 1 : pageIndex >= pages.length - 2}
+                            className="fixed cursor-pointer top-1/2 -translate-y-1/2 right-2 sm:right-4 z-[100] p-3 rounded-full bg-white/80 hover:bg-white shadow-md disabled:opacity-30 transition-all hover:scale-110 pointer-events-auto"
+                        >
+                            <svg className="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+                        </button>
+                    </>
+                )}
 
                 {/* On mobile, cap the width so react-pageflip's block stays under its
                     portrait threshold (2 x minWidth = 630px) for the whole <=768px range;
@@ -207,13 +219,6 @@ export function CatalogViewer({ isAdmin }: CatalogViewerProps) {
                     </button>
                 )}
 
-                <button
-                    onClick={handleNext}
-                    disabled={isMobile ? pageIndex >= pages.length - 1 : pageIndex >= pages.length - 2}
-                    className="fixed cursor-pointer top-1/2 -translate-y-1/2 right-2 sm:right-4 z-[100] p-3 rounded-full bg-white/80 hover:bg-white shadow-md disabled:opacity-30 transition-all hover:scale-110 pointer-events-auto"
-                >
-                    <svg className="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
-                </button>
 
                 {/* Page indicator */}
                 <div className="fixed bottom-24 left-1/2 -translate-x-1/2 py-2 px-6 bg-black/80 backdrop-blur-md text-white rounded-full text-xs font-black tracking-widest shadow-2xl z-[100] pointer-events-none">
