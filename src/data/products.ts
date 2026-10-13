@@ -6,10 +6,11 @@ export type Product = {
     sku?: string;
     variant?: string;
     image?: string;
-    talla?: string;      // Clothing size (e.g. S, M, L)
-    tamaño?: string;     // Object size (e.g. 40x50cm)
-    color?: string;      // Color category or specific color (e.g. "Sublimado", "Negro", "Azul")
-    referencia?: string; // Specific design/variant name from V2 (e.g. "Safari", "Caballero")
+    talla?: string;
+    tamaño?: string;
+    color?: string;
+    referencia?: string;
+    productType?: string;
 };
 
 export const products: Product[] = [
@@ -20,1260 +21,1400 @@ export const products: Product[] = [
         "currency": "COP",
         "sku": "Negro",
         "color": "Negro",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Negro",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p2",
         "name": "Toalla Unicolor",
         "price": 60000,
         "currency": "COP",
         "sku": "Azul",
         "color": "Azul",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Azul",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p3",
         "name": "Toalla Unicolor",
         "price": 60000,
         "currency": "COP",
         "sku": "Sky Blue",
         "color": "Sky Blue",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Sky Blue",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p4",
         "name": "Toalla Unicolor",
         "price": 60000,
         "currency": "COP",
         "sku": "Tiffany",
         "color": "Tiffany",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Tiffany",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p5",
         "name": "Toalla Unicolor",
         "price": 60000,
         "currency": "COP",
         "sku": "Amarillo",
         "color": "Amarillo",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Amarillo",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p6",
         "name": "Toalla Unicolor",
         "price": 60000,
         "currency": "COP",
         "sku": "Rojo",
         "color": "Rojo",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Rojo",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p7",
         "name": "Toalla Unicolor",
         "price": 60000,
         "currency": "COP",
         "sku": "Naranjado",
         "color": "Naranjado",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Naranjado",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p8",
         "name": "Toalla Unicolor",
         "price": 60000,
         "currency": "COP",
         "sku": "Gris",
         "color": "Gris",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Gris",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p9",
         "name": "Toalla Unicolor",
         "price": 60000,
         "currency": "COP",
         "sku": "Verde militar",
         "color": "Verde militar",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Verde militar",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p10",
         "name": "Toalla Unicolor",
         "price": 60000,
         "currency": "COP",
         "sku": "Verde",
         "color": "Verde",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Verde",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p11",
         "name": "Toalla Unicolor",
         "price": 60000,
         "currency": "COP",
         "sku": "Rosado",
         "color": "Rosado",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Rosado",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p12",
         "name": "Toalla Unicolor",
         "price": 60000,
         "currency": "COP",
         "sku": "Coral",
         "color": "Coral",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Coral",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p13",
         "name": "Toalla Unicolor",
         "price": 60000,
         "currency": "COP",
         "sku": "Morado",
         "color": "Morado",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Morado",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p14",
         "name": "Toalla Unicolor",
         "price": 60000,
         "currency": "COP",
         "sku": "Blanco",
         "color": "Blanco",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Blanco",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p15",
         "name": "Toalla Unicolor",
         "price": 55000,
         "currency": "COP",
         "sku": "Negro",
         "color": "Negro",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Negro",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p16",
         "name": "Toalla Unicolor",
         "price": 55000,
         "currency": "COP",
         "sku": "Azul",
         "color": "Azul",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Azul",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p17",
         "name": "Toalla Unicolor",
         "price": 55000,
         "currency": "COP",
         "sku": "Sky Blue",
         "color": "Sky Blue",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Sky Blue",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p18",
         "name": "Toalla Unicolor",
         "price": 55000,
         "currency": "COP",
         "sku": "Tiffany",
         "color": "Tiffany",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Tiffany",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p19",
         "name": "Toalla Unicolor",
         "price": 55000,
         "currency": "COP",
         "sku": "Amarillo",
         "color": "Amarillo",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Amarillo",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p20",
         "name": "Toalla Unicolor",
         "price": 55000,
         "currency": "COP",
         "sku": "Rojo",
         "color": "Rojo",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Rojo",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p21",
         "name": "Toalla Unicolor",
         "price": 55000,
         "currency": "COP",
         "sku": "Naranjado",
         "color": "Naranjado",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Naranjado",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p22",
         "name": "Toalla Unicolor",
         "price": 55000,
         "currency": "COP",
         "sku": "Gris",
         "color": "Gris",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Gris",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p23",
         "name": "Toalla Unicolor",
         "price": 55000,
         "currency": "COP",
         "sku": "Verde militar",
         "color": "Verde militar",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Verde militar",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p24",
         "name": "Toalla Unicolor",
         "price": 55000,
         "currency": "COP",
         "sku": "Verde",
         "color": "Verde",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Verde",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p25",
         "name": "Toalla Unicolor",
         "price": 55000,
         "currency": "COP",
         "sku": "Rosado",
         "color": "Rosado",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Rosado",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p26",
         "name": "Toalla Unicolor",
         "price": 55000,
         "currency": "COP",
         "sku": "Coral",
         "color": "Coral",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Coral",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p27",
         "name": "Toalla Unicolor",
         "price": 55000,
         "currency": "COP",
         "sku": "Morado",
         "color": "Morado",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Morado",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p28",
         "name": "Toalla Unicolor",
         "price": 55000,
         "currency": "COP",
         "sku": "Blanco",
         "color": "Blanco",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Blanco",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p29",
         "name": "Toalla Unicolor",
         "price": 22000,
         "currency": "COP",
         "sku": "Negro",
         "color": "Negro",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Negro",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p30",
         "name": "Toalla Unicolor",
         "price": 22000,
         "currency": "COP",
         "sku": "Azul",
         "color": "Azul",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Azul",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p31",
         "name": "Toalla Unicolor",
         "price": 22000,
         "currency": "COP",
         "sku": "Sky Blue",
         "color": "Sky Blue",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Sky Blue",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p32",
         "name": "Toalla Unicolor",
         "price": 22000,
         "currency": "COP",
         "sku": "Tiffany",
         "color": "Tiffany",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Tiffany",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p33",
         "name": "Toalla Unicolor",
         "price": 22000,
         "currency": "COP",
         "sku": "Amarillo",
         "color": "Amarillo",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Amarillo",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p34",
         "name": "Toalla Unicolor",
         "price": 22000,
         "currency": "COP",
         "sku": "Rojo",
         "color": "Rojo",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Rojo",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p35",
         "name": "Toalla Unicolor",
         "price": 22000,
         "currency": "COP",
         "sku": "Naranjado",
         "color": "Naranjado",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Naranjado",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p36",
         "name": "Toalla Unicolor",
         "price": 22000,
         "currency": "COP",
         "sku": "Gris",
         "color": "Gris",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Gris",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p37",
         "name": "Toalla Unicolor",
         "price": 22000,
         "currency": "COP",
         "sku": "Verde militar",
         "color": "Verde militar",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Verde militar",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p38",
         "name": "Toalla Unicolor",
         "price": 22000,
         "currency": "COP",
         "sku": "Verde",
         "color": "Verde",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Verde",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p39",
         "name": "Toalla Unicolor",
         "price": 22000,
         "currency": "COP",
         "sku": "Rosado",
         "color": "Rosado",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Rosado",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p40",
         "name": "Toalla Unicolor",
         "price": 22000,
         "currency": "COP",
         "sku": "Coral",
         "color": "Coral",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Coral",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p41",
         "name": "Toalla Unicolor",
         "price": 22000,
         "currency": "COP",
         "sku": "Morado",
         "color": "Morado",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Morado",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p42",
         "name": "Toalla Unicolor",
         "price": 22000,
         "currency": "COP",
         "sku": "Blanco",
         "color": "Blanco",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Blanco",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p43",
         "name": "Toalla Unicolor",
         "price": 14000,
         "currency": "COP",
         "sku": "Negro",
         "color": "Negro",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Negro",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p44",
         "name": "Toalla Unicolor",
         "price": 14000,
         "currency": "COP",
         "sku": "Azul",
         "color": "Azul",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Azul",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p45",
         "name": "Toalla Unicolor",
         "price": 14000,
         "currency": "COP",
         "sku": "Sky Blue",
         "color": "Sky Blue",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Sky Blue",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p46",
         "name": "Toalla Unicolor",
         "price": 14000,
         "currency": "COP",
         "sku": "Tiffany",
         "color": "Tiffany",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Tiffany",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p47",
         "name": "Toalla Unicolor",
         "price": 14000,
         "currency": "COP",
         "sku": "Amarillo",
         "color": "Amarillo",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Amarillo",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p48",
         "name": "Toalla Unicolor",
         "price": 14000,
         "currency": "COP",
         "sku": "Rojo",
         "color": "Rojo",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Rojo",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p49",
         "name": "Toalla Unicolor",
         "price": 14000,
         "currency": "COP",
         "sku": "Naranjado",
         "color": "Naranjado",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Naranjado",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p50",
         "name": "Toalla Unicolor",
         "price": 14000,
         "currency": "COP",
         "sku": "Gris",
         "color": "Gris",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Gris",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p51",
         "name": "Toalla Unicolor",
         "price": 14000,
         "currency": "COP",
         "sku": "Verde militar",
         "color": "Verde militar",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Verde militar",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p52",
         "name": "Toalla Unicolor",
         "price": 14000,
         "currency": "COP",
         "sku": "Verde",
         "color": "Verde",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Verde",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p53",
         "name": "Toalla Unicolor",
         "price": 14000,
         "currency": "COP",
         "sku": "Rosado",
         "color": "Rosado",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Rosado",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p54",
         "name": "Toalla Unicolor",
         "price": 14000,
         "currency": "COP",
         "sku": "Coral",
         "color": "Coral",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Coral",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p55",
         "name": "Toalla Unicolor",
         "price": 14000,
         "currency": "COP",
         "sku": "Morado",
         "color": "Morado",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Morado",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p56",
         "name": "Toalla Unicolor",
         "price": 14000,
         "currency": "COP",
         "sku": "Blanco",
         "color": "Blanco",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Blanco",
+            "productType": "Toalla Unicolor",
+    },{
         "id": "p57",
         "name": "Toalla Sublimada",
         "price": 64956,
         "currency": "COP",
         "sku": "Safari",
         "color": "Safari",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Safari",
+            "productType": "Toalla Sublimada",
+    },{
         "id": "p58",
         "name": "Toalla Sublimada",
         "price": 64957,
         "currency": "COP",
         "sku": "Rincon verde",
         "color": "Rincon verde",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Rincon verde",
+            "productType": "Toalla Sublimada",
+    },{
         "id": "p59",
         "name": "Toalla Sublimada",
         "price": 64958,
         "currency": "COP",
         "sku": "Bahia Solano",
         "color": "Bahia Solano",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Bahia Solano",
+            "productType": "Toalla Sublimada",
+    },{
         "id": "p60",
         "name": "Toalla Sublimada",
         "price": 64959,
         "currency": "COP",
         "sku": "Oleaje",
         "color": "Oleaje",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Oleaje",
+            "productType": "Toalla Sublimada",
+    },{
         "id": "p61",
         "name": "Toalla Sublimada",
         "price": 64960,
         "currency": "COP",
         "sku": "Luminosa",
         "color": "Luminosa",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Luminosa",
+            "productType": "Toalla Sublimada",
+    },{
         "id": "p62",
         "name": "Toalla Sublimada",
         "price": 64961,
         "currency": "COP",
         "sku": "Destellos",
         "color": "Destellos",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Destellos",
+            "productType": "Toalla Sublimada",
+    },{
         "id": "p63",
         "name": "Toalla Sublimada",
         "price": 64962,
         "currency": "COP",
         "sku": "Sakura",
         "color": "Sakura",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Sakura",
+            "productType": "Toalla Sublimada",
+    },{
         "id": "p64",
         "name": "Toalla Sublimada",
         "price": 64963,
         "currency": "COP",
         "sku": "Celestia",
         "color": "Celestia",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Celestia",
+            "productType": "Toalla Sublimada",
+    },{
         "id": "p65",
         "name": "Toalla Sublimada",
         "price": 64964,
         "currency": "COP",
         "sku": "Ocaso",
         "color": "Ocaso",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Ocaso",
+            "productType": "Toalla Sublimada",
+    },{
         "id": "p66",
         "name": "Toalla Sublimada",
         "price": 64965,
         "currency": "COP",
         "sku": "Aurora",
         "color": "Aurora",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Aurora",
+            "productType": "Toalla Sublimada",
+    },{
         "id": "p67",
         "name": "Toalla Sublimada",
         "price": 64966,
         "currency": "COP",
         "sku": "Aventura Marina",
         "color": "Aventura Marina",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Aventura Marina",
+            "productType": "Toalla Sublimada",
+    },{
         "id": "p68",
         "name": "Toalla Sublimada",
         "price": 64967,
         "currency": "COP",
         "sku": "Aqua",
         "color": "Aqua",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Aqua",
+            "productType": "Toalla Sublimada",
+    },{
         "id": "p69",
         "name": "Toalla Sublimada",
         "price": 64968,
         "currency": "COP",
         "sku": "Tiburn Martillo",
         "color": "Tiburn Martillo",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Tiburn Martillo",
+            "productType": "Toalla Sublimada",
+    },{
         "id": "p70",
         "name": "Toalla Sublimada",
         "price": 64969,
         "currency": "COP",
         "sku": "Tiburn Ballena",
         "color": "Tiburn Ballena",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Tiburn Ballena",
+            "productType": "Toalla Sublimada",
+    },{
         "id": "p71",
         "name": "Toalla Sublimada",
         "price": 64970,
         "currency": "COP",
         "sku": "Tortuga Marina",
         "color": "Tortuga Marina",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Tortuga Marina",
+            "productType": "Toalla Sublimada",
+    },{
         "id": "p72",
         "name": "Toalla Sublimada",
         "price": 64971,
         "currency": "COP",
         "sku": "Coralino",
         "color": "Coralino",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Coralino",
+            "productType": "Toalla Sublimada",
+    },{
         "id": "p73",
         "name": "Toalla Sublimada",
         "price": 64972,
         "currency": "COP",
         "sku": "Cayo Cangrejo",
         "color": "Cayo Cangrejo",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Cayo Cangrejo",
+            "productType": "Toalla Sublimada",
+    },{
         "id": "p74",
         "name": "Toalla Sublimada",
         "price": 64973,
         "currency": "COP",
         "sku": "Reino Encantado",
         "color": "Reino Encantado",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Reino Encantado",
+            "productType": "Toalla Sublimada",
+    },{
         "id": "p75",
         "name": "Toalla Sublimada",
         "price": 64974,
         "currency": "COP",
         "sku": "Jungle Kids",
         "color": "Jungle Kids",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Jungle Kids",
+            "productType": "Toalla Sublimada",
+    },{
         "id": "p76",
         "name": "Toalla Sublimada",
         "price": 64975,
         "currency": "COP",
         "sku": "Principito",
         "color": "Principito",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Principito",
+            "productType": "Toalla Sublimada",
+    },{
         "id": "p77",
         "name": "Toalla Sublimada",
         "price": 64976,
         "currency": "COP",
         "sku": "Jirafas",
         "color": "Jirafas",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Jirafas",
+            "productType": "Toalla Sublimada",
+    },{
         "id": "p78",
         "name": "Toalla Sublimada",
         "price": 64977,
         "currency": "COP",
         "sku": "Elefantes",
         "color": "Elefantes",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Elefantes",
+            "productType": "Toalla Sublimada",
+    },{
         "id": "p79",
         "name": "Toalla Sublimada",
         "price": 64978,
         "currency": "COP",
         "sku": "Aviones Kids",
         "color": "Aviones Kids",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Aviones Kids",
+            "productType": "Toalla Sublimada",
+    },{
         "id": "p80",
         "name": "Toalla Sublimada",
         "price": 64979,
         "currency": "COP",
         "sku": "Drangon Kids",
         "color": "Drangon Kids",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Drangon Kids",
+            "productType": "Toalla Sublimada",
+    },{
         "id": "p81",
         "name": "Toalla Sublimada",
         "price": 64980,
         "currency": "COP",
         "sku": "Da de los muertos",
         "color": "Da de los muertos",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Da de los muertos",
+            "productType": "Toalla Sublimada",
+    },{
         "id": "p82",
         "name": "Toalla Sublimada",
         "price": 64981,
         "currency": "COP",
         "sku": "Carnaval de venecia",
         "color": "Carnaval de venecia",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Carnaval de venecia",
+            "productType": "Toalla Sublimada",
+    },{
         "id": "p83",
         "name": "Toalla Sublimada",
         "price": 64982,
         "currency": "COP",
         "sku": "Festival de los cerezos",
         "color": "Festival de los cerezos",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Festival de los cerezos",
+            "productType": "Toalla Sublimada",
+    },{
         "id": "p84",
         "name": "Toalla Sublimada",
         "price": 64983,
         "currency": "COP",
         "sku": "Festival Aloha",
         "color": "Festival Aloha",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Festival Aloha",
+            "productType": "Toalla Sublimada",
+    },{
         "id": "p85",
         "name": "Toalla Sublimada",
         "price": 64984,
         "currency": "COP",
         "sku": "Ao nuevo Chino",
         "color": "Ao nuevo Chino",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Ao nuevo Chino",
+            "productType": "Toalla Sublimada",
+    },{
         "id": "p86",
         "name": "Toalla Sublimada",
         "price": 64985,
         "currency": "COP",
         "sku": "Festival de ballenas Hermanus",
         "color": "Festival de ballenas Hermanus",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Festival de ballenas Hermanus",
+            "productType": "Toalla Sublimada",
+    },{
         "id": "p87",
         "name": "Toalla Sublimada",
         "price": 64986,
         "currency": "COP",
         "sku": "Festival del Tinglar",
         "color": "Festival del Tinglar",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Festival del Tinglar",
+            "productType": "Toalla Sublimada",
+    },{
         "id": "p88",
         "name": "Toalla Sublimada",
         "price": 64987,
         "currency": "COP",
         "sku": "Feria de flores",
         "color": "Feria de flores",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Feria de flores",
+            "productType": "Toalla Sublimada",
+    },{
         "id": "p89",
         "name": "Toalla Sublimada",
         "price": 64988,
         "currency": "COP",
         "sku": "Festival de los globos",
         "color": "Festival de los globos",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Festival de los globos",
+            "productType": "Toalla Sublimada",
+    },{
         "id": "p90",
         "name": "Toalla Sublimada",
         "price": 64989,
         "currency": "COP",
         "sku": "Festival Holi",
         "color": "Festival Holi",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Festival Holi",
+            "productType": "Toalla Sublimada",
+    },{
         "id": "p91",
         "name": "Toalla Sublimada",
         "price": 64990,
         "currency": "COP",
         "sku": "Festival de Songkran",
         "color": "Festival de Songkran",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Festival de Songkran",
+            "productType": "Toalla Sublimada",
+    },{
         "id": "p92",
         "name": "Toalla Sublimada",
         "price": 64991,
         "currency": "COP",
         "sku": "Carnaval de Rio",
         "color": "Carnaval de Rio",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Carnaval de Rio",
+            "productType": "Toalla Sublimada",
+    },{
         "id": "p93",
         "name": "Toalla Sublimada",
         "price": 64992,
         "currency": "COP",
         "sku": "Pingino emperador",
         "color": "Pingino emperador",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Pingino emperador",
+            "productType": "Toalla Sublimada",
+    },{
         "id": "p94",
         "name": "Toalla Sublimada",
         "price": 64993,
         "currency": "COP",
         "sku": "Guacamayo Jacinto",
         "color": "Guacamayo Jacinto",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Guacamayo Jacinto",
+            "productType": "Toalla Sublimada",
+    },{
         "id": "p95",
         "name": "Toalla Sublimada",
         "price": 64994,
         "currency": "COP",
         "sku": "Elefante Africano",
         "color": "Elefante Africano",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Elefante Africano",
+            "productType": "Toalla Sublimada",
+    },{
         "id": "p96",
         "name": "Toalla Sublimada",
         "price": 64995,
         "currency": "COP",
         "sku": "Quetzal",
         "color": "Quetzal",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Quetzal",
+            "productType": "Toalla Sublimada",
+    },{
         "id": "p97",
         "name": "Toalla Sublimada",
         "price": 64996,
         "currency": "COP",
         "sku": "Mariposa Monarca",
         "color": "Mariposa Monarca",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Mariposa Monarca",
+            "productType": "Toalla Sublimada",
+    },{
         "id": "p98",
         "name": "Toalla Sublimada",
         "price": 64997,
         "currency": "COP",
         "sku": "Tigre Bengala",
         "color": "Tigre Bengala",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Tigre Bengala",
+            "productType": "Toalla Sublimada",
+    },{
         "id": "p99",
         "name": "Toalla Sublimada",
         "price": 64998,
         "currency": "COP",
         "sku": "Panda Gigante",
         "color": "Panda Gigante",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Panda Gigante",
+            "productType": "Toalla Sublimada",
+    },{
         "id": "p100",
         "name": "Toalla Sublimada",
         "price": 64999,
         "currency": "COP",
         "sku": "Jaguar",
         "color": "Jaguar",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Jaguar",
+            "productType": "Toalla Sublimada",
+    },{
         "id": "p101",
         "name": "Toalla Sublimada",
         "price": 65000,
         "currency": "COP",
         "sku": "Tortuga Carey",
         "color": "Tortuga Carey",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Tortuga Carey",
+            "productType": "Toalla Sublimada",
+    },{
         "id": "p102",
         "name": "Toalla Sublimada",
         "price": 65000,
         "currency": "COP",
         "sku": "Ballena Azul",
         "color": "Ballena Azul",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Ballena Azul",
+            "productType": "Toalla Sublimada",
+    },{
         "id": "p103",
         "name": "Toalla Sublimada",
         "price": 65000,
         "currency": "COP",
         "sku": "Mantarraya Gigante",
         "color": "Mantarraya Gigante",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Mantarraya Gigante",
+            "productType": "Toalla Sublimada",
+    },{
         "id": "p104",
         "name": "Toalla Sublimada",
         "price": 65000,
         "currency": "COP",
         "sku": "Delfin Rosado",
         "color": "Delfin Rosado",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Delfin Rosado",
+            "productType": "Toalla Sublimada",
+    },{
         "id": "p105",
         "name": "Toalla Cooling",
         "price": 20000,
         "currency": "COP",
         "sku": "Azul",
         "color": "Azul",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Azul",
+            "productType": "Toalla Cooling",
+    },{
         "id": "p106",
         "name": "Toalla Cooling",
         "price": 20000,
         "currency": "COP",
         "sku": "Verde",
         "color": "Verde",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Verde",
+            "productType": "Toalla Cooling",
+    },{
         "id": "p107",
         "name": "Toalla Cooling",
         "price": 20000,
         "currency": "COP",
         "sku": "Morado",
         "color": "Morado",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Morado",
+            "productType": "Toalla Cooling",
+    },{
         "id": "p108",
         "name": "Toalla Cooling",
         "price": 20000,
         "currency": "COP",
         "sku": "Gris",
         "color": "Gris",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Gris",
+            "productType": "Toalla Cooling",
+    },{
         "id": "p109",
         "name": "Poncho",
         "price": 130000,
         "currency": "COP",
         "sku": "Caballero",
         "color": "Caballero",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Caballero",
+            "productType": "Poncho",
+    },{
         "id": "p110",
         "name": "Poncho",
         "price": 130000,
         "currency": "COP",
         "sku": "Aqua",
         "color": "Aqua",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Aqua",
+            "productType": "Poncho",
+    },{
         "id": "p111",
         "name": "Poncho",
         "price": 130000,
         "currency": "COP",
         "sku": "Tiffany",
         "color": "Tiffany",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Tiffany",
+            "productType": "Poncho",
+    },{
         "id": "p112",
         "name": "Poncho",
         "price": 130000,
         "currency": "COP",
         "sku": "Oleaje",
         "color": "Oleaje",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Oleaje",
+            "productType": "Poncho",
+    },{
         "id": "p113",
         "name": "Poncho",
         "price": 130000,
         "currency": "COP",
         "sku": "Bahia Solano",
         "color": "Bahia Solano",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Bahia Solano",
+            "productType": "Poncho",
+    },{
         "id": "p114",
         "name": "Poncho",
         "price": 130000,
         "currency": "COP",
         "sku": "Celestia",
         "color": "Celestia",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Celestia",
+            "productType": "Poncho",
+    },{
         "id": "p115",
         "name": "Poncho",
         "price": 130000,
         "currency": "COP",
         "sku": "Gris",
         "color": "Gris",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Gris",
+            "productType": "Poncho",
+    },{
         "id": "p116",
         "name": "Poncho",
         "price": 130000,
         "currency": "COP",
         "sku": "Festival de ballenas Hermanus",
         "color": "Festival de ballenas Hermanus",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Festival de ballenas Hermanus",
+            "productType": "Poncho",
+    },{
         "id": "p117",
         "name": "Poncho",
         "price": 130000,
         "currency": "COP",
         "sku": "Cayo Cangrejo",
         "color": "Cayo Cangrejo",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Cayo Cangrejo",
+            "productType": "Poncho",
+    },{
         "id": "p118",
         "name": "Poncho",
         "price": 130000,
         "currency": "COP",
         "sku": "Festival Aloha",
         "color": "Festival Aloha",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Festival Aloha",
+            "productType": "Poncho",
+    },{
         "id": "p119",
         "name": "Poncho",
         "price": 130000,
         "currency": "COP",
         "sku": "Festival del Tinglar",
         "color": "Festival del Tinglar",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Festival del Tinglar",
+            "productType": "Poncho",
+    },{
         "id": "p120",
         "name": "Poncho",
         "price": 130000,
         "currency": "COP",
         "sku": "Agua",
         "color": "Agua",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Agua",
+            "productType": "Poncho",
+    },{
         "id": "p121",
         "name": "Poncho",
         "price": 130000,
         "currency": "COP",
         "sku": "Mariposa Monarca",
         "color": "Mariposa Monarca",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Mariposa Monarca",
+            "productType": "Poncho",
+    },{
         "id": "p122",
         "name": "Poncho",
         "price": 130000,
         "currency": "COP",
         "sku": "Mantarraya Gigante",
         "color": "Mantarraya Gigante",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Mantarraya Gigante",
+            "productType": "Poncho",
+    },{
         "id": "p123",
         "name": "Poncho",
         "price": 130000,
         "currency": "COP",
         "sku": "Tortuga Carey",
         "color": "Tortuga Carey",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Tortuga Carey",
+            "productType": "Poncho",
+    },{
         "id": "p124",
         "name": "Poncho",
         "price": 130000,
         "currency": "COP",
         "sku": "Pingino emperador",
         "color": "Pingino emperador",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Pingino emperador",
+            "productType": "Poncho",
+    },{
         "id": "p125",
         "name": "Poncho",
         "price": 120000,
         "currency": "COP",
         "sku": "Gris",
         "color": "Gris",
-        "variant": "unicolor"
-    },
-    {
+        "variant": "unicolor",
+            "referencia": "Gris",
+            "productType": "Poncho",
+    },{
         "id": "p126",
         "name": "Poncho",
         "price": 120000,
         "currency": "COP",
         "sku": "Tiffany",
         "color": "Tiffany",
-        "variant": "unicolor"
-    },
-    {
+        "variant": "unicolor",
+            "referencia": "Tiffany",
+            "productType": "Poncho",
+    },{
         "id": "p127",
         "name": "Poncho Kids",
         "price": 120000,
         "currency": "COP",
         "sku": "Festival Aloha",
         "color": "Festival Aloha",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Festival Aloha",
+            "productType": "Poncho Kids",
+    },{
         "id": "p128",
         "name": "Poncho Kids",
         "price": 120000,
         "currency": "COP",
         "sku": "Aviones Kids",
         "color": "Aviones Kids",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Aviones Kids",
+            "productType": "Poncho Kids",
+    },{
         "id": "p129",
         "name": "Poncho Kids",
         "price": 120000,
         "currency": "COP",
         "sku": "Panda Gigante",
         "color": "Panda Gigante",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Panda Gigante",
+            "productType": "Poncho Kids",
+    },{
         "id": "p130",
         "name": "Poncho Kids",
         "price": 120000,
         "currency": "COP",
         "sku": "Festival de Songkran",
         "color": "Festival de Songkran",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Festival de Songkran",
+            "productType": "Poncho Kids",
+    },{
         "id": "p131",
         "name": "Poncho Kids",
         "price": 120000,
         "currency": "COP",
         "sku": "Festival del Tinglar",
         "color": "Festival del Tinglar",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Festival del Tinglar",
+            "productType": "Poncho Kids",
+    },{
         "id": "p132",
         "name": "Poncho Kids",
         "price": 120000,
         "currency": "COP",
         "sku": "Aventura Marina",
         "color": "Aventura Marina",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Aventura Marina",
+            "productType": "Poncho Kids",
+    },{
         "id": "p133",
         "name": "Capuchas",
         "price": 65000,
         "currency": "COP",
         "sku": "Pjaro azul",
         "color": "Pjaro azul",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Pjaro azul",
+            "productType": "Capuchas",
+    },{
         "id": "p134",
         "name": "Capuchas",
         "price": 65000,
         "currency": "COP",
         "sku": "Dinosaurio",
         "color": "Dinosaurio",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Dinosaurio",
+            "productType": "Capuchas",
+    },{
         "id": "p135",
         "name": "Capuchas",
         "price": 65000,
         "currency": "COP",
         "sku": "Pez payaso",
         "color": "Pez payaso",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Pez payaso",
+            "productType": "Capuchas",
+    },{
         "id": "p136",
         "name": "Capuchas",
         "price": 65000,
         "currency": "COP",
         "sku": "Cerdito",
         "color": "Cerdito",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Cerdito",
+            "productType": "Capuchas",
+    },{
         "id": "p137",
         "name": "Capuchas",
         "price": 65000,
         "currency": "COP",
         "sku": "Buho",
         "color": "Buho",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Buho",
+            "productType": "Capuchas",
+    },{
         "id": "p138",
         "name": "Capuchas",
         "price": 65000,
         "currency": "COP",
         "sku": "Elefante",
         "color": "Elefante",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Elefante",
+            "productType": "Capuchas",
+    },{
         "id": "p139",
         "name": "Capuchas",
         "price": 65000,
         "currency": "COP",
         "sku": "Unicornio",
         "color": "Unicornio",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Unicornio",
+            "productType": "Capuchas",
+    },{
         "id": "p140",
         "name": "Capuchas",
         "price": 65000,
         "currency": "COP",
         "sku": "Jirafa",
         "color": "Jirafa",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Jirafa",
+            "productType": "Capuchas",
+    },{
         "id": "p141",
         "name": "Baby Capuchas",
         "price": 38000,
@@ -1281,9 +1422,10 @@ export const products: Product[] = [
         "sku": "Pjaro azul",
         "talla": "Unica",
         "color": "Pjaro azul",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Pjaro azul",
+            "productType": "Baby Capuchas",
+    },{
         "id": "p142",
         "name": "Baby Capuchas",
         "price": 38000,
@@ -1291,9 +1433,10 @@ export const products: Product[] = [
         "sku": "Dinosaurio",
         "talla": "Unica",
         "color": "Dinosaurio",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Dinosaurio",
+            "productType": "Baby Capuchas",
+    },{
         "id": "p143",
         "name": "Baby Capuchas",
         "price": 38000,
@@ -1301,9 +1444,10 @@ export const products: Product[] = [
         "sku": "Pez payaso",
         "talla": "Unica",
         "color": "Pez payaso",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Pez payaso",
+            "productType": "Baby Capuchas",
+    },{
         "id": "p144",
         "name": "Baby Capuchas",
         "price": 38000,
@@ -1311,9 +1455,10 @@ export const products: Product[] = [
         "sku": "Cerdito",
         "talla": "Unica",
         "color": "Cerdito",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Cerdito",
+            "productType": "Baby Capuchas",
+    },{
         "id": "p145",
         "name": "Baby Capuchas",
         "price": 38000,
@@ -1321,9 +1466,10 @@ export const products: Product[] = [
         "sku": "Buho",
         "talla": "Unica",
         "color": "Buho",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Buho",
+            "productType": "Baby Capuchas",
+    },{
         "id": "p146",
         "name": "Baby Capuchas",
         "price": 38000,
@@ -1331,9 +1477,10 @@ export const products: Product[] = [
         "sku": "Elefante",
         "talla": "Unica",
         "color": "Elefante",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Elefante",
+            "productType": "Baby Capuchas",
+    },{
         "id": "p147",
         "name": "Baby Capuchas",
         "price": 38000,
@@ -1341,9 +1488,10 @@ export const products: Product[] = [
         "sku": "Unicornio",
         "talla": "Unica",
         "color": "Unicornio",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Unicornio",
+            "productType": "Baby Capuchas",
+    },{
         "id": "p148",
         "name": "Baby Capuchas",
         "price": 38000,
@@ -1351,9 +1499,10 @@ export const products: Product[] = [
         "sku": "Jirafa",
         "talla": "Unica",
         "color": "Jirafa",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Jirafa",
+            "productType": "Baby Capuchas",
+    },{
         "id": "p149",
         "name": "Batas",
         "price": 90000,
@@ -1361,9 +1510,10 @@ export const products: Product[] = [
         "sku": "Coral- Blue",
         "talla": "S",
         "color": "Coral- Blue",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Coral- Blue",
+            "productType": "Batas",
+    },{
         "id": "p150",
         "name": "Batas",
         "price": 90000,
@@ -1371,9 +1521,10 @@ export const products: Product[] = [
         "sku": "Coral- Blue",
         "talla": "M",
         "color": "Coral- Blue",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Coral- Blue",
+            "productType": "Batas",
+    },{
         "id": "p151",
         "name": "Batas",
         "price": 90000,
@@ -1381,9 +1532,10 @@ export const products: Product[] = [
         "sku": "Coral- Blue",
         "talla": "L",
         "color": "Coral- Blue",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Coral- Blue",
+            "productType": "Batas",
+    },{
         "id": "p152",
         "name": "Vestidos de Baño",
         "price": 115000,
@@ -1391,9 +1543,10 @@ export const products: Product[] = [
         "sku": "Fuego",
         "talla": "S/ M",
         "color": "Fuego",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Fuego",
+            "productType": "Vestidos de Baño",
+    },{
         "id": "p153",
         "name": "Vestidos de Baño",
         "price": 115000,
@@ -1401,9 +1554,10 @@ export const products: Product[] = [
         "sku": "Oleaje",
         "talla": "S/ M",
         "color": "Oleaje",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Oleaje",
+            "productType": "Vestidos de Baño",
+    },{
         "id": "p154",
         "name": "Vestidos de Baño",
         "price": 125000,
@@ -1411,9 +1565,10 @@ export const products: Product[] = [
         "sku": "Multiusos",
         "talla": "S/ M",
         "color": "Multiusos",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Multiusos",
+            "productType": "Vestidos de Baño",
+    },{
         "id": "p155",
         "name": "Vestidos de Baño",
         "price": 115000,
@@ -1421,9 +1576,10 @@ export const products: Product[] = [
         "sku": "Rojo/ocre",
         "talla": "S/ M",
         "color": "Rojo/ocre",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Rojo/ocre",
+            "productType": "Vestidos de Baño",
+    },{
         "id": "p156",
         "name": "Vestidos de Baño",
         "price": 115000,
@@ -1431,9 +1587,10 @@ export const products: Product[] = [
         "sku": "Fantasia Caf",
         "talla": "S/ M",
         "color": "Fantasia Caf",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Fantasia Caf",
+            "productType": "Vestidos de Baño",
+    },{
         "id": "p157",
         "name": "Vestidos de Baño",
         "price": 115000,
@@ -1441,9 +1598,10 @@ export const products: Product[] = [
         "sku": "Fantasia Blanco",
         "talla": "S/ M",
         "color": "Fantasia Blanco",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Fantasia Blanco",
+            "productType": "Vestidos de Baño",
+    },{
         "id": "p158",
         "name": "Vestidos de Baño",
         "price": 115000,
@@ -1451,9 +1609,10 @@ export const products: Product[] = [
         "sku": "Marea",
         "talla": "S/ M",
         "color": "Marea",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Marea",
+            "productType": "Vestidos de Baño",
+    },{
         "id": "p159",
         "name": "Vestidos de Baño",
         "price": 115000,
@@ -1461,9 +1620,10 @@ export const products: Product[] = [
         "sku": "Terracota",
         "talla": "S/ M",
         "color": "Terracota",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Terracota",
+            "productType": "Vestidos de Baño",
+    },{
         "id": "p160",
         "name": "Vestidos de Baño",
         "price": 130000,
@@ -1471,9 +1631,10 @@ export const products: Product[] = [
         "sku": "Negro/Verde",
         "talla": "S/ M",
         "color": "Negro/Verde",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Negro/Verde",
+            "productType": "Vestidos de Baño",
+    },{
         "id": "p161",
         "name": "Vestidos de Baño",
         "price": 130000,
@@ -1481,9 +1642,10 @@ export const products: Product[] = [
         "sku": "Vinotinto/Dorado",
         "talla": "S/ M",
         "color": "Vinotinto/Dorado",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Vinotinto/Dorado",
+            "productType": "Vestidos de Baño",
+    },{
         "id": "p162",
         "name": "Vestidos de Baño",
         "price": 115000,
@@ -1491,9 +1653,10 @@ export const products: Product[] = [
         "sku": "Morado/Fucsia",
         "talla": "S/ M",
         "color": "Morado/Fucsia",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Morado/Fucsia",
+            "productType": "Vestidos de Baño",
+    },{
         "id": "p163",
         "name": "Vestidos de Baño",
         "price": 115000,
@@ -1501,9 +1664,10 @@ export const products: Product[] = [
         "sku": "Fuego",
         "talla": "L/XL",
         "color": "Fuego",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Fuego",
+            "productType": "Vestidos de Baño",
+    },{
         "id": "p164",
         "name": "Vestidos de Baño",
         "price": 115000,
@@ -1511,9 +1675,10 @@ export const products: Product[] = [
         "sku": "Oleaje",
         "talla": "L/XL",
         "color": "Oleaje",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Oleaje",
+            "productType": "Vestidos de Baño",
+    },{
         "id": "p165",
         "name": "Vestidos de Baño",
         "price": 125000,
@@ -1521,9 +1686,10 @@ export const products: Product[] = [
         "sku": "Multiusos",
         "talla": "L/XL",
         "color": "Multiusos",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Multiusos",
+            "productType": "Vestidos de Baño",
+    },{
         "id": "p166",
         "name": "Vestidos de Baño",
         "price": 115000,
@@ -1531,9 +1697,10 @@ export const products: Product[] = [
         "sku": "Rojo/ocre",
         "talla": "L/XL",
         "color": "Rojo/ocre",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Rojo/ocre",
+            "productType": "Vestidos de Baño",
+    },{
         "id": "p167",
         "name": "Vestidos de Baño",
         "price": 115000,
@@ -1541,9 +1708,10 @@ export const products: Product[] = [
         "sku": "Fantasia Caf",
         "talla": "L/XL",
         "color": "Fantasia Caf",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Fantasia Caf",
+            "productType": "Vestidos de Baño",
+    },{
         "id": "p168",
         "name": "Vestidos de Baño",
         "price": 115000,
@@ -1551,9 +1719,10 @@ export const products: Product[] = [
         "sku": "Fantasia Blanco",
         "talla": "L/XL",
         "color": "Fantasia Blanco",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Fantasia Blanco",
+            "productType": "Vestidos de Baño",
+    },{
         "id": "p169",
         "name": "Vestidos de Baño",
         "price": 115000,
@@ -1561,9 +1730,10 @@ export const products: Product[] = [
         "sku": "Marea",
         "talla": "L/XL",
         "color": "Marea",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Marea",
+            "productType": "Vestidos de Baño",
+    },{
         "id": "p170",
         "name": "Vestidos de Baño",
         "price": 115000,
@@ -1571,9 +1741,10 @@ export const products: Product[] = [
         "sku": "Terracota",
         "talla": "L/XL",
         "color": "Terracota",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Terracota",
+            "productType": "Vestidos de Baño",
+    },{
         "id": "p171",
         "name": "Vestidos de Baño",
         "price": 130000,
@@ -1581,9 +1752,10 @@ export const products: Product[] = [
         "sku": "Negro/Verde",
         "talla": "L/XL",
         "color": "Negro/Verde",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Negro/Verde",
+            "productType": "Vestidos de Baño",
+    },{
         "id": "p172",
         "name": "Vestidos de Baño",
         "price": 130000,
@@ -1591,9 +1763,10 @@ export const products: Product[] = [
         "sku": "Vinotinto/Dorado",
         "talla": "L/XL",
         "color": "Vinotinto/Dorado",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Vinotinto/Dorado",
+            "productType": "Vestidos de Baño",
+    },{
         "id": "p173",
         "name": "Vestidos de Baño",
         "price": 115000,
@@ -1601,9 +1774,10 @@ export const products: Product[] = [
         "sku": "Morado/Fucsia",
         "talla": "L/XL",
         "color": "Morado/Fucsia",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Morado/Fucsia",
+            "productType": "Vestidos de Baño",
+    },{
         "id": "p174",
         "name": "Pantalonetas de Baño",
         "price": 110000,
@@ -1611,9 +1785,10 @@ export const products: Product[] = [
         "sku": "Bahia Solano",
         "talla": "M",
         "color": "Bahia Solano",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Bahia Solano",
+            "productType": "Pantalonetas de Baño",
+    },{
         "id": "p175",
         "name": "Pantalonetas de Baño",
         "price": 110000,
@@ -1621,9 +1796,10 @@ export const products: Product[] = [
         "sku": "Festival del Tinglar",
         "talla": "M",
         "color": "Festival del Tinglar",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Festival del Tinglar",
+            "productType": "Pantalonetas de Baño",
+    },{
         "id": "p176",
         "name": "Pantalonetas de Baño",
         "price": 110000,
@@ -1631,9 +1807,10 @@ export const products: Product[] = [
         "sku": "Oleaje",
         "talla": "M",
         "color": "Oleaje",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Oleaje",
+            "productType": "Pantalonetas de Baño",
+    },{
         "id": "p177",
         "name": "Pantalonetas de Baño",
         "price": 110000,
@@ -1641,9 +1818,10 @@ export const products: Product[] = [
         "sku": "Aqua",
         "talla": "M",
         "color": "Aqua",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Aqua",
+            "productType": "Pantalonetas de Baño",
+    },{
         "id": "p178",
         "name": "Pantalonetas de Baño",
         "price": 110000,
@@ -1651,9 +1829,10 @@ export const products: Product[] = [
         "sku": "Azul/negro",
         "talla": "M",
         "color": "Azul/negro",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Azul/negro",
+            "productType": "Pantalonetas de Baño",
+    },{
         "id": "p179",
         "name": "Pantalonetas de Baño",
         "price": 110000,
@@ -1661,9 +1840,10 @@ export const products: Product[] = [
         "sku": "Carnaval de Rio",
         "talla": "M",
         "color": "Carnaval de Rio",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Carnaval de Rio",
+            "productType": "Pantalonetas de Baño",
+    },{
         "id": "p180",
         "name": "Pantalonetas de Baño",
         "price": 110000,
@@ -1671,9 +1851,10 @@ export const products: Product[] = [
         "sku": "Festival de aloha",
         "talla": "M",
         "color": "Festival de aloha",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Festival de aloha",
+            "productType": "Pantalonetas de Baño",
+    },{
         "id": "p181",
         "name": "Pantalonetas de Baño",
         "price": 110000,
@@ -1681,9 +1862,10 @@ export const products: Product[] = [
         "sku": "Elefante Africano",
         "talla": "M",
         "color": "Elefante Africano",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Elefante Africano",
+            "productType": "Pantalonetas de Baño",
+    },{
         "id": "p182",
         "name": "Pantalonetas de Baño",
         "price": 110000,
@@ -1691,9 +1873,10 @@ export const products: Product[] = [
         "sku": "Guacamayo Jacinto",
         "talla": "M",
         "color": "Guacamayo Jacinto",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Guacamayo Jacinto",
+            "productType": "Pantalonetas de Baño",
+    },{
         "id": "p183",
         "name": "Pantalonetas de Baño",
         "price": 110000,
@@ -1701,9 +1884,10 @@ export const products: Product[] = [
         "sku": "Pingino emperador",
         "talla": "M",
         "color": "Pingino emperador",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Pingino emperador",
+            "productType": "Pantalonetas de Baño",
+    },{
         "id": "p184",
         "name": "Pantalonetas de Baño",
         "price": 110000,
@@ -1711,9 +1895,10 @@ export const products: Product[] = [
         "sku": "Mantarraya Gigante",
         "talla": "M",
         "color": "Mantarraya Gigante",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Mantarraya Gigante",
+            "productType": "Pantalonetas de Baño",
+    },{
         "id": "p185",
         "name": "Pantalonetas de Baño",
         "price": 110000,
@@ -1721,9 +1906,10 @@ export const products: Product[] = [
         "sku": "Bahia Solano",
         "talla": "L",
         "color": "Bahia Solano",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Bahia Solano",
+            "productType": "Pantalonetas de Baño",
+    },{
         "id": "p186",
         "name": "Pantalonetas de Baño",
         "price": 110000,
@@ -1731,9 +1917,10 @@ export const products: Product[] = [
         "sku": "Festival del Tinglar",
         "talla": "L",
         "color": "Festival del Tinglar",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Festival del Tinglar",
+            "productType": "Pantalonetas de Baño",
+    },{
         "id": "p187",
         "name": "Pantalonetas de Baño",
         "price": 110000,
@@ -1741,9 +1928,10 @@ export const products: Product[] = [
         "sku": "Oleaje",
         "talla": "L",
         "color": "Oleaje",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Oleaje",
+            "productType": "Pantalonetas de Baño",
+    },{
         "id": "p188",
         "name": "Pantalonetas de Baño",
         "price": 110000,
@@ -1751,9 +1939,10 @@ export const products: Product[] = [
         "sku": "Aqua",
         "talla": "L",
         "color": "Aqua",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Aqua",
+            "productType": "Pantalonetas de Baño",
+    },{
         "id": "p189",
         "name": "Pantalonetas de Baño",
         "price": 110000,
@@ -1761,9 +1950,10 @@ export const products: Product[] = [
         "sku": "Azul/negro",
         "talla": "L",
         "color": "Azul/negro",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Azul/negro",
+            "productType": "Pantalonetas de Baño",
+    },{
         "id": "p190",
         "name": "Pantalonetas de Baño",
         "price": 110000,
@@ -1771,9 +1961,10 @@ export const products: Product[] = [
         "sku": "Carnaval de Rio",
         "talla": "L",
         "color": "Carnaval de Rio",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Carnaval de Rio",
+            "productType": "Pantalonetas de Baño",
+    },{
         "id": "p191",
         "name": "Pantalonetas de Baño",
         "price": 110000,
@@ -1781,9 +1972,10 @@ export const products: Product[] = [
         "sku": "Festival de aloha",
         "talla": "L",
         "color": "Festival de aloha",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Festival de aloha",
+            "productType": "Pantalonetas de Baño",
+    },{
         "id": "p192",
         "name": "Pantalonetas de Baño",
         "price": 110000,
@@ -1791,9 +1983,10 @@ export const products: Product[] = [
         "sku": "Elefante Africano",
         "talla": "L",
         "color": "Elefante Africano",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Elefante Africano",
+            "productType": "Pantalonetas de Baño",
+    },{
         "id": "p193",
         "name": "Pantalonetas de Baño",
         "price": 110000,
@@ -1801,9 +1994,10 @@ export const products: Product[] = [
         "sku": "Guacamayo Jacinto",
         "talla": "L",
         "color": "Guacamayo Jacinto",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Guacamayo Jacinto",
+            "productType": "Pantalonetas de Baño",
+    },{
         "id": "p194",
         "name": "Pantalonetas de Baño",
         "price": 110000,
@@ -1811,9 +2005,10 @@ export const products: Product[] = [
         "sku": "Pingino emperador",
         "talla": "L",
         "color": "Pingino emperador",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Pingino emperador",
+            "productType": "Pantalonetas de Baño",
+    },{
         "id": "p195",
         "name": "Pantalonetas de Baño",
         "price": 110000,
@@ -1821,9 +2016,10 @@ export const products: Product[] = [
         "sku": "Mantarraya Gigante",
         "talla": "L",
         "color": "Mantarraya Gigante",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Mantarraya Gigante",
+            "productType": "Pantalonetas de Baño",
+    },{
         "id": "p196",
         "name": "Pantalonetas de Baño",
         "price": 110000,
@@ -1831,9 +2027,10 @@ export const products: Product[] = [
         "sku": "Bahia Solano",
         "talla": "XL",
         "color": "Bahia Solano",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Bahia Solano",
+            "productType": "Pantalonetas de Baño",
+    },{
         "id": "p197",
         "name": "Pantalonetas de Baño",
         "price": 110000,
@@ -1841,9 +2038,10 @@ export const products: Product[] = [
         "sku": "Festival del Tinglar",
         "talla": "XL",
         "color": "Festival del Tinglar",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Festival del Tinglar",
+            "productType": "Pantalonetas de Baño",
+    },{
         "id": "p198",
         "name": "Pantalonetas de Baño",
         "price": 110000,
@@ -1851,9 +2049,10 @@ export const products: Product[] = [
         "sku": "Oleaje",
         "talla": "XL",
         "color": "Oleaje",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Oleaje",
+            "productType": "Pantalonetas de Baño",
+    },{
         "id": "p199",
         "name": "Pantalonetas de Baño",
         "price": 110000,
@@ -1861,9 +2060,10 @@ export const products: Product[] = [
         "sku": "Aqua",
         "talla": "XL",
         "color": "Aqua",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Aqua",
+            "productType": "Pantalonetas de Baño",
+    },{
         "id": "p200",
         "name": "Pantalonetas de Baño",
         "price": 110000,
@@ -1871,9 +2071,10 @@ export const products: Product[] = [
         "sku": "Azul/negro",
         "talla": "XL",
         "color": "Azul/negro",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Azul/negro",
+            "productType": "Pantalonetas de Baño",
+    },{
         "id": "p201",
         "name": "Pantalonetas de Baño",
         "price": 110000,
@@ -1881,9 +2082,10 @@ export const products: Product[] = [
         "sku": "Carnaval de Rio",
         "talla": "XL",
         "color": "Carnaval de Rio",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Carnaval de Rio",
+            "productType": "Pantalonetas de Baño",
+    },{
         "id": "p202",
         "name": "Pantalonetas de Baño",
         "price": 110000,
@@ -1891,9 +2093,10 @@ export const products: Product[] = [
         "sku": "Festival de aloha",
         "talla": "XL",
         "color": "Festival de aloha",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Festival de aloha",
+            "productType": "Pantalonetas de Baño",
+    },{
         "id": "p203",
         "name": "Pantalonetas de Baño",
         "price": 110000,
@@ -1901,9 +2104,10 @@ export const products: Product[] = [
         "sku": "Elefante Africano",
         "talla": "XL",
         "color": "Elefante Africano",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Elefante Africano",
+            "productType": "Pantalonetas de Baño",
+    },{
         "id": "p204",
         "name": "Pantalonetas de Baño",
         "price": 110000,
@@ -1911,9 +2115,10 @@ export const products: Product[] = [
         "sku": "Guacamayo Jacinto",
         "talla": "XL",
         "color": "Guacamayo Jacinto",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Guacamayo Jacinto",
+            "productType": "Pantalonetas de Baño",
+    },{
         "id": "p205",
         "name": "Pantalonetas de Baño",
         "price": 110000,
@@ -1921,9 +2126,10 @@ export const products: Product[] = [
         "sku": "Pingino emperador",
         "talla": "XL",
         "color": "Pingino emperador",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Pingino emperador",
+            "productType": "Pantalonetas de Baño",
+    },{
         "id": "p206",
         "name": "Pantalonetas de Baño",
         "price": 110000,
@@ -1931,9 +2137,10 @@ export const products: Product[] = [
         "sku": "Mantarraya Gigante",
         "talla": "XL",
         "color": "Mantarraya Gigante",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Mantarraya Gigante",
+            "productType": "Pantalonetas de Baño",
+    },{
         "id": "p207",
         "name": "Buzo Acuático",
         "price": 90000,
@@ -1941,9 +2148,10 @@ export const products: Product[] = [
         "sku": "Negro",
         "talla": "S",
         "color": "Negro",
-        "variant": "Unicolor con logo"
-    },
-    {
+        "variant": "Unicolor con logo",
+            "referencia": "Negro",
+            "productType": "Buzo Acuático",
+    },{
         "id": "p208",
         "name": "Buzo Acuático",
         "price": 90000,
@@ -1951,9 +2159,10 @@ export const products: Product[] = [
         "sku": "Gris",
         "talla": "S",
         "color": "Gris",
-        "variant": "Unicolor con logo"
-    },
-    {
+        "variant": "Unicolor con logo",
+            "referencia": "Gris",
+            "productType": "Buzo Acuático",
+    },{
         "id": "p209",
         "name": "Buzo Acuático",
         "price": 90000,
@@ -1961,9 +2170,10 @@ export const products: Product[] = [
         "sku": "Rosado",
         "talla": "S",
         "color": "Rosado",
-        "variant": "Unicolor con logo"
-    },
-    {
+        "variant": "Unicolor con logo",
+            "referencia": "Rosado",
+            "productType": "Buzo Acuático",
+    },{
         "id": "p210",
         "name": "Buzo Acuático",
         "price": 90000,
@@ -1971,9 +2181,10 @@ export const products: Product[] = [
         "sku": "Negro",
         "talla": "M",
         "color": "Negro",
-        "variant": "Unicolor con logo"
-    },
-    {
+        "variant": "Unicolor con logo",
+            "referencia": "Negro",
+            "productType": "Buzo Acuático",
+    },{
         "id": "p211",
         "name": "Buzo Acuático",
         "price": 90000,
@@ -1981,9 +2192,10 @@ export const products: Product[] = [
         "sku": "Gris",
         "talla": "M",
         "color": "Gris",
-        "variant": "Unicolor con logo"
-    },
-    {
+        "variant": "Unicolor con logo",
+            "referencia": "Gris",
+            "productType": "Buzo Acuático",
+    },{
         "id": "p212",
         "name": "Buzo Acuático",
         "price": 90000,
@@ -1991,9 +2203,10 @@ export const products: Product[] = [
         "sku": "Rosado",
         "talla": "M",
         "color": "Rosado",
-        "variant": "Unicolor con logo"
-    },
-    {
+        "variant": "Unicolor con logo",
+            "referencia": "Rosado",
+            "productType": "Buzo Acuático",
+    },{
         "id": "p213",
         "name": "Buzo Acuático",
         "price": 90000,
@@ -2001,9 +2214,10 @@ export const products: Product[] = [
         "sku": "Negro",
         "talla": "L",
         "color": "Negro",
-        "variant": "Unicolor con logo"
-    },
-    {
+        "variant": "Unicolor con logo",
+            "referencia": "Negro",
+            "productType": "Buzo Acuático",
+    },{
         "id": "p214",
         "name": "Buzo Acuático",
         "price": 90000,
@@ -2011,9 +2225,10 @@ export const products: Product[] = [
         "sku": "Gris",
         "talla": "L",
         "color": "Gris",
-        "variant": "Unicolor con logo"
-    },
-    {
+        "variant": "Unicolor con logo",
+            "referencia": "Gris",
+            "productType": "Buzo Acuático",
+    },{
         "id": "p215",
         "name": "Buzo Acuático",
         "price": 90000,
@@ -2021,1114 +2236,1239 @@ export const products: Product[] = [
         "sku": "Rosado",
         "talla": "L",
         "color": "Rosado",
-        "variant": "Unicolor con logo"
-    },
-    {
+        "variant": "Unicolor con logo",
+            "referencia": "Rosado",
+            "productType": "Buzo Acuático",
+    },{
         "id": "p216",
         "name": "Pareo",
         "price": 100000,
         "currency": "COP",
         "sku": "Animal Print",
         "color": "Animal Print",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Animal Print",
+            "productType": "Pareo",
+    },{
         "id": "p217",
         "name": "Pareo",
         "price": 100000,
         "currency": "COP",
         "sku": "Aqua",
         "color": "Aqua",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Aqua",
+            "productType": "Pareo",
+    },{
         "id": "p218",
         "name": "Pareo mallatex licrado",
         "price": 50000,
         "currency": "COP",
         "sku": "Blanco",
         "color": "Blanco",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Blanco",
+            "productType": "Pareo mallatex licrado",
+    },{
         "id": "p219",
         "name": "Pareo mallatex licrado",
         "price": 50000,
         "currency": "COP",
         "sku": "Caf",
         "color": "Caf",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Caf",
+            "productType": "Pareo mallatex licrado",
+    },{
         "id": "p220",
         "name": "Pareo Tul",
         "price": 80000,
         "currency": "COP",
         "sku": "Verde",
         "color": "Verde",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Verde",
+            "productType": "Pareo Tul",
+    },{
         "id": "p221",
         "name": "Pareo Tul",
         "price": 80000,
         "currency": "COP",
         "sku": "Vinotinto",
         "color": "Vinotinto",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Vinotinto",
+            "productType": "Pareo Tul",
+    },{
         "id": "p222",
         "name": "Pareo Tul",
         "price": 80000,
         "currency": "COP",
         "sku": "Blanco",
         "color": "Blanco",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Blanco",
+            "productType": "Pareo Tul",
+    },{
         "id": "p223",
         "name": "Pareo Tul",
         "price": 80000,
         "currency": "COP",
         "sku": "Negro",
         "color": "Negro",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Negro",
+            "productType": "Pareo Tul",
+    },{
         "id": "p224",
         "name": "Turbantes",
         "price": 30000,
         "currency": "COP",
         "sku": "Sakura",
         "color": "Sakura",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Sakura",
+            "productType": "Turbantes",
+    },{
         "id": "p225",
         "name": "Turbantes",
         "price": 30000,
         "currency": "COP",
         "sku": "Luminosa",
         "color": "Luminosa",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Luminosa",
+            "productType": "Turbantes",
+    },{
         "id": "p226",
         "name": "Turbantes",
         "price": 30000,
         "currency": "COP",
         "sku": "Destellos",
         "color": "Destellos",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Destellos",
+            "productType": "Turbantes",
+    },{
         "id": "p227",
         "name": "Turbantes",
         "price": 30000,
         "currency": "COP",
         "sku": "Holi",
         "color": "Holi",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Holi",
+            "productType": "Turbantes",
+    },{
         "id": "p228",
         "name": "Turbantes",
         "price": 30000,
         "currency": "COP",
         "sku": "Festival del Tinglar",
         "color": "Festival del Tinglar",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Festival del Tinglar",
+            "productType": "Turbantes",
+    },{
         "id": "p229",
         "name": "Turbantes",
         "price": 30000,
         "currency": "COP",
         "sku": "Feria de flores",
         "color": "Feria de flores",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Feria de flores",
+            "productType": "Turbantes",
+    },{
         "id": "p230",
         "name": "Turbantes",
         "price": 30000,
         "currency": "COP",
         "sku": "Festival de Songkran",
         "color": "Festival de Songkran",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Festival de Songkran",
+            "productType": "Turbantes",
+    },{
         "id": "p231",
         "name": "Turbantes",
         "price": 30000,
         "currency": "COP",
         "sku": "Festival de aloha",
         "color": "Festival de aloha",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Festival de aloha",
+            "productType": "Turbantes",
+    },{
         "id": "p232",
         "name": "Turbantes",
         "price": 30000,
         "currency": "COP",
         "sku": "Tortuga Carey",
         "color": "Tortuga Carey",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Tortuga Carey",
+            "productType": "Turbantes",
+    },{
         "id": "p233",
         "name": "Turbantes",
         "price": 30000,
         "currency": "COP",
         "sku": "Delfin Rosado",
         "color": "Delfin Rosado",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Delfin Rosado",
+            "productType": "Turbantes",
+    },{
         "id": "p234",
         "name": "Turbantes",
         "price": 30000,
         "currency": "COP",
         "sku": "Guacamayo Jacinto",
         "color": "Guacamayo Jacinto",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Guacamayo Jacinto",
+            "productType": "Turbantes",
+    },{
         "id": "p235",
         "name": "Turbantes",
         "price": 30000,
         "currency": "COP",
         "sku": "Mariposa Monarca",
         "color": "Mariposa Monarca",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Mariposa Monarca",
+            "productType": "Turbantes",
+    },{
         "id": "p236",
         "name": "Pañoleta",
         "price": 40000,
         "currency": "COP",
         "sku": "Guepardos",
         "color": "Guepardos",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Guepardos",
+            "productType": "Pañoleta",
+    },{
         "id": "p237",
         "name": "Pañoleta",
         "price": 40000,
         "currency": "COP",
         "sku": "Elefantes",
         "color": "Elefantes",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Elefantes",
+            "productType": "Pañoleta",
+    },{
         "id": "p238",
         "name": "Pañoleta",
         "price": 40000,
         "currency": "COP",
         "sku": "Jirafas",
         "color": "Jirafas",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Jirafas",
+            "productType": "Pañoleta",
+    },{
         "id": "p239",
         "name": "Pañoleta",
         "price": 40000,
         "currency": "COP",
         "sku": "Festival de aloha",
         "color": "Festival de aloha",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Festival de aloha",
+            "productType": "Pañoleta",
+    },{
         "id": "p240",
         "name": "Pañoleta",
         "price": 40000,
         "currency": "COP",
         "sku": "Feria de flores",
         "color": "Feria de flores",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Feria de flores",
+            "productType": "Pañoleta",
+    },{
         "id": "p241",
         "name": "Pañoleta",
         "price": 40000,
         "currency": "COP",
         "sku": "Festival de Songkran",
         "color": "Festival de Songkran",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Festival de Songkran",
+            "productType": "Pañoleta",
+    },{
         "id": "p242",
         "name": "Pañoleta",
         "price": 40000,
         "currency": "COP",
         "sku": "Festival Holi",
         "color": "Festival Holi",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Festival Holi",
+            "productType": "Pañoleta",
+    },{
         "id": "p243",
         "name": "Pañoleta",
         "price": 40000,
         "currency": "COP",
         "sku": "Festival del Tinglar",
         "color": "Festival del Tinglar",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Festival del Tinglar",
+            "productType": "Pañoleta",
+    },{
         "id": "p244",
         "name": "Pañoleta",
         "price": 40000,
         "currency": "COP",
         "sku": "Mariposa Monarca",
         "color": "Mariposa Monarca",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Mariposa Monarca",
+            "productType": "Pañoleta",
+    },{
         "id": "p245",
         "name": "Pañoleta",
         "price": 40000,
         "currency": "COP",
         "sku": "Guacamayo Jacinto",
         "color": "Guacamayo Jacinto",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Guacamayo Jacinto",
+            "productType": "Pañoleta",
+    },{
         "id": "p246",
         "name": "Pañoleta",
         "price": 40000,
         "currency": "COP",
         "sku": "Delfin Rosado",
         "color": "Delfin Rosado",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Delfin Rosado",
+            "productType": "Pañoleta",
+    },{
         "id": "p247",
         "name": "Pañoleta",
         "price": 40000,
         "currency": "COP",
         "sku": "Tortuga Carey",
         "color": "Tortuga Carey",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Tortuga Carey",
+            "productType": "Pañoleta",
+    },{
         "id": "p248",
         "name": "Backpack Ligero",
         "price": 249000,
         "currency": "COP",
         "sku": "Azul",
         "color": "Azul",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Azul",
+            "productType": "Backpack Ligero",
+    },{
         "id": "p249",
         "name": "Backpack Ligero",
         "price": 249000,
         "currency": "COP",
         "sku": "Gris",
         "color": "Gris",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Gris",
+            "productType": "Backpack Ligero",
+    },{
         "id": "p250",
         "name": "Backpack Ligero",
         "price": 249000,
         "currency": "COP",
         "sku": "Naranja",
         "color": "Naranja",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Naranja",
+            "productType": "Backpack Ligero",
+    },{
         "id": "p251",
         "name": "Backpack Viajero",
         "price": 299000,
         "currency": "COP",
         "sku": "Negro",
         "color": "Negro",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Negro",
+            "productType": "Backpack Viajero",
+    },{
         "id": "p252",
         "name": "Backpack Viajero",
         "price": 299000,
         "currency": "COP",
         "sku": "Caf",
         "color": "Caf",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Caf",
+            "productType": "Backpack Viajero",
+    },{
         "id": "p253",
         "name": "Backpack Viajero",
         "price": 299000,
         "currency": "COP",
         "sku": "Gris",
         "color": "Gris",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Gris",
+            "productType": "Backpack Viajero",
+    },{
         "id": "p254",
         "name": "Bolso Playero",
         "price": 100000,
         "currency": "COP",
         "sku": "Mantarraya",
         "color": "Mantarraya",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Mantarraya",
+            "productType": "Bolso Playero",
+    },{
         "id": "p255",
         "name": "Bolso Playero",
         "price": 100000,
         "currency": "COP",
         "sku": "Colibries",
         "color": "Colibries",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Colibries",
+            "productType": "Bolso Playero",
+    },{
         "id": "p256",
         "name": "Bolso Playero",
         "price": 100000,
         "currency": "COP",
         "sku": "Medusas",
         "color": "Medusas",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Medusas",
+            "productType": "Bolso Playero",
+    },{
         "id": "p257",
         "name": "Bolso Playero",
         "price": 100000,
         "currency": "COP",
         "sku": "Jaguar",
         "color": "Jaguar",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Jaguar",
+            "productType": "Bolso Playero",
+    },{
         "id": "p258",
         "name": "Bolso Playero",
         "price": 100000,
         "currency": "COP",
         "sku": "Azul / Gris",
         "color": "Azul / Gris",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Azul / Gris",
+            "productType": "Bolso Playero",
+    },{
         "id": "p259",
         "name": "Bolso Playero",
         "price": 100000,
         "currency": "COP",
         "sku": "Beige / negro",
         "color": "Beige / negro",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Beige / negro",
+            "productType": "Bolso Playero",
+    },{
         "id": "p260",
         "name": "Morral Ligero",
         "price": 90000,
         "currency": "COP",
         "sku": "Medusas",
         "color": "Medusas",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Medusas",
+            "productType": "Morral Ligero",
+    },{
         "id": "p261",
         "name": "Morral Ligero",
         "price": 90000,
         "currency": "COP",
         "sku": "Mantarraya",
         "color": "Mantarraya",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Mantarraya",
+            "productType": "Morral Ligero",
+    },{
         "id": "p262",
         "name": "Morral Ligero",
         "price": 90000,
         "currency": "COP",
         "sku": "Beige / negro",
         "color": "Beige / negro",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Beige / negro",
+            "productType": "Morral Ligero",
+    },{
         "id": "p263",
         "name": "Morral Ligero",
         "price": 90000,
         "currency": "COP",
         "sku": "Azul / Gris",
         "color": "Azul / Gris",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Azul / Gris",
+            "productType": "Morral Ligero",
+    },{
         "id": "p264",
         "name": "Tula Expandible",
         "price": 30000,
         "currency": "COP",
         "sku": "Colibries",
         "color": "Colibries",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Colibries",
+            "productType": "Tula Expandible",
+    },{
         "id": "p265",
         "name": "Tula Expandible",
         "price": 30000,
         "currency": "COP",
         "sku": "Beige / negro",
         "color": "Beige / negro",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Beige / negro",
+            "productType": "Tula Expandible",
+    },{
         "id": "p266",
         "name": "Tula Expandible",
         "price": 30000,
         "currency": "COP",
         "sku": "Azul / Gris",
         "color": "Azul / Gris",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Azul / Gris",
+            "productType": "Tula Expandible",
+    },{
         "id": "p267",
         "name": "Bolsa Seca  10lts",
         "price": 50000,
         "currency": "COP",
         "sku": "Amarillo",
         "color": "Amarillo",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Amarillo",
+            "productType": "Bolsa Seca  10lts",
+    },{
         "id": "p268",
         "name": "Bolsa Seca  10lts",
         "price": 50000,
         "currency": "COP",
         "sku": "Naranja",
         "color": "Naranja",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Naranja",
+            "productType": "Bolsa Seca  10lts",
+    },{
         "id": "p269",
         "name": "Bolsa Seca  10lts",
         "price": 50000,
         "currency": "COP",
         "sku": "Azul",
         "color": "Azul",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Azul",
+            "productType": "Bolsa Seca  10lts",
+    },{
         "id": "p270",
         "name": "Bolsa Seca  10lts",
         "price": 50000,
         "currency": "COP",
         "sku": "Verde limn",
         "color": "Verde limn",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Verde limn",
+            "productType": "Bolsa Seca  10lts",
+    },{
         "id": "p271",
         "name": "Bolsa Seca  10lts",
         "price": 50000,
         "currency": "COP",
         "sku": "Fucsia",
         "color": "Fucsia",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Fucsia",
+            "productType": "Bolsa Seca  10lts",
+    },{
         "id": "p272",
         "name": "Bolsa Seca  10lts",
         "price": 50000,
         "currency": "COP",
         "sku": "Negro",
         "color": "Negro",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Negro",
+            "productType": "Bolsa Seca  10lts",
+    },{
         "id": "p273",
         "name": "Bolsa Seca  20lts",
         "price": 70000,
         "currency": "COP",
         "sku": "Amarillo",
         "color": "Amarillo",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Amarillo",
+            "productType": "Bolsa Seca  20lts",
+    },{
         "id": "p274",
         "name": "Bolsa Seca  20lts",
         "price": 70000,
         "currency": "COP",
         "sku": "Naranja",
         "color": "Naranja",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Naranja",
+            "productType": "Bolsa Seca  20lts",
+    },{
         "id": "p275",
         "name": "Bolsa Seca  20lts",
         "price": 70000,
         "currency": "COP",
         "sku": "Azul",
         "color": "Azul",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Azul",
+            "productType": "Bolsa Seca  20lts",
+    },{
         "id": "p276",
         "name": "Bolsa Seca  20lts",
         "price": 70000,
         "currency": "COP",
         "sku": "Verde limn",
         "color": "Verde limn",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Verde limn",
+            "productType": "Bolsa Seca  20lts",
+    },{
         "id": "p277",
         "name": "Bolsa Seca  20lts",
         "price": 70000,
         "currency": "COP",
         "sku": "Fucsia",
         "color": "Fucsia",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Fucsia",
+            "productType": "Bolsa Seca  20lts",
+    },{
         "id": "p278",
         "name": "Bolsa Seca  20lts",
         "price": 70000,
         "currency": "COP",
         "sku": "Negro",
         "color": "Negro",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Negro",
+            "productType": "Bolsa Seca  20lts",
+    },{
         "id": "p279",
         "name": "Manta Picnic",
         "price": 130000,
         "currency": "COP",
         "sku": "Principito",
         "color": "Principito",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Principito",
+            "productType": "Manta Picnic",
+    },{
         "id": "p280",
         "name": "Manta Picnic",
         "price": 130000,
         "currency": "COP",
         "sku": "Tiburn Ballena",
         "color": "Tiburn Ballena",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Tiburn Ballena",
+            "productType": "Manta Picnic",
+    },{
         "id": "p281",
         "name": "Manta Picnic",
         "price": 130000,
         "currency": "COP",
         "sku": "Canguros",
         "color": "Canguros",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Canguros",
+            "productType": "Manta Picnic",
+    },{
         "id": "p282",
         "name": "Manta Picnic",
         "price": 130000,
         "currency": "COP",
         "sku": "Elefantes",
         "color": "Elefantes",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Elefantes",
+            "productType": "Manta Picnic",
+    },{
         "id": "p283",
         "name": "Manta Picnic",
         "price": 130000,
         "currency": "COP",
         "sku": "Feria de Flores",
         "color": "Feria de Flores",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Feria de Flores",
+            "productType": "Manta Picnic",
+    },{
         "id": "p284",
         "name": "Manta Picnic",
         "price": 130000,
         "currency": "COP",
         "sku": "Festival de ballenas Hermanus",
         "color": "Festival de ballenas Hermanus",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Festival de ballenas Hermanus",
+            "productType": "Manta Picnic",
+    },{
         "id": "p285",
         "name": "Manta Picnic",
         "price": 130000,
         "currency": "COP",
         "sku": "Festival Aloha",
         "color": "Festival Aloha",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Festival Aloha",
+            "productType": "Manta Picnic",
+    },{
         "id": "p286",
         "name": "Manta Picnic",
         "price": 130000,
         "currency": "COP",
         "sku": "Festival del Tinglar",
         "color": "Festival del Tinglar",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Festival del Tinglar",
+            "productType": "Manta Picnic",
+    },{
         "id": "p287",
         "name": "Manta Picnic",
         "price": 130000,
         "currency": "COP",
         "sku": "Mantarraya Gigante",
         "color": "Mantarraya Gigante",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Mantarraya Gigante",
+            "productType": "Manta Picnic",
+    },{
         "id": "p288",
         "name": "Manta Picnic",
         "price": 130000,
         "currency": "COP",
         "sku": "Guacamayo Jacinto",
         "color": "Guacamayo Jacinto",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Guacamayo Jacinto",
+            "productType": "Manta Picnic",
+    },{
         "id": "p289",
         "name": "Manta Picnic",
         "price": 130000,
         "currency": "COP",
         "sku": "Panda Gigante",
         "color": "Panda Gigante",
-        "variant": "Sublimado"
-    },
-    {
+        "variant": "Sublimado",
+            "referencia": "Panda Gigante",
+            "productType": "Manta Picnic",
+    },{
         "id": "p290",
         "name": "Hamaca Ligera",
         "price": 100000,
         "currency": "COP",
         "sku": "Negro",
         "color": "Negro",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Negro",
+            "productType": "Hamaca Ligera",
+    },{
         "id": "p291",
         "name": "Hamaca Ligera",
         "price": 100000,
         "currency": "COP",
         "sku": "Tiffany",
         "color": "Tiffany",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Tiffany",
+            "productType": "Hamaca Ligera",
+    },{
         "id": "p292",
         "name": "Hamaca Ligera",
         "price": 100000,
         "currency": "COP",
         "sku": "Azul",
         "color": "Azul",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Azul",
+            "productType": "Hamaca Ligera",
+    },{
         "id": "p293",
         "name": "Hamaca Ligera",
         "price": 100000,
         "currency": "COP",
         "sku": "Verde",
         "color": "Verde",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Verde",
+            "productType": "Hamaca Ligera",
+    },{
         "id": "p294",
         "name": "Hamaca Ligera",
         "price": 100000,
         "currency": "COP",
         "sku": "Gris",
         "color": "Gris",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Gris",
+            "productType": "Hamaca Ligera",
+    },{
         "id": "p295",
         "name": "Hamaca Ligera",
         "price": 100000,
         "currency": "COP",
         "sku": "Fucsia",
         "color": "Fucsia",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Fucsia",
+            "productType": "Hamaca Ligera",
+    },{
         "id": "p296",
         "name": "Botella Termica",
         "price": 70000,
         "currency": "COP",
         "sku": "Azul oscuro",
         "color": "Azul oscuro",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Azul oscuro",
+            "productType": "Botella Termica",
+    },{
         "id": "p297",
         "name": "Botella Termica",
         "price": 70000,
         "currency": "COP",
         "sku": "Azul cielo",
         "color": "Azul cielo",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Azul cielo",
+            "productType": "Botella Termica",
+    },{
         "id": "p298",
         "name": "Botella Termica",
         "price": 70000,
         "currency": "COP",
         "sku": "Rojo",
         "color": "Rojo",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Rojo",
+            "productType": "Botella Termica",
+    },{
         "id": "p299",
         "name": "Botella Termica",
         "price": 70000,
         "currency": "COP",
         "sku": "Rosa",
         "color": "Rosa",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Rosa",
+            "productType": "Botella Termica",
+    },{
         "id": "p300",
         "name": "Termo Expandible",
         "price": 35000,
         "currency": "COP",
         "sku": "Rosado",
         "color": "Rosado",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Rosado",
+            "productType": "Termo Expandible",
+    },{
         "id": "p301",
         "name": "Termo Expandible",
         "price": 35000,
         "currency": "COP",
         "sku": "Blanco",
         "color": "Blanco",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Blanco",
+            "productType": "Termo Expandible",
+    },{
         "id": "p302",
         "name": "Termo Expandible",
         "price": 35000,
         "currency": "COP",
         "sku": "Azul",
         "color": "Azul",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Azul",
+            "productType": "Termo Expandible",
+    },{
         "id": "p303",
         "name": "Termo Manilla",
         "price": 30000,
         "currency": "COP",
         "sku": "Naranja",
         "color": "Naranja",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Naranja",
+            "productType": "Termo Manilla",
+    },{
         "id": "p304",
         "name": "Termo Manilla",
         "price": 30000,
         "currency": "COP",
         "sku": "Verde",
         "color": "Verde",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Verde",
+            "productType": "Termo Manilla",
+    },{
         "id": "p305",
         "name": "Kit de Viaje",
         "price": 30000,
         "currency": "COP",
         "sku": "Blanco-Azul-Verde",
         "color": "Blanco-Azul-Verde",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Blanco-Azul-Verde",
+            "productType": "Kit de Viaje",
+    },{
         "id": "p306",
         "name": "Buff Deportivo",
         "price": 30000,
         "currency": "COP",
         "sku": "Verde",
         "color": "Verde",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Verde",
+            "productType": "Buff Deportivo",
+    },{
         "id": "p307",
         "name": "Buff Deportivo",
         "price": 30000,
         "currency": "COP",
         "sku": "Azul",
         "color": "Azul",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Azul",
+            "productType": "Buff Deportivo",
+    },{
         "id": "p308",
         "name": "Buff Deportivo",
         "price": 30000,
         "currency": "COP",
         "sku": "Morado",
         "color": "Morado",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Morado",
+            "productType": "Buff Deportivo",
+    },{
         "id": "p309",
         "name": "Buff Deportivo",
         "price": 30000,
         "currency": "COP",
         "sku": "Gris",
         "color": "Gris",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Gris",
+            "productType": "Buff Deportivo",
+    },{
         "id": "p310",
         "name": "Almohada Viajera",
         "price": 40000,
         "currency": "COP",
         "sku": "Negro-Azul",
         "color": "Negro-Azul",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Negro-Azul",
+            "productType": "Almohada Viajera",
+    },{
         "id": "p311",
         "name": "Cubre ojos",
         "price": 40000,
         "currency": "COP",
         "sku": "Negro",
         "color": "Negro",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Negro",
+            "productType": "Cubre ojos",
+    },{
         "id": "p312",
         "name": "Cubre ojos",
         "price": 40000,
         "currency": "COP",
         "sku": "Azul oscuro",
         "color": "Azul oscuro",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Azul oscuro",
+            "productType": "Cubre ojos",
+    },{
         "id": "p313",
         "name": "Cubre ojos",
         "price": 40000,
         "currency": "COP",
         "sku": "Rosado",
         "color": "Rosado",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Rosado",
+            "productType": "Cubre ojos",
+    },{
         "id": "p314",
         "name": "Cubre ojos",
         "price": 40000,
         "currency": "COP",
         "sku": "Azul Claro",
         "color": "Azul Claro",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Azul Claro",
+            "productType": "Cubre ojos",
+    },{
         "id": "p315",
         "name": "Sobres Organizadores",
         "price": 30000,
         "currency": "COP",
         "sku": "Gris",
         "color": "Gris",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Gris",
+            "productType": "Sobres Organizadores",
+    },{
         "id": "p316",
         "name": "Sobres Organizadores",
         "price": 30000,
         "currency": "COP",
         "sku": "Negro",
         "color": "Negro",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Negro",
+            "productType": "Sobres Organizadores",
+    },{
         "id": "p317",
         "name": "Sobres Organizadores",
         "price": 30000,
         "currency": "COP",
         "sku": "Beige",
         "color": "Beige",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Beige",
+            "productType": "Sobres Organizadores",
+    },{
         "id": "p318",
         "name": "Kit Organizador",
         "price": 90000,
         "currency": "COP",
         "sku": "Gris",
         "color": "Gris",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Gris",
+            "productType": "Kit Organizador",
+    },{
         "id": "p319",
         "name": "Kit Organizador",
         "price": 90000,
         "currency": "COP",
         "sku": "Negro",
         "color": "Negro",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Negro",
+            "productType": "Kit Organizador",
+    },{
         "id": "p320",
         "name": "Kit Organizador",
         "price": 90000,
         "currency": "COP",
         "sku": "Beige",
         "color": "Beige",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Beige",
+            "productType": "Kit Organizador",
+    },{
         "id": "p321",
         "name": "Bolsa de lavado",
         "price": 15000,
         "currency": "COP",
         "sku": "Blanco",
         "color": "Blanco",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Blanco",
+            "productType": "Bolsa de lavado",
+    },{
         "id": "p322",
         "name": "Mini Billetera",
         "price": 80000,
         "currency": "COP",
         "sku": "Rojo",
         "color": "Rojo",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Rojo",
+            "productType": "Mini Billetera",
+    },{
         "id": "p323",
         "name": "Mini Billetera",
         "price": 80000,
         "currency": "COP",
         "sku": "Negro",
         "color": "Negro",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Negro",
+            "productType": "Mini Billetera",
+    },{
         "id": "p324",
         "name": "Mini Billetera",
         "price": 80000,
         "currency": "COP",
         "sku": "Beige",
         "color": "Beige",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Beige",
+            "productType": "Mini Billetera",
+    },{
         "id": "p325",
         "name": "Mini Billetera",
         "price": 80000,
         "currency": "COP",
         "sku": "Rosado",
         "color": "Rosado",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Rosado",
+            "productType": "Mini Billetera",
+    },{
         "id": "p326",
         "name": "Mini Billetera",
         "price": 80000,
         "currency": "COP",
         "sku": "Gris",
         "color": "Gris",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Gris",
+            "productType": "Mini Billetera",
+    },{
         "id": "p327",
         "name": "Mini Billetera",
         "price": 80000,
         "currency": "COP",
         "sku": "Azul",
         "color": "Azul",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Azul",
+            "productType": "Mini Billetera",
+    },{
         "id": "p328",
         "name": "Porta Pasaporte",
         "price": 90000,
         "currency": "COP",
         "sku": "Rojo",
         "color": "Rojo",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Rojo",
+            "productType": "Porta Pasaporte",
+    },{
         "id": "p329",
         "name": "Porta Pasaporte",
         "price": 90000,
         "currency": "COP",
         "sku": "Negro",
         "color": "Negro",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Negro",
+            "productType": "Porta Pasaporte",
+    },{
         "id": "p330",
         "name": "Porta Pasaporte",
         "price": 90000,
         "currency": "COP",
         "sku": "Beige",
         "color": "Beige",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Beige",
+            "productType": "Porta Pasaporte",
+    },{
         "id": "p331",
         "name": "Porta Pasaporte",
         "price": 90000,
         "currency": "COP",
         "sku": "Rosado",
         "color": "Rosado",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Rosado",
+            "productType": "Porta Pasaporte",
+    },{
         "id": "p332",
         "name": "Porta Pasaporte",
         "price": 90000,
         "currency": "COP",
         "sku": "Gris",
         "color": "Gris",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Gris",
+            "productType": "Porta Pasaporte",
+    },{
         "id": "p333",
         "name": "Porta Pasaporte",
         "price": 90000,
         "currency": "COP",
         "sku": "Azul",
         "color": "Azul",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Azul",
+            "productType": "Porta Pasaporte",
+    },{
         "id": "p334",
         "name": "Cosmetiqueras ligera",
         "price": 45000,
         "currency": "COP",
         "sku": "Rosado",
         "color": "Rosado",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Rosado",
+            "productType": "Cosmetiqueras ligera",
+    },{
         "id": "p335",
         "name": "Cosmetiqueras ligera",
         "price": 45000,
         "currency": "COP",
         "sku": "Morado",
         "color": "Morado",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Morado",
+            "productType": "Cosmetiqueras ligera",
+    },{
         "id": "p336",
         "name": "Cosmetiqueras ligera",
         "price": 45000,
         "currency": "COP",
         "sku": "Negro",
         "color": "Negro",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Negro",
+            "productType": "Cosmetiqueras ligera",
+    },{
         "id": "p337",
         "name": "Adaptador universal",
         "price": 50000,
         "currency": "COP",
         "sku": "Blanco",
         "color": "Blanco",
-        "variant": "Unicolor"
-    },
-    {
+        "variant": "Unicolor",
+            "referencia": "Blanco",
+            "productType": "Adaptador universal",
+    },{
         "id": "p338",
         "name": "Bolso Casual",
         "price": 90000,
         "currency": "COP",
         "sku": "Beige",
         "color": "Beige",
-        "variant": "Unicolor"
+        "variant": "Unicolor",
+            "referencia": "Beige",
+            "productType": "Bolso Casual",
     },
     {
         "id": "p339",

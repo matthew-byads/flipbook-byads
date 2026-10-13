@@ -231,19 +231,24 @@ export const PageStage = forwardRef<HTMLDivElement, PageStageProps>(({
     let activeVariants: Product[] = [];
     let activeName = "";
     let activeReferencia: string | undefined;
+    let activeProductType: string | undefined;
     if (activeHotspot) {
         if (activeHotspot.productName) {
             activeName = activeHotspot.productName;
             activeReferencia = activeHotspot.productReferencia;
+            activeProductType = activeHotspot.productReferencia ? undefined : activeHotspot.productName; // productType derived from productName when no referencia
             if (activeReferencia) {
                 // Prefer referencia match — name may include size suffixes
+                // Also filter by productType for defense-in-depth (prevents cross-product-type matches)
                 activeVariants = allProducts.filter(
-                    (p) => p.referencia === activeReferencia
+                    (p) => p.referencia === activeReferencia &&
+                        (!activeProductType || p.productType === activeProductType)
                 );
             } else {
-                // No referencia — match by name (exact or prefix with size suffix)
+                // No referencia — match by name AND productType (defense-in-depth)
                 activeVariants = allProducts.filter(
-                    (p) => p.name === activeName || p.name.startsWith(activeName + " ")
+                    (p) => (p.name === activeName || p.name.startsWith(activeName + " ")) &&
+                        (!activeProductType || p.productType === activeProductType)
                 );
             }
         } else if (activeHotspot.productId) {
@@ -252,6 +257,7 @@ export const PageStage = forwardRef<HTMLDivElement, PageStageProps>(({
                 activeVariants = [p];
                 activeName = p.name;
                 activeReferencia = p.referencia;
+                activeProductType = p.productType;
             }
         }
 
