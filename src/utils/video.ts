@@ -7,18 +7,18 @@ export function getEmbedUrl(url: string): { type: "youtube" | "vimeo" | "direct"
     
     const trimmed = url.trim();
 
-    // YouTube regexes
-    const ytReg = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
+    // YouTube: watch, youtu.be, shorts, live, embed and legacy /v/ links
+    const ytReg = /(?:youtube(?:-nocookie)?\.com\/(?:shorts\/|live\/|embed\/|v\/|e\/|[^/]+\/.+\/|.*[?&]v=)|youtu\.be\/)([A-Za-z0-9_-]{11})/i;
     const ytMatch = trimmed.match(ytReg);
     if (ytMatch && ytMatch[1]) {
         return {
             type: "youtube",
-            embedUrl: `https://www.youtube.com/embed/${ytMatch[1]}?autoplay=1&rel=0`
+            embedUrl: `https://www.youtube.com/embed/${ytMatch[1]}?autoplay=1&rel=0&playsinline=1`
         };
     }
     
     // Vimeo regexes
-    const vimeoReg = /vimeo\.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|video\/|)(\d+)(?:$|\/|\?)/i;
+    const vimeoReg = /vimeo\.com\/(?:channels\/(?:\w+\/)?|groups\/([^/]*)\/videos\/|album\/(\d+)\/video\/|video\/|)(\d+)(?:$|\/|\?)/i;
     const vimeoMatch = trimmed.match(vimeoReg);
     if (vimeoMatch && vimeoMatch[3]) {
         return {

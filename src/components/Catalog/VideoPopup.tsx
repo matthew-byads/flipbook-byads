@@ -72,6 +72,8 @@ export function VideoPopup({ videoUrl, onClose }: VideoPopupProps) {
                             src={embedUrl}
                             autoPlay
                             controls
+                            playsInline
+                            preload="metadata"
                             className="w-full h-full object-contain"
                         />
                     ) : (
